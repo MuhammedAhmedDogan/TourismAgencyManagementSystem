@@ -74,6 +74,7 @@ CREATE TABLE IF NOT EXISTS public.price
     price_hotel_id int NOT NULL,
     price_pension_id int NOT NULL,
     price_season_id int NOT NULL,
+    price_guest_type text NOT NULL,
     price float NOT NULL,
     PRIMARY KEY (price_id),
     FOREIGN KEY (price_room_id) REFERENCES public.room(room_id),
