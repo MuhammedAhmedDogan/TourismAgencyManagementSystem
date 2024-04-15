@@ -17,14 +17,12 @@ public class UserView extends Layout {
     private JButton btn_save;
     private JLabel lbl_username;
     private User user;
-    private UserManager userManager;
+    private UserManager userManager = new UserManager();
 
     public UserView(User user) {
         this.add(container);
         this.guiInitilaze(400, 500);
         this.user = user;
-
-        this.userManager = new UserManager();
 
         this.cmb_role.setModel(new DefaultComboBoxModel<>(User.Role.values()));
 
@@ -43,21 +41,33 @@ public class UserView extends Layout {
                 this.user.setUsername(this.fld_username.getText());
                 this.user.setPassword(this.fld_password.getText());
 
-                if (this.user.getId() != 0) {
-                    result = this.userManager.update(this.user);
+                if (this.isUsernameExist(this.user)) {
+                    Helper.showMessage("Bu kullanıcı adı zaten kullanılıyor !");
                 } else {
-                    result = this.userManager.save(this.user);
-                }
+                    if (this.user.getId() != 0) {
+                        result = this.userManager.update(this.user);
+                    } else {
+                        result = this.userManager.save(this.user);
+                    }
 
-                if (result) {
-                    Helper.showMessage("done");
-                    dispose();
-                } else {
-                    Helper.showMessage("error");
+                    if (result) {
+                        Helper.showMessage("done");
+                        dispose();
+                    }
                 }
             }
 
         });
 
     }
+
+    private boolean isUsernameExist(User thisuser) {
+        for (User user : userManager.findAll()) {
+            if (user.getUsername().equals(thisuser.getUsername()) && user.getId() != thisuser.getId()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
