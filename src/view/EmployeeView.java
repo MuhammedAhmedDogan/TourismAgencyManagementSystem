@@ -14,6 +14,9 @@ public class EmployeeView extends Layout {
     private JPanel pnl_room;
     private JPanel pnl_hotel;
     private JPanel pnl_reservation;
+    private JScrollPane scrl_room;
+    private JScrollPane scrl_hotel;
+    private JScrollPane scrl_reservation;
     private User user;
 
     public EmployeeView(User user) {

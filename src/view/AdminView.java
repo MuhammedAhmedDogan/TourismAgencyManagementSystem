@@ -78,17 +78,18 @@ public class AdminView extends Layout {
         });
         this.tbl_users.setComponentPopupMenu(user_menu);
 
+        loadUserFilter();
+
         this.btn_add_user.addActionListener(e -> {
             UserView userView = new UserView(new User());
             userView.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent e) {
                     loadUserTable(null);
+                    cmb_filter_role.setSelectedItem(null);
                 }
             });
         });
-
-        loadUserFilter();
 
         this.cmb_filter_role.addActionListener(e -> {
             loadUserTable(userRowListBySearch());

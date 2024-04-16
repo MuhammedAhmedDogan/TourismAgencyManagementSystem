@@ -11,8 +11,8 @@ public class LoginView extends Layout {
     private JPanel container;
     private JPanel w_top;
     private JPanel w_bottom;
-    private JLabel lbl_welcome;
-    private JLabel lbl_welcome2;
+    private JLabel lbl_title;
+    private JLabel lbl_title2;
     private JTextField fld_username;
     private JTextField fld_password;
     private JLabel lbl_username;

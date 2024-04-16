@@ -16,7 +16,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="2fe77" class="javax.swing.JLabel" binding="lbl_welcome">
+          <component id="2fe77" class="javax.swing.JLabel" binding="lbl_title">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="2" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -25,7 +25,7 @@
               <text value="TURİZM ACENTE"/>
             </properties>
           </component>
-          <component id="ce9ff" class="javax.swing.JLabel" binding="lbl_welcome2">
+          <component id="ce9ff" class="javax.swing.JLabel" binding="lbl_title2">
             <constraints>
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -68,14 +68,6 @@
               <text value="Şifre"/>
             </properties>
           </component>
-          <component id="f8dc1" class="javax.swing.JTextField" binding="fld_password">
-            <constraints>
-              <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="-1"/>
-              </grid>
-            </constraints>
-            <properties/>
-          </component>
           <component id="7facc" class="javax.swing.JButton" binding="btn_login">
             <constraints>
               <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
@@ -104,6 +96,14 @@
               <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
             </constraints>
           </vspacer>
+          <component id="86b1e" class="javax.swing.JPasswordField" binding="fld_password">
+            <constraints>
+              <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties/>
+          </component>
         </children>
       </grid>
     </children>
