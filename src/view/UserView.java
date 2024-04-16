@@ -42,7 +42,7 @@ public class UserView extends Layout {
                 this.user.setPassword(this.fld_password.getText());
 
                 if (userManager.isUsernameExist(this.user)) {
-                    Helper.showMessage("Bu kullanıcı adı zaten kullanılıyor !");
+                    Helper.showMessage("Bu kullanıcı adı başka biri tarafından kullanılıyor !");
                 } else {
                     if (this.user.getId() != 0) {
                         result = this.userManager.update(this.user);

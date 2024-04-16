@@ -25,6 +25,7 @@ public class AdminView extends Layout {
     private JComboBox<User.Role> cmb_filter_role;
     private JLabel lbl_filter;
     private JButton btn_clear;
+    private JButton btn_add_user;
     private User user;
     private UserManager userManager;
     private DefaultTableModel tmdl_user = new DefaultTableModel();
@@ -40,7 +41,6 @@ public class AdminView extends Layout {
         this.lbl_welcome.setText("Hoşgeldiniz : " + this.user.getUsername());
         loadUserTable(null);
         loadUserComponent();
-        loadUserFilter();
     }
 
     public void loadUserTable(ArrayList<Object[]> userList) {
@@ -53,16 +53,8 @@ public class AdminView extends Layout {
 
     public void loadUserComponent() {
         tableRowSelect(this.tbl_users);
+
         this.user_menu = new JPopupMenu();
-        this.user_menu.add("Yeni").addActionListener(e -> {
-            UserView userView = new UserView(new User());
-            userView.addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowClosed(WindowEvent e) {
-                    loadUserTable(null);
-                }
-            });
-        });
         this.user_menu.add("Güncelle").addActionListener(e -> {
             int selectUserId = this.getTableSelectedRow(tbl_users, 0);
             UserView userView = new UserView(this.userManager.getById(selectUserId));
@@ -85,6 +77,18 @@ public class AdminView extends Layout {
             }
         });
         this.tbl_users.setComponentPopupMenu(user_menu);
+
+        this.btn_add_user.addActionListener(e -> {
+            UserView userView = new UserView(new User());
+            userView.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    loadUserTable(null);
+                }
+            });
+        });
+
+        loadUserFilter();
 
         this.cmb_filter_role.addActionListener(e -> {
             loadUserTable(userRowListBySearch());
