@@ -38,7 +38,7 @@ public class LoginView extends Layout {
                         AdminView adminView = new AdminView(loginUser);
                         dispose();
                     } else if (loginUser.getRole().toString().equalsIgnoreCase("EMPLOYEE")) {
-                        System.out.println("Employee");
+                        EmployeeView employeeView = new EmployeeView(loginUser);
                         dispose();
                     } else {
                         Helper.showMessage("Kullanıcı yetkisi bulunamadı !");

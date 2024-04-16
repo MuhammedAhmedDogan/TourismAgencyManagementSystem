@@ -38,7 +38,7 @@ public class AdminView extends Layout {
         this.user = user;
         this.userManager = new UserManager();
 
-        this.lbl_welcome.setText("Hoşgeldiniz : " + this.user.getUsername());
+        this.lbl_welcome.setText("Hoşgeldiniz : " + this.user.getUsername() + " (" + this.user.getRole() + ")");
         loadUserTable(null);
         loadUserComponent();
     }
@@ -100,6 +100,11 @@ public class AdminView extends Layout {
         });
 
         this.btn_exit.addActionListener(e -> {
+            dispose();
+        });
+
+        this.btn_employee.addActionListener(e -> {
+            EmployeeView employeeView = new EmployeeView(this.user);
             dispose();
         });
     }
