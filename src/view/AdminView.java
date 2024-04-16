@@ -24,7 +24,6 @@ public class AdminView extends Layout {
     private JPanel pnl_filter;
     private JComboBox<User.Role> cmb_filter_role;
     private JLabel lbl_filter;
-    private JButton btn_search;
     private JButton btn_clear;
     private User user;
     private UserManager userManager;
@@ -70,7 +69,7 @@ public class AdminView extends Layout {
             userView.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent e) {
-                    loadUserTable(null);
+                    loadUserTable(userRowListBySearch());
                 }
             });
         });
@@ -79,7 +78,7 @@ public class AdminView extends Layout {
                 int selectUserId = this.getTableSelectedRow(tbl_users, 0);
                 if (this.userManager.delete(selectUserId)) {
                     Helper.showMessage("done");
-                    loadUserTable(null);
+                    loadUserTable(userRowListBySearch());
                 } else {
                     Helper.showMessage("error");
                 }
@@ -87,20 +86,27 @@ public class AdminView extends Layout {
         });
         this.tbl_users.setComponentPopupMenu(user_menu);
 
-        this.btn_search.addActionListener(e -> {
-            ArrayList<User> userListBySearch = this.userManager.getByRole((User.Role) cmb_filter_role.getSelectedItem());
-            ArrayList<Object[]> userRowListBySearch = this.userManager.getForTable(this.col_user.length, userListBySearch);
-            loadUserTable(userRowListBySearch);
+        this.cmb_filter_role.addActionListener(e -> {
+            loadUserTable(userRowListBySearch());
         });
 
         this.btn_clear.addActionListener(e -> {
             this.cmb_filter_role.setSelectedItem(null);
             loadUserTable(null);
         });
+
+        this.btn_exit.addActionListener(e -> {
+            dispose();
+        });
     }
 
     public void loadUserFilter() {
         this.cmb_filter_role.setModel(new DefaultComboBoxModel<>(User.Role.values()));
         this.cmb_filter_role.setSelectedItem(null);
+    }
+
+    public ArrayList<Object[]> userRowListBySearch() {
+        ArrayList<User> userListBySearch = this.userManager.getByRole((User.Role) this.cmb_filter_role.getSelectedItem());
+        return this.userManager.getForTable(this.col_user.length, userListBySearch);
     }
 }
