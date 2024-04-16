@@ -25,6 +25,14 @@ public class UserManager {
         return this.userDao.getById(id);
     }
 
+    public ArrayList<User> getByRole(User.Role role) {
+        if (role == null) {
+            return this.findAll();
+        } else {
+            return userDao.getByRole(role);
+        }
+    }
+
     public boolean delete(int id) {
         return this.userDao.delete(id);
     }
@@ -45,7 +53,7 @@ public class UserManager {
         return this.userDao.update(user);
     }
 
-    public ArrayList<Object[]> getFortable(int size, ArrayList<User> users) {
+    public ArrayList<Object[]> getForTable(int size, ArrayList<User> users) {
         ArrayList<Object[]> userList = new ArrayList<>();
         for (User user : users) {
             int i = 0;
@@ -57,5 +65,14 @@ public class UserManager {
             userList.add(rowObject);
         }
         return userList;
+    }
+
+    public boolean isUsernameExist(User thisuser) {
+        for (User user : this.findAll()) {
+            if (user.getUsername().equals(thisuser.getUsername()) && user.getId() != thisuser.getId()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

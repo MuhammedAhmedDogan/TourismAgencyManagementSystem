@@ -18,7 +18,7 @@ public class UserDao {
 
     public ArrayList<User> findAll() {
         ArrayList<User> userList = new ArrayList<>();
-        String query = "SELECT * FROM public.user";
+        String query = "SELECT * FROM public.user ORDER BY user_name ASC";
         try {
             ResultSet rs = this.con.createStatement().executeQuery(query);
             while (rs.next()) {
@@ -63,11 +63,27 @@ public class UserDao {
         return obj;
     }
 
+    public ArrayList<User> getByRole(User.Role role) {
+        ArrayList<User> userList = new ArrayList<>();
+        String query = "SELECT * FROM public.user WHERE user_role = ? ORDER BY user_name ASC";
+        try {
+            PreparedStatement pr = this.con.prepareStatement(query);
+            pr.setString(1, role.toString());
+            ResultSet rs = pr.executeQuery();
+            while (rs.next()) {
+                userList.add(this.match(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return userList;
+    }
+
     public boolean delete(int id) {
         String query = "DELETE FROM public.user WHERE user_id = ?";
         try {
             PreparedStatement pr = con.prepareStatement(query);
-            pr.setInt(1,id);
+            pr.setInt(1, id);
             return pr.executeUpdate() != -1;
         } catch (SQLException e) {
             e.printStackTrace();

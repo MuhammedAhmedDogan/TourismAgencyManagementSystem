@@ -53,7 +53,6 @@ public class Helper {
                 yield "Mesaj";
             }
         };
-
         JOptionPane.showMessageDialog(null, msg, title, JOptionPane.INFORMATION_MESSAGE);
     }
 

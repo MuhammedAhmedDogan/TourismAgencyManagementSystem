@@ -41,7 +41,7 @@ public class UserView extends Layout {
                 this.user.setUsername(this.fld_username.getText());
                 this.user.setPassword(this.fld_password.getText());
 
-                if (this.isUsernameExist(this.user)) {
+                if (userManager.isUsernameExist(this.user)) {
                     Helper.showMessage("Bu kullanıcı adı zaten kullanılıyor !");
                 } else {
                     if (this.user.getId() != 0) {
@@ -59,15 +59,6 @@ public class UserView extends Layout {
 
         });
 
-    }
-
-    private boolean isUsernameExist(User thisuser) {
-        for (User user : userManager.findAll()) {
-            if (user.getUsername().equals(thisuser.getUsername()) && user.getId() != thisuser.getId()) {
-                return true;
-            }
-        }
-        return false;
     }
 
 }

@@ -10,7 +10,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
-public class AdminView extends Layout{
+public class AdminView extends Layout {
     private JPanel container;
     private JPanel pnl_top;
     private JLabel lbl_welcome;
@@ -21,10 +21,16 @@ public class AdminView extends Layout{
     private JPanel pnl_users;
     private JScrollPane scrl_users;
     private JTable tbl_users;
+    private JPanel pnl_filter;
+    private JComboBox<User.Role> cmb_filter_role;
+    private JLabel lbl_filter;
+    private JButton btn_search;
+    private JButton btn_clear;
     private User user;
     private UserManager userManager;
     private DefaultTableModel tmdl_user = new DefaultTableModel();
     private JPopupMenu user_menu = new JPopupMenu();
+    private Object[] col_user;
 
     public AdminView(User user) {
         this.add(container);
@@ -33,14 +39,17 @@ public class AdminView extends Layout{
         this.userManager = new UserManager();
 
         this.lbl_welcome.setText("Hoşgeldiniz : " + this.user.getUsername());
-        loadUserTable();
+        loadUserTable(null);
         loadUserComponent();
+        loadUserFilter();
     }
 
-    public void loadUserTable() {
-        Object[] col_user = {"ID", "Kullanıcı Adı", "Şifre", "Pozisyon"};
-        ArrayList<Object[]> carList = this.userManager.getFortable(col_user.length, this.userManager.findAll());
-        createTable(this.tmdl_user, this.tbl_users, col_user, carList);
+    public void loadUserTable(ArrayList<Object[]> userList) {
+        this.col_user = new Object[]{"ID", "Kullanıcı Adı", "Şifre", "Pozisyon"};
+        if (userList == null) {
+            userList = this.userManager.getForTable(col_user.length, this.userManager.findAll());
+        }
+        createTable(this.tmdl_user, this.tbl_users, col_user, userList);
     }
 
     public void loadUserComponent() {
@@ -51,7 +60,7 @@ public class AdminView extends Layout{
             userView.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent e) {
-                    loadUserTable();
+                    loadUserTable(null);
                 }
             });
         });
@@ -61,7 +70,7 @@ public class AdminView extends Layout{
             userView.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent e) {
-                    loadUserTable();
+                    loadUserTable(null);
                 }
             });
         });
@@ -70,12 +79,28 @@ public class AdminView extends Layout{
                 int selectUserId = this.getTableSelectedRow(tbl_users, 0);
                 if (this.userManager.delete(selectUserId)) {
                     Helper.showMessage("done");
-                    loadUserTable();
+                    loadUserTable(null);
                 } else {
                     Helper.showMessage("error");
                 }
             }
         });
         this.tbl_users.setComponentPopupMenu(user_menu);
+
+        this.btn_search.addActionListener(e -> {
+            ArrayList<User> userListBySearch = this.userManager.getByRole((User.Role) cmb_filter_role.getSelectedItem());
+            ArrayList<Object[]> userRowListBySearch = this.userManager.getForTable(this.col_user.length, userListBySearch);
+            loadUserTable(userRowListBySearch);
+        });
+
+        this.btn_clear.addActionListener(e -> {
+            this.cmb_filter_role.setSelectedItem(null);
+            loadUserTable(null);
+        });
+    }
+
+    public void loadUserFilter() {
+        this.cmb_filter_role.setModel(new DefaultComboBoxModel<>(User.Role.values()));
+        this.cmb_filter_role.setSelectedItem(null);
     }
 }
