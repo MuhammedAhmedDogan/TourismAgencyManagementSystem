@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS public.season
     season_id SERIAL,
     season_hotel_id int NOT NULL,
     season_start_date date NOT NUll,
-    season_end_day date NOT NULL,
+    season_end_date date NOT NULL,
     PRIMARY KEY (season_id),
     FOREIGN KEY ( season_hotel_id) REFERENCES public.hotel(hotel_id)
 );
