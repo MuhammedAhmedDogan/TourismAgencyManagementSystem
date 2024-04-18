@@ -113,7 +113,7 @@ public class SeasonDao {
         String query = "UPDATE public.season SET " +
                 "season_hotel_id = ?, " +
                 "season_start_date = ?, " +
-                "season_end_date " +
+                "season_end_date = ? " +
                 "WHERE season_id = ?";
         try {
             PreparedStatement pr = this.con.prepareStatement(query);
@@ -122,6 +122,7 @@ public class SeasonDao {
             java.sql.Date sqlDateEnd = new java.sql.Date(season.getEndDate().getTime());
             pr.setDate(2, sqlDateStart);
             pr.setDate(3, sqlDateEnd);
+            pr.setInt(4,season.getId());
             return pr.executeUpdate() != -1;
         } catch (SQLException e) {
             e.printStackTrace();

@@ -61,7 +61,7 @@ public class HotelView extends Layout {
         this.cmb_star.setModel(new DefaultComboBoxModel<>(Hotel.Star.values()));
         this.cmb_star.setSelectedItem(null);
 
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         DateFormatter dateFormatter = new DateFormatter(dateFormat);
         DefaultFormatterFactory formatterFactory = new DefaultFormatterFactory(dateFormatter);
         this.fld_season1_start.setFormatterFactory(formatterFactory);
@@ -123,6 +123,16 @@ public class HotelView extends Layout {
 
                 if (this.hotel.getId() != 0) {
                     result = this.hotelManager.update(this.hotel);
+                    try {
+                        seasons.getFirst().setStartDate(dateFormat.parse(this.fld_season1_start.getText()));
+                        seasons.getFirst().setEndDate(dateFormat.parse(this.fld_season1_end.getText()));
+                        seasons.getLast().setStartDate(dateFormat.parse(this.fld_season2_start.getText()));
+                        seasons.getLast().setEndDate(dateFormat.parse(this.fld_season2_end.getText()));
+                    } catch (ParseException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    result = this.seasonManager.update(this.seasons.getFirst()) && this.seasonManager.update(this.seasons.getLast());
+
                 } else {
                     result = this.hotelManager.save(hotel);
                     this.hotel = this.hotelManager.getById(this.hotelManager.newHotelId());

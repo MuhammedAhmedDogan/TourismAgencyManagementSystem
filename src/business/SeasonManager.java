@@ -41,4 +41,12 @@ public class SeasonManager {
         return this.seasonDao.save(season);
     }
 
+    public boolean update(Season season) {
+        if (this.getById(season.getId()) == null) {
+            Helper.showMessage("Sezon bulunamadı !");
+            return false;
+        }
+        return this.seasonDao.update(season);
+    }
+
 }
