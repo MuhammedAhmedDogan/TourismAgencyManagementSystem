@@ -23,11 +23,11 @@ public class Hotel {
     private boolean fullCreditPension;
 
     public enum Star {
-        BIRYILDIZ("1 Yıldız"),
-        IKIYILDIZ("2 Yıldız"),
-        UCYILDIZ("3 Yıldız"),
-        DORTYILDIZ("4 Yıldız"),
-        BESYILDIZ("5 Yıldız");
+        BIR_YILDIZ("1 Yıldız"),
+        IKI_YILDIZ("2 Yıldız"),
+        UC_YILDIZ("3 Yıldız"),
+        DORT_YILDIZ("4 Yıldız"),
+        BES_YILDIZ("5 Yıldız");
 
         private final String starValue;
 

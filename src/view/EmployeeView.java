@@ -31,7 +31,7 @@ public class EmployeeView extends Layout {
 
     public EmployeeView(User user) {
         this.add(container);
-        this.guiInitilaze(800, 500);
+        this.guiInitilaze(1000, 700);
         this.user = user;
         this.hotelManager = new HotelManager();
 
