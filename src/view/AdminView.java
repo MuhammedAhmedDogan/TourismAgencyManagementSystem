@@ -49,6 +49,7 @@ public class AdminView extends Layout {
             userList = this.userManager.getForTable(col_user.length, this.userManager.findAll());
         }
         createTable(this.tmdl_user, this.tbl_users, col_user, userList);
+        tbl_users.getColumnModel().getColumn(0).setMaxWidth(75);
     }
 
     public void loadUserComponent() {

@@ -98,7 +98,12 @@
                 </constraints>
                 <properties/>
                 <border type="none"/>
-                <children/>
+                <children>
+                  <component id="4f09d" class="javax.swing.JTable" binding="tbl_hotel">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                </children>
               </scrollpane>
             </children>
           </grid>

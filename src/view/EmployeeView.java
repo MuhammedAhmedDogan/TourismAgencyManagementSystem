@@ -1,8 +1,14 @@
 package view;
 
+import business.HotelManager;
+import core.Helper;
 import entity.User;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 
 public class EmployeeView extends Layout {
     private JPanel container;
@@ -17,12 +23,17 @@ public class EmployeeView extends Layout {
     private JScrollPane scrl_room;
     private JScrollPane scrl_hotel;
     private JScrollPane scrl_reservation;
+    private JTable tbl_hotel;
+    private DefaultTableModel tmdl_hotel = new DefaultTableModel();
     private User user;
+    private HotelManager hotelManager;
+    private JPopupMenu hotel_menu = new JPopupMenu();
 
     public EmployeeView(User user) {
         this.add(container);
         this.guiInitilaze(800, 500);
         this.user = user;
+        this.hotelManager = new HotelManager();
 
         this.lbl_welcome.setText("Hoşgeldiniz : " + this.user.getUsername() + " (" + this.user.getRole() + ")");
 
@@ -32,6 +43,44 @@ public class EmployeeView extends Layout {
             dispose();
         });
 
+        loadHotelTable();
+        loadHotelComponent();
 
+    }
+
+    public void loadHotelTable() {
+        Object[] col_hotel = {"ID","Otel Adı", "Şehir", "Telefon", "eMail", "Yıldız"};
+        ArrayList<Object[]> hotelList = this.hotelManager.getForTable(col_hotel.length, this.hotelManager.findAll());
+        createTable(this.tmdl_hotel, this.tbl_hotel, col_hotel, hotelList);
+        tbl_hotel.getColumnModel().getColumn(0).setMaxWidth(75);
+        tbl_hotel.getColumnModel().getColumn(5).setMaxWidth(75);
+    }
+
+    public void loadHotelComponent() {
+        tableRowSelect(this.tbl_hotel);
+
+        this.hotel_menu = new JPopupMenu();
+        this.hotel_menu.add("Güncelle").addActionListener(e -> {
+            int selectHotelId = this.getTableSelectedRow(tbl_hotel, 0);
+            HotelView hotelView = new HotelView(this.hotelManager.getById(selectHotelId));
+            hotelView.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    loadHotelTable();
+                }
+            });
+        });
+        this.hotel_menu.add("Sil").addActionListener(e -> {
+            if (Helper.confirm("sure")) {
+                int selectHotelId = this.getTableSelectedRow(tbl_hotel, 0);
+                if (this.hotelManager.delete(selectHotelId)) {
+                    Helper.showMessage("done");
+                    loadHotelTable();
+                } else {
+                    Helper.showMessage("error");
+                }
+            }
+        });
+        this.tbl_hotel.setComponentPopupMenu(hotel_menu);
     }
 }
