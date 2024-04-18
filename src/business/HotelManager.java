@@ -1,7 +1,9 @@
 package business;
 
+import core.Helper;
 import dao.HotelDao;
 import entity.Hotel;
+import entity.User;
 
 import java.util.ArrayList;
 
@@ -39,6 +41,14 @@ public class HotelManager {
 
     public boolean delete(int id) {
         return this.hotelDao.delete(id);
+    }
+
+    public boolean save(Hotel hotel) {
+        if (this.getById(hotel.getId()) != null) {
+            Helper.showMessage("error");
+            return false;
+        }
+        return this.hotelDao.save(hotel);
     }
 
 }

@@ -2,6 +2,7 @@ package view;
 
 import business.HotelManager;
 import core.Helper;
+import entity.Hotel;
 import entity.User;
 
 import javax.swing.*;
@@ -24,6 +25,8 @@ public class EmployeeView extends Layout {
     private JScrollPane scrl_hotel;
     private JScrollPane scrl_reservation;
     private JTable tbl_hotel;
+    private JButton btn_hotel_add;
+    private JPanel pnl_hotel_add;
     private DefaultTableModel tmdl_hotel = new DefaultTableModel();
     private User user;
     private HotelManager hotelManager;
@@ -49,7 +52,7 @@ public class EmployeeView extends Layout {
     }
 
     public void loadHotelTable() {
-        Object[] col_hotel = {"ID","Otel Adı", "Şehir", "Telefon", "eMail", "Yıldız"};
+        Object[] col_hotel = {"ID", "Otel Adı", "Şehir", "Telefon", "eMail", "Yıldız"};
         ArrayList<Object[]> hotelList = this.hotelManager.getForTable(col_hotel.length, this.hotelManager.findAll());
         createTable(this.tmdl_hotel, this.tbl_hotel, col_hotel, hotelList);
         tbl_hotel.getColumnModel().getColumn(0).setMaxWidth(75);
@@ -82,5 +85,16 @@ public class EmployeeView extends Layout {
             }
         });
         this.tbl_hotel.setComponentPopupMenu(hotel_menu);
+
+        this.btn_hotel_add.addActionListener(e -> {
+            HotelView hotelView = new HotelView(new Hotel());
+            hotelView.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    loadHotelTable();
+                }
+            });
+
+        });
     }
 }

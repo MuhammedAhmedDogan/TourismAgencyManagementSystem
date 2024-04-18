@@ -2,6 +2,7 @@ package dao;
 
 import core.Db;
 import entity.Hotel;
+import entity.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -79,6 +80,58 @@ public class HotelDao {
         try {
             PreparedStatement pr = con.prepareStatement(query);
             pr.setInt(1, id);
+            return pr.executeUpdate() != -1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    public boolean save(Hotel hotel) {
+        String query = "INSERT INTO public.hotel " +
+                "(" +
+                "hotel_name," +
+                "hotel_city," +
+                "hotel_address," +
+                "hotel_email," +
+                "hotel_phone," +
+                "hotel_star," +
+                "car_park," +
+                "wifi," +
+                "pool," +
+                "fitness," +
+                "spa," +
+                "room_service," +
+                "ultra_pension," +
+                "all_inclusive_pension," +
+                "room_breakfast_pension," +
+                "full_pension," +
+                "half_pension," +
+                "only_bed_pension," +
+                "full_credit_pension" +
+                ")" +
+                " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        try {
+            PreparedStatement pr = this.con.prepareStatement(query);
+            pr.setString(1, hotel.getName());
+            pr.setString(2, hotel.getCity());
+            pr.setString(3, hotel.getAddress());
+            pr.setString(4, hotel.getEmail());
+            pr.setString(5, hotel.getPhone());
+            pr.setString(6, hotel.getStar().toString());
+            pr.setBoolean(7, hotel.isCarPark());
+            pr.setBoolean(8, hotel.isWifi());
+            pr.setBoolean(9, hotel.isPool());
+            pr.setBoolean(10, hotel.isFitness());
+            pr.setBoolean(11, hotel.isSpa());
+            pr.setBoolean(12, hotel.isRoomService());
+            pr.setBoolean(13, hotel.isUltraPension());
+            pr.setBoolean(14, hotel.isAllInclusivePension());
+            pr.setBoolean(15, hotel.isRoomBreakfastPension());
+            pr.setBoolean(16, hotel.isFullPension());
+            pr.setBoolean(17, hotel.isHalfPension());
+            pr.setBoolean(18, hotel.isOnlyBedPension());
+            pr.setBoolean(19, hotel.isFullCreditPension());
             return pr.executeUpdate() != -1;
         } catch (SQLException e) {
             e.printStackTrace();
