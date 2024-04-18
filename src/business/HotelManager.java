@@ -51,4 +51,12 @@ public class HotelManager {
         return this.hotelDao.save(hotel);
     }
 
+    public boolean update(Hotel hotel) {
+        if (this.getById(hotel.getId()) == null) {
+            Helper.showMessage(hotel.getId() + " ID kayıtlı kullanıcı bulunamadı !");
+            return false;
+        }
+        return this.hotelDao.update(hotel);
+    }
+
 }
