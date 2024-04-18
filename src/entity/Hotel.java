@@ -38,6 +38,11 @@ public class Hotel {
         public String getStarValue() {
             return starValue;
         }
+
+        @Override
+        public String toString() {
+            return starValue;
+        }
     }
 
     public Hotel() {

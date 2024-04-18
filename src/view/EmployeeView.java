@@ -1,6 +1,7 @@
 package view;
 
 import business.HotelManager;
+import business.SeasonManager;
 import core.Helper;
 import entity.Hotel;
 import entity.User;
@@ -30,6 +31,7 @@ public class EmployeeView extends Layout {
     private DefaultTableModel tmdl_hotel = new DefaultTableModel();
     private User user;
     private HotelManager hotelManager;
+    private SeasonManager seasonManager;
     private JPopupMenu hotel_menu = new JPopupMenu();
 
     public EmployeeView(User user) {
@@ -37,6 +39,7 @@ public class EmployeeView extends Layout {
         this.guiInitilaze(1000, 700);
         this.user = user;
         this.hotelManager = new HotelManager();
+        this.seasonManager = new SeasonManager();
 
         this.lbl_welcome.setText("Hoşgeldiniz : " + this.user.getUsername() + " (" + this.user.getRole() + ")");
 
@@ -76,7 +79,7 @@ public class EmployeeView extends Layout {
         this.hotel_menu.add("Sil").addActionListener(e -> {
             if (Helper.confirm("sure")) {
                 int selectHotelId = this.getTableSelectedRow(tbl_hotel, 0);
-                if (this.hotelManager.delete(selectHotelId)) {
+                if (this.seasonManager.deleteByHotelId(selectHotelId) && this.hotelManager.delete(selectHotelId)) {
                     Helper.showMessage("done");
                     loadHotelTable();
                 } else {

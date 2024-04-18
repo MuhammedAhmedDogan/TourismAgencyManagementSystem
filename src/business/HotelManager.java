@@ -59,4 +59,8 @@ public class HotelManager {
         return this.hotelDao.update(hotel);
     }
 
+    public int newHotelId() {
+        return this.hotelDao.newHotelId();
+    }
+
 }

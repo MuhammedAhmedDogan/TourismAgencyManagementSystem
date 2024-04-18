@@ -1,14 +1,19 @@
 package view;
 
 import business.HotelManager;
+import business.SeasonManager;
 import core.Helper;
 import entity.Hotel;
+import entity.Season;
 
 import javax.swing.*;
 import javax.swing.text.DateFormatter;
 import javax.swing.text.DefaultFormatterFactory;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 public class HotelView extends Layout {
     private JPanel container;
@@ -43,17 +48,21 @@ public class HotelView extends Layout {
     private JFormattedTextField fld_season2_end;
     private Hotel hotel;
     private HotelManager hotelManager;
+    private SeasonManager seasonManager;
+    private ArrayList<Season> seasons;
 
     public HotelView(Hotel hotel) {
         this.add(container);
         this.guiInitilaze(500, 700);
         this.hotel = hotel;
         this.hotelManager = new HotelManager();
+        this.seasonManager = new SeasonManager();
+        this.seasons = seasonManager.getByHotelId(hotel.getId());
 
         this.cmb_star.setModel(new DefaultComboBoxModel<>(Hotel.Star.values()));
         this.cmb_star.setSelectedItem(null);
 
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         DateFormatter dateFormatter = new DateFormatter(dateFormat);
         DefaultFormatterFactory formatterFactory = new DefaultFormatterFactory(dateFormatter);
         this.fld_season1_start.setFormatterFactory(formatterFactory);
@@ -61,7 +70,7 @@ public class HotelView extends Layout {
         this.fld_season2_start.setFormatterFactory(formatterFactory);
         this.fld_season2_end.setFormatterFactory(formatterFactory);
 
-        if (hotel != null) {
+        if (!seasons.isEmpty()) {
             this.fld_name.setText(hotel.getName());
             this.fld_city.setText(hotel.getCity());
             this.fld_address.setText(hotel.getAddress());
@@ -81,6 +90,11 @@ public class HotelView extends Layout {
             this.check_half_pension.setSelected(hotel.isHalfPension());
             this.check_only_bed_pension.setSelected(hotel.isOnlyBedPension());
             this.check_full_credit_pension.setSelected(hotel.isFullCreditPension());
+            this.fld_season1_start.setText(seasons.getFirst().getStartDate().toString());
+            this.fld_season1_end.setText(seasons.getFirst().getEndDate().toString());
+            this.fld_season2_start.setText(seasons.getLast().getStartDate().toString());
+            this.fld_season2_end.setText(seasons.getLast().getEndDate().toString());
+
         }
 
         this.btn_save.addActionListener(e -> {
@@ -111,7 +125,16 @@ public class HotelView extends Layout {
                 if (this.hotel.getId() != 0) {
                     result = this.hotelManager.update(this.hotel);
                 } else {
-                    result = this.hotelManager.save(this.hotel);
+                    result = this.hotelManager.save(hotel);
+                    this.hotel = this.hotelManager.getById(this.hotelManager.newHotelId());
+                    this.seasons.clear();
+                    try {
+                        this.seasons.add(new Season(dateFormat.parse(this.fld_season1_start.getText()), dateFormat.parse(this.fld_season1_end.getText()) ,this.hotel));
+                        this.seasons.add(new Season(dateFormat.parse(this.fld_season2_start.getText()), dateFormat.parse(this.fld_season2_end.getText()) ,this.hotel));
+                    } catch (ParseException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    result = this.seasonManager.save(seasons.getFirst()) && this.seasonManager.save(seasons.getLast());
                 }
 
                 if (result) {

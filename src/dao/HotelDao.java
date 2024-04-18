@@ -2,7 +2,7 @@ package dao;
 
 import core.Db;
 import entity.Hotel;
-import entity.User;
+import entity.Season;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -188,6 +188,20 @@ public class HotelDao {
             e.printStackTrace();
         }
         return true;
+    }
+
+    public int newHotelId() {
+        String query = "SELECT * FROM public.hotel ORDER BY hotel_id DESC LIMIT 1";
+        Hotel hotel = new Hotel();
+        try {
+            ResultSet rs = this.con.createStatement().executeQuery(query);
+            if (rs.next()) {
+                hotel = this.match(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return hotel.getId();
     }
 
 }
