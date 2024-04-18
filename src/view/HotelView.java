@@ -98,7 +98,7 @@ public class HotelView extends Layout {
         }
 
         this.btn_save.addActionListener(e -> {
-            if (Helper.isFieldListEmpty(new JTextField[]{this.fld_name, this.fld_city, this.fld_address, this.fld_email, this.fld_phone,this.fld_season1_start,this.fld_season1_end,this.fld_season2_start,this.fld_season2_end}) || this.cmb_star.getSelectedItem() == null) {
+            if (Helper.isFieldListEmpty(new JTextField[]{this.fld_name, this.fld_city, this.fld_address, this.fld_email, this.fld_phone, this.fld_season1_start, this.fld_season1_end, this.fld_season2_start, this.fld_season2_end}) || this.cmb_star.getSelectedItem() == null) {
                 Helper.showMessage("fill");
             } else {
                 boolean result;
@@ -129,8 +129,8 @@ public class HotelView extends Layout {
                     this.hotel = this.hotelManager.getById(this.hotelManager.newHotelId());
                     this.seasons.clear();
                     try {
-                        this.seasons.add(new Season(dateFormat.parse(this.fld_season1_start.getText()), dateFormat.parse(this.fld_season1_end.getText()) ,this.hotel));
-                        this.seasons.add(new Season(dateFormat.parse(this.fld_season2_start.getText()), dateFormat.parse(this.fld_season2_end.getText()) ,this.hotel));
+                        this.seasons.add(new Season(dateFormat.parse(this.fld_season1_start.getText()), dateFormat.parse(this.fld_season1_end.getText()), this.hotel));
+                        this.seasons.add(new Season(dateFormat.parse(this.fld_season2_start.getText()), dateFormat.parse(this.fld_season2_end.getText()), this.hotel));
                     } catch (ParseException ex) {
                         throw new RuntimeException(ex);
                     }
