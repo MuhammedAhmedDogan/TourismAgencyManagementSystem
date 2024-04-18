@@ -13,7 +13,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class HotelView extends Layout {
     private JPanel container;
@@ -107,7 +106,7 @@ public class HotelView extends Layout {
                 this.hotel.setAddress(this.fld_address.getText());
                 this.hotel.setEmail(this.fld_email.getText());
                 this.hotel.setPhone(this.fld_phone.getText());
-                this.hotel.setStar((Hotel.Star) this.cmb_star.getSelectedItem());
+                this.hotel.setStar((Hotel.Star) cmb_star.getSelectedItem());
                 this.hotel.setCarPark(this.check_carpark.isSelected());
                 this.hotel.setWifi(this.check_wifi.isSelected());
                 this.hotel.setPool(this.check_pool.isSelected());

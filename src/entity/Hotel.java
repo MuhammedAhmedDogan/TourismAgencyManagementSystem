@@ -31,13 +31,14 @@ public class Hotel {
 
         private final String starValue;
 
-        Star(String starValue){
+        Star(String starValue) {
             this.starValue = starValue;
         }
 
         public String getStarValue() {
             return starValue;
         }
+
     }
 
     public Hotel() {
