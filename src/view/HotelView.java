@@ -27,7 +27,6 @@ public class HotelView extends Layout {
     private JPanel pnl_right;
     private JLabel lbl_title;
     private JTextField fld_name;
-    private JTextField fld_city;
     private JTextField fld_address;
     private JTextField fld_email;
     private JTextField fld_phone;
@@ -51,6 +50,7 @@ public class HotelView extends Layout {
     private JFormattedTextField fld_season1_end;
     private JFormattedTextField fld_season2_start;
     private JFormattedTextField fld_season2_end;
+    private JComboBox cmb_city;
     private Hotel hotel;
     private HotelManager hotelManager;
     private SeasonManager seasonManager;
@@ -70,6 +70,7 @@ public class HotelView extends Layout {
 
         this.cmb_star.setModel(new DefaultComboBoxModel<>(Hotel.Star.values()));
         this.cmb_star.setSelectedItem(null);
+        this.loadCmbCity();
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         DateFormatter dateFormatter = new DateFormatter(dateFormat);
@@ -81,7 +82,7 @@ public class HotelView extends Layout {
 
         if (this.hotel.getId() != 0) {
             this.fld_name.setText(hotel.getName());
-            this.fld_city.setText(hotel.getCity());
+            this.cmb_city.setSelectedItem(hotel.getCity());
             this.fld_address.setText(hotel.getAddress());
             this.fld_email.setText(hotel.getEmail());
             this.fld_phone.setText(hotel.getPhone());
@@ -107,18 +108,18 @@ public class HotelView extends Layout {
         }
 
         this.btn_save.addActionListener(e -> {
-            if (Helper.isFieldListEmpty(new JTextField[]{this.fld_name, this.fld_city, this.fld_address, this.fld_email, this.fld_phone, this.fld_season1_start, this.fld_season1_end, this.fld_season2_start, this.fld_season2_end}) || this.cmb_star.getSelectedItem() == null) {
+            if (Helper.isFieldListEmpty(new JTextField[]{this.fld_name, this.fld_address, this.fld_email, this.fld_phone, this.fld_season1_start, this.fld_season1_end, this.fld_season2_start, this.fld_season2_end}) || this.cmb_star.getSelectedItem() == null || this.cmb_city.getSelectedItem() == null) {
                 Helper.showMessage("fill");
             } else if (!this.check_ultra_pension.isSelected() && !this.check_all_inclusive_pension.isSelected() && !this.check_room_breakfast_pension.isSelected() && !this.check_full_pension.isSelected() && !this.check_half_pension.isSelected() && !this.check_only_bed_pension.isSelected() && !this.check_full_credit_pension.isSelected()) {
                 Helper.showMessage("Otelde en az bir pansiyon tipi bulunmalıdır !");
             } else {
                 boolean result;
                 this.hotel.setName(this.fld_name.getText());
-                this.hotel.setCity(this.fld_city.getText());
+                this.hotel.setCity(this.cmb_city.getSelectedItem().toString());
                 this.hotel.setAddress(this.fld_address.getText());
                 this.hotel.setEmail(this.fld_email.getText());
                 this.hotel.setPhone(this.fld_phone.getText());
-                this.hotel.setStar((Hotel.Star) cmb_star.getSelectedItem());
+                this.hotel.setStar(Hotel.Star.getStar(cmb_star.getSelectedItem().toString()));
                 this.hotel.setCarPark(this.check_carpark.isSelected());
                 this.hotel.setWifi(this.check_wifi.isSelected());
                 this.hotel.setPool(this.check_pool.isSelected());
@@ -263,7 +264,34 @@ public class HotelView extends Layout {
                 }
             }
         });
+    }
 
+    public void loadCmbCity() {
+        this.cmb_city.setModel(new DefaultComboBoxModel<>(City.values()));
+        this.cmb_city.setSelectedItem(null);
+
+        JTextField searchField = new JTextField();
+        searchField.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {}
+            @Override
+            public void keyPressed(KeyEvent e) {}
+            @Override
+            public void keyReleased(KeyEvent e) {
+                String query = searchField.getText().toLowerCase();
+                List<String> filteredItems = new ArrayList<>();
+                for (City item : City.values()) {
+                    if (item.toString().startsWith(query)) {
+                        filteredItems.add(item.getName());
+                    }
+                }
+
+                cmb_city.removeAllItems();
+                for (String item : filteredItems){
+                    cmb_city.addItem(item);
+                }
+            }
+        });
     }
 
 }

@@ -39,6 +39,19 @@ public class Hotel {
             return starValue;
         }
 
+        public static Star getStar(String str){
+            for (Star star : Star.values()) {
+                if (star.getStarValue().equalsIgnoreCase(str)) {
+                    return star;
+                }
+            }
+            return null;
+        }
+
+        @Override
+        public String toString() {
+            return starValue;
+        }
     }
 
     public Hotel() {

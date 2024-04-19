@@ -73,7 +73,7 @@ public class HotelDao {
         obj.setAddress(rs.getString("hotel_address"));
         obj.setEmail(rs.getString("hotel_email"));
         obj.setPhone(rs.getString("hotel_phone"));
-        obj.setStar(Hotel.Star.valueOf(rs.getString("hotel_star")));
+        obj.setStar(Hotel.Star.getStar(rs.getString("hotel_star")));
         obj.setCarPark(rs.getBoolean("car_park"));
         obj.setWifi(rs.getBoolean("wifi"));
         obj.setPool(rs.getBoolean("pool"));
