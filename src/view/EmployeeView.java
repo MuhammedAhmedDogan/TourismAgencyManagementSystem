@@ -6,6 +6,7 @@ import business.RoomManager;
 import business.SeasonManager;
 import core.Helper;
 import entity.Hotel;
+import entity.Room;
 import entity.User;
 
 import javax.swing.*;
@@ -31,6 +32,8 @@ public class EmployeeView extends Layout {
     private JButton btn_hotel_add;
     private JPanel pnl_hotel_add;
     private JTable tbl_room;
+    private JPanel pnl_room_add;
+    private JButton btn_room_add;
     private DefaultTableModel tmdl_hotel = new DefaultTableModel();
     private DefaultTableModel tmdl_room = new DefaultTableModel();
     private User user;
@@ -39,6 +42,7 @@ public class EmployeeView extends Layout {
     private PensionManager pensionManager;
     private RoomManager roomManager;
     private JPopupMenu hotel_menu = new JPopupMenu();
+    private JPopupMenu room_menu = new JPopupMenu();
 
     public EmployeeView(User user) {
         this.add(container);
@@ -63,6 +67,7 @@ public class EmployeeView extends Layout {
         loadHotelComponent();
 
         loadRoomTable();
+        loadRoomComponent();
     }
 
     public void loadRoomTable() {
@@ -70,6 +75,45 @@ public class EmployeeView extends Layout {
         ArrayList<Object[]> roomList = roomManager.getForTable(col_room.length, this.roomManager.findAll());
         createTable(this.tmdl_room, this.tbl_room, col_room, roomList);
         tbl_room.getColumnModel().getColumn(0).setMaxWidth(75);
+    }
+
+    public void loadRoomComponent() {
+        tableRowSelect(this.tbl_room);
+
+        this.room_menu = new JPopupMenu();
+        this.room_menu.add("Güncelle").addActionListener(e -> {
+            int selectRoomId = this.getTableSelectedRow(tbl_room, 0);
+            RoomView roomView = new RoomView(this.roomManager.getById(selectRoomId));
+            roomView.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    loadRoomTable();
+                }
+            });
+        });
+        this.room_menu.add("Sil").addActionListener(e -> {
+            if (Helper.confirm("sure")) {
+                int selectRoomId = this.getTableSelectedRow(tbl_room, 0);
+                if (this.roomManager.deleteById(selectRoomId)) {
+                    Helper.showMessage("done");
+                    loadRoomTable();
+                } else {
+                    Helper.showMessage("error");
+                }
+            }
+        });
+        this.tbl_room.setComponentPopupMenu(room_menu);
+
+        this.btn_room_add.addActionListener(e -> {
+            RoomView roomView = new RoomView(new Room());
+            roomView.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    loadRoomTable();
+                }
+            });
+
+        });
     }
 
     public void loadHotelTable() {
