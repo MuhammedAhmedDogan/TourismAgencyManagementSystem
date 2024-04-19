@@ -1,9 +1,11 @@
 package view;
 
 import business.HotelManager;
+import business.PensionManager;
 import business.SeasonManager;
 import core.Helper;
 import entity.Hotel;
+import entity.Pension;
 import entity.Season;
 
 import javax.swing.*;
@@ -48,7 +50,9 @@ public class HotelView extends Layout {
     private Hotel hotel;
     private HotelManager hotelManager;
     private SeasonManager seasonManager;
+    private PensionManager pensionManager;
     private ArrayList<Season> seasons;
+    private ArrayList<Pension> pensions;
 
     public HotelView(Hotel hotel) {
         this.add(container);
@@ -56,7 +60,9 @@ public class HotelView extends Layout {
         this.hotel = hotel;
         this.hotelManager = new HotelManager();
         this.seasonManager = new SeasonManager();
+        this.pensionManager = new PensionManager();
         this.seasons = seasonManager.getByHotelId(hotel.getId());
+        this.pensions = pensionManager.getByHotelId(hotel.getId());
 
         this.cmb_star.setModel(new DefaultComboBoxModel<>(Hotel.Star.values()));
         this.cmb_star.setSelectedItem(null);
@@ -69,11 +75,11 @@ public class HotelView extends Layout {
         this.fld_season2_start.setFormatterFactory(formatterFactory);
         this.fld_season2_end.setFormatterFactory(formatterFactory);
 
-        if (!seasons.isEmpty()) {
+        if (this.hotel.getId() != 0) {
             this.fld_name.setText(hotel.getName());
             this.fld_city.setText(hotel.getCity());
             this.fld_address.setText(hotel.getAddress());
-            this.fld_email.setText(hotel.getAddress());
+            this.fld_email.setText(hotel.getEmail());
             this.fld_phone.setText(hotel.getPhone());
             this.cmb_star.setSelectedItem(hotel.getStar());
             this.check_carpark.setSelected(hotel.isCarPark());
@@ -99,6 +105,8 @@ public class HotelView extends Layout {
         this.btn_save.addActionListener(e -> {
             if (Helper.isFieldListEmpty(new JTextField[]{this.fld_name, this.fld_city, this.fld_address, this.fld_email, this.fld_phone, this.fld_season1_start, this.fld_season1_end, this.fld_season2_start, this.fld_season2_end}) || this.cmb_star.getSelectedItem() == null) {
                 Helper.showMessage("fill");
+            } else if (!this.check_ultra_pension.isSelected() && !this.check_all_inclusive_pension.isSelected() && !this.check_room_breakfast_pension.isSelected() && !this.check_full_pension.isSelected() && !this.check_half_pension.isSelected() && !this.check_only_bed_pension.isSelected() && !this.check_full_credit_pension.isSelected()) {
+                Helper.showMessage("Otelde en az bir pansiyon tipi bulunmalıdır !");
             } else {
                 boolean result;
                 this.hotel.setName(this.fld_name.getText());
@@ -122,7 +130,7 @@ public class HotelView extends Layout {
                 this.hotel.setFullCreditPension(this.check_full_credit_pension.isSelected());
 
                 if (this.hotel.getId() != 0) {
-                    result = this.hotelManager.update(this.hotel);
+                    this.hotelManager.update(this.hotel);
                     try {
                         seasons.getFirst().setStartDate(dateFormat.parse(this.fld_season1_start.getText()));
                         seasons.getFirst().setEndDate(dateFormat.parse(this.fld_season1_end.getText()));
@@ -132,9 +140,8 @@ public class HotelView extends Layout {
                         throw new RuntimeException(ex);
                     }
                     result = this.seasonManager.update(this.seasons.getFirst()) && this.seasonManager.update(this.seasons.getLast());
-
                 } else {
-                    result = this.hotelManager.save(hotel);
+                    this.hotelManager.save(hotel);
                     this.hotel = this.hotelManager.getById(this.hotelManager.newHotelId());
                     this.seasons.clear();
                     try {
@@ -144,6 +151,104 @@ public class HotelView extends Layout {
                         throw new RuntimeException(ex);
                     }
                     result = this.seasonManager.save(seasons.getFirst()) && this.seasonManager.save(seasons.getLast());
+                }
+
+                if (pensions.isEmpty()) {
+                    if (this.check_ultra_pension.isSelected()) {
+                        this.pensionManager.save(new Pension(this.hotel, Pension.PensionType.Ultra_Her_Sey_Dahil));
+                    }
+                    if (this.check_all_inclusive_pension.isSelected()) {
+                        this.pensionManager.save(new Pension(this.hotel, Pension.PensionType.Her_Sey_Dahil));
+                    }
+                    if (this.check_room_breakfast_pension.isSelected()) {
+                        this.pensionManager.save(new Pension(this.hotel, Pension.PensionType.Oda_Kahvaltı));
+                    }
+                    if (this.check_full_pension.isSelected()) {
+                        this.pensionManager.save(new Pension(this.hotel, Pension.PensionType.Tam_Pansiyon));
+                    }
+                    if (this.check_half_pension.isSelected()) {
+                        this.pensionManager.save(new Pension(this.hotel, Pension.PensionType.Yarım_Pansiyon));
+                    }
+                    if (this.check_only_bed_pension.isSelected()) {
+                        this.pensionManager.save(new Pension(this.hotel, Pension.PensionType.Sadece_Yatak));
+                    }
+                    if (this.check_full_credit_pension.isSelected()) {
+                        this.pensionManager.save(new Pension(this.hotel, Pension.PensionType.Alkol_Haric_Full_Credit));
+                    }
+                } else {
+                    boolean isUltra = false;
+                    boolean isAllInclusive = false;
+                    boolean isRoomBreakfast = false;
+                    boolean isFullPension = false;
+                    boolean isHalfPension = false;
+                    boolean isOnlyBed = false;
+                    boolean isFullCredit = false;
+
+                    for (Pension pension : pensions) {
+                        if (pension.getPensionType().equals(Pension.PensionType.Ultra_Her_Sey_Dahil)) {
+                            isUltra = true;
+                            if (!this.check_ultra_pension.isSelected()) {
+                                this.pensionManager.deleteById(pension.getId());
+                            }
+                        }
+                        if (pension.getPensionType().equals(Pension.PensionType.Her_Sey_Dahil)) {
+                            isAllInclusive = true;
+                            if (!this.check_all_inclusive_pension.isSelected()) {
+                                this.pensionManager.deleteById(pension.getId());
+                            }
+                        }
+                        if (pension.getPensionType().equals(Pension.PensionType.Oda_Kahvaltı)) {
+                            isRoomBreakfast = true;
+                            if (!this.check_room_breakfast_pension.isSelected()) {
+                                this.pensionManager.deleteById(pension.getId());
+                            }
+                        }
+                        if (pension.getPensionType().equals(Pension.PensionType.Tam_Pansiyon)) {
+                            isFullPension = true;
+                            if (!this.check_full_pension.isSelected()) {
+                                this.pensionManager.deleteById(pension.getId());
+                            }
+                        }
+                        if (pension.getPensionType().equals(Pension.PensionType.Yarım_Pansiyon)) {
+                            isHalfPension = true;
+                            if (!this.check_half_pension.isSelected()) {
+                                this.pensionManager.deleteById(pension.getId());
+                            }
+                        }
+                        if (pension.getPensionType().equals(Pension.PensionType.Sadece_Yatak)) {
+                            isOnlyBed = true;
+                            if (!this.check_only_bed_pension.isSelected()) {
+                                this.pensionManager.deleteById(pension.getId());
+                            }
+                        }
+                        if (pension.getPensionType().equals(Pension.PensionType.Alkol_Haric_Full_Credit)) {
+                            isFullCredit = true;
+                            if (!this.check_full_credit_pension.isSelected()) {
+                                this.pensionManager.deleteById(pension.getId());
+                            }
+                        }
+                    }
+                    if (this.check_ultra_pension.isSelected() && !isUltra) {
+                        this.pensionManager.save(new Pension(this.hotel, Pension.PensionType.Ultra_Her_Sey_Dahil));
+                    }
+                    if (this.check_all_inclusive_pension.isSelected() && !isAllInclusive) {
+                        this.pensionManager.save(new Pension(this.hotel, Pension.PensionType.Her_Sey_Dahil));
+                    }
+                    if (this.check_room_breakfast_pension.isSelected() && !isRoomBreakfast) {
+                        this.pensionManager.save(new Pension(this.hotel, Pension.PensionType.Oda_Kahvaltı));
+                    }
+                    if (this.check_full_pension.isSelected() && !isFullPension) {
+                        this.pensionManager.save(new Pension(this.hotel, Pension.PensionType.Tam_Pansiyon));
+                    }
+                    if (this.check_half_pension.isSelected() && !isHalfPension) {
+                        this.pensionManager.save(new Pension(this.hotel, Pension.PensionType.Yarım_Pansiyon));
+                    }
+                    if (this.check_only_bed_pension.isSelected() && !isOnlyBed) {
+                        this.pensionManager.save(new Pension(this.hotel, Pension.PensionType.Sadece_Yatak));
+                    }
+                    if (this.check_full_credit_pension.isSelected() && !isFullCredit) {
+                        this.pensionManager.save(new Pension(this.hotel, Pension.PensionType.Alkol_Haric_Full_Credit));
+                    }
                 }
 
                 if (result) {

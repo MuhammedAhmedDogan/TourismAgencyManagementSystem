@@ -1,11 +1,10 @@
 package dao;
 
 import core.Db;
-import entity.Hotel;
 import entity.Season;
-import entity.User;
-
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class SeasonDao {
@@ -51,13 +50,13 @@ public class SeasonDao {
     }
 
     public ArrayList<Season> getByHotelId(int hotelId) {
-        return selectByQuery("SELECT * FROM public.season WHERE season_hotel_id = " + hotelId);
+        return selectByQuery("SELECT * FROM public.season WHERE season_hotel_id = " + hotelId + " ORDER BY season_id");
     }
 
     public Season match(ResultSet rs) throws SQLException {
         Season obj = new Season();
         obj.setId(rs.getInt("season_id"));
-        obj.setHotel(hotelDao.getById(rs.getInt("season_hotel_id")));
+        obj.setHotel(this.hotelDao.getById(rs.getInt("season_hotel_id")));
         obj.setStartDate(rs.getDate("season_start_date"));
         obj.setEndDate(rs.getDate("season_end_date"));
         return obj;
@@ -122,7 +121,7 @@ public class SeasonDao {
             java.sql.Date sqlDateEnd = new java.sql.Date(season.getEndDate().getTime());
             pr.setDate(2, sqlDateStart);
             pr.setDate(3, sqlDateEnd);
-            pr.setInt(4,season.getId());
+            pr.setInt(4, season.getId());
             return pr.executeUpdate() != -1;
         } catch (SQLException e) {
             e.printStackTrace();

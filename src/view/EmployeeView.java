@@ -49,6 +49,10 @@ public class EmployeeView extends Layout {
             dispose();
         });
 
+        this.btn_exit.addActionListener(e -> {
+            dispose();
+        });
+
         loadHotelTable();
         loadHotelComponent();
 

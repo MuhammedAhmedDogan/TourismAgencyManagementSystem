@@ -26,10 +26,18 @@ public class SeasonManager {
     }
 
     public boolean deleteById(int id) {
+        if (this.getById(id) == null) {
+            Helper.showMessage("Sezon bulunamadı !");
+            return false;
+        }
         return this.seasonDao.deleteById(id);
     }
 
     public boolean deleteByHotelId(int id) {
+        if (this.getByHotelId(id).isEmpty()) {
+            Helper.showMessage("Sezon bulunamadı !");
+            return false;
+        }
         return this.seasonDao.deleteByHotelId(id);
     }
 
