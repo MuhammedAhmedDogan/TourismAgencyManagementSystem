@@ -1,6 +1,7 @@
 package dao;
 
 import core.Db;
+import entity.City;
 import entity.Hotel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -46,6 +47,22 @@ public class HotelDao {
             e.printStackTrace();
         }
         return obj;
+    }
+
+    public ArrayList<Hotel> getByCity(City city) {
+        ArrayList<Hotel> hotelList = new ArrayList<>();
+        String query = "SELECT * FROM public.hotel WHERE hotel_city = ? ORDER BY hotel_name ASC";
+        try {
+            PreparedStatement pr = this.con.prepareStatement(query);
+            pr.setString(1, city.toString());
+            ResultSet rs = pr.executeQuery();
+            while (rs.next()) {
+                hotelList.add(this.match(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return hotelList;
     }
 
     public Hotel match(ResultSet rs) throws SQLException {

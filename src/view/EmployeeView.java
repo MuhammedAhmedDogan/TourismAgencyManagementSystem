@@ -5,15 +5,19 @@ import business.PensionManager;
 import business.RoomManager;
 import business.SeasonManager;
 import core.Helper;
+import entity.City;
 import entity.Hotel;
 import entity.Room;
 import entity.User;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.List;
 
 public class EmployeeView extends Layout {
     private JPanel container;
@@ -34,6 +38,9 @@ public class EmployeeView extends Layout {
     private JTable tbl_room;
     private JPanel pnl_room_add;
     private JButton btn_room_add;
+    private JComboBox cmb_city_search;
+    private JLabel lbl_city_search;
+    private JButton btn_city_clear;
     private DefaultTableModel tmdl_hotel = new DefaultTableModel();
     private DefaultTableModel tmdl_room = new DefaultTableModel();
     private User user;
@@ -43,6 +50,8 @@ public class EmployeeView extends Layout {
     private RoomManager roomManager;
     private JPopupMenu hotel_menu = new JPopupMenu();
     private JPopupMenu room_menu = new JPopupMenu();
+    private Object[] col_hotel;
+    private Object[] col_room;
 
     public EmployeeView(User user) {
         this.add(container);
@@ -63,7 +72,7 @@ public class EmployeeView extends Layout {
 
         this.btn_exit.addActionListener(e -> dispose());
 
-        loadHotelTable();
+        loadHotelTable(null);
         loadHotelComponent();
 
         loadRoomTable();
@@ -71,7 +80,7 @@ public class EmployeeView extends Layout {
     }
 
     public void loadRoomTable() {
-        Object[] col_room = {"ID", "Otel Adı", "Oda Tipi", "Yatak Sayısı", "Oda Alanı (Metrekare)", "Boş Oda Sayısı"};
+        this.col_room = new Object[]{"ID", "Otel Adı", "Oda Tipi", "Yatak Sayısı", "Oda Alanı (Metrekare)", "Boş Oda Sayısı"};
         ArrayList<Object[]> roomList = roomManager.getForTable(col_room.length, this.roomManager.findAll());
         createTable(this.tmdl_room, this.tbl_room, col_room, roomList);
         tbl_room.getColumnModel().getColumn(0).setMaxWidth(75);
@@ -116,15 +125,19 @@ public class EmployeeView extends Layout {
         });
     }
 
-    public void loadHotelTable() {
-        Object[] col_hotel = {"ID", "Otel Adı", "Şehir", "Telefon", "eMail", "Yıldız"};
-        ArrayList<Object[]> hotelList = this.hotelManager.getForTable(col_hotel.length, this.hotelManager.findAll());
+    public void loadHotelTable(ArrayList<Object[]> hotelList) {
+        this.col_hotel = new Object[]{"ID", "Otel Adı", "Şehir", "Telefon", "eMail", "Yıldız"};
+        if (hotelList == null) {
+            hotelList = this.hotelManager.getForTable(col_hotel.length, this.hotelManager.findAll());
+        }
         createTable(this.tmdl_hotel, this.tbl_hotel, col_hotel, hotelList);
         tbl_hotel.getColumnModel().getColumn(0).setMaxWidth(75);
         tbl_hotel.getColumnModel().getColumn(5).setMaxWidth(75);
     }
 
     public void loadHotelComponent() {
+        loadHotelFilter();
+
         tableRowSelect(this.tbl_hotel);
 
         this.hotel_menu = new JPopupMenu();
@@ -134,7 +147,7 @@ public class EmployeeView extends Layout {
             hotelView.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent e) {
-                    loadHotelTable();
+                    loadHotelTable(hotelRowListBySearch());
                 }
             });
         });
@@ -143,7 +156,7 @@ public class EmployeeView extends Layout {
                 int selectHotelId = this.getTableSelectedRow(tbl_hotel, 0);
                 if (this.pensionManager.deleteByHotelId(selectHotelId) && this.seasonManager.deleteByHotelId(selectHotelId) && this.hotelManager.delete(selectHotelId)) {
                     Helper.showMessage("done");
-                    loadHotelTable();
+                    loadHotelTable(hotelRowListBySearch());
                 } else {
                     Helper.showMessage("error");
                 }
@@ -156,10 +169,50 @@ public class EmployeeView extends Layout {
             hotelView.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent e) {
-                    loadHotelTable();
+                    loadHotelTable(null);
+                    cmb_city_search.setSelectedItem(null);
                 }
             });
-
         });
+
+        this.cmb_city_search.addActionListener(e -> loadHotelTable(hotelRowListBySearch()));
+
+        this.btn_city_clear.addActionListener(e -> {
+            this.cmb_city_search.setSelectedItem(null);
+            loadHotelTable(null);
+        });
+    }
+
+    public void loadHotelFilter() {
+        this.cmb_city_search.setModel(new DefaultComboBoxModel<>(City.values()));
+        this.cmb_city_search.setSelectedItem(null);
+
+        JTextField searchField = new JTextField();
+        searchField.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {}
+            @Override
+            public void keyPressed(KeyEvent e) {}
+            @Override
+            public void keyReleased(KeyEvent e) {
+                String query = searchField.getText().toLowerCase();
+                List<String> filteredItems = new ArrayList<>();
+                for (City item : City.values()) {
+                    if (item.toString().startsWith(query)) {
+                        filteredItems.add(item.getName());
+                    }
+                }
+
+                cmb_city_search.removeAllItems();
+                for (String item : filteredItems){
+                    cmb_city_search.addItem(item);
+                }
+            }
+        });
+    }
+
+    public ArrayList<Object[]> hotelRowListBySearch() {
+        ArrayList<Hotel> userListBySearch = this.hotelManager.getByCity((City) this.cmb_city_search.getSelectedItem());
+        return this.hotelManager.getForTable(this.col_hotel.length, userListBySearch);
     }
 }

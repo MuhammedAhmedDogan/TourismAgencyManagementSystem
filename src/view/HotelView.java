@@ -4,6 +4,7 @@ import business.HotelManager;
 import business.PensionManager;
 import business.SeasonManager;
 import core.Helper;
+import entity.City;
 import entity.Hotel;
 import entity.Pension;
 import entity.Season;
@@ -11,10 +12,13 @@ import entity.Season;
 import javax.swing.*;
 import javax.swing.text.DateFormatter;
 import javax.swing.text.DefaultFormatterFactory;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 public class HotelView extends Layout {
     private JPanel container;

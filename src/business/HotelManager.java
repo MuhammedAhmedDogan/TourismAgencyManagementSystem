@@ -2,7 +2,9 @@ package business;
 
 import core.Helper;
 import dao.HotelDao;
+import entity.City;
 import entity.Hotel;
+
 import java.util.ArrayList;
 
 public class HotelManager {
@@ -18,6 +20,14 @@ public class HotelManager {
 
     public Hotel getById(int id) {
         return this.hotelDao.getById(id);
+    }
+
+    public ArrayList<Hotel> getByCity(City city) {
+        if (city == null) {
+            return this.findAll();
+        } else {
+            return hotelDao.getByCity(city);
+        }
     }
 
     public ArrayList<Object[]> getForTable(int size, ArrayList<Hotel> hotels) {

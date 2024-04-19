@@ -53,6 +53,8 @@ public class AdminView extends Layout {
     }
 
     public void loadUserComponent() {
+        loadUserFilter();
+
         tableRowSelect(this.tbl_users);
 
         this.user_menu = new JPopupMenu();
@@ -78,8 +80,6 @@ public class AdminView extends Layout {
             }
         });
         this.tbl_users.setComponentPopupMenu(user_menu);
-
-        loadUserFilter();
 
         this.btn_add_user.addActionListener(e -> {
             UserView userView = new UserView(new User());
