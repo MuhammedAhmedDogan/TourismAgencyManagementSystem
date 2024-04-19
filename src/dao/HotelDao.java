@@ -2,8 +2,6 @@ package dao;
 
 import core.Db;
 import entity.Hotel;
-import entity.Season;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

@@ -3,8 +3,6 @@ package dao;
 import core.Db;
 import entity.Season;
 import java.sql.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class SeasonDao {

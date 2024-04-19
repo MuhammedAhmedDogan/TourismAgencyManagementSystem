@@ -3,8 +3,6 @@ package business;
 import core.Helper;
 import dao.HotelDao;
 import entity.Hotel;
-import entity.User;
-
 import java.util.ArrayList;
 
 public class HotelManager {

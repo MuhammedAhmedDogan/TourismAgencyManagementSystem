@@ -3,7 +3,6 @@ package business;
 import core.Helper;
 import dao.SeasonDao;
 import entity.Season;
-
 import java.util.ArrayList;
 
 public class SeasonManager {
