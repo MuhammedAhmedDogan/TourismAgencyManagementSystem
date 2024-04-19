@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class SeasonDao {
     private final Connection con;
-    private HotelDao hotelDao;
+    private final HotelDao hotelDao;
 
     public SeasonDao() {
         this.con = Db.getInstance();

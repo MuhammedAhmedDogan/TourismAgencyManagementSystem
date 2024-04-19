@@ -92,18 +92,14 @@ public class AdminView extends Layout {
             });
         });
 
-        this.cmb_filter_role.addActionListener(e -> {
-            loadUserTable(userRowListBySearch());
-        });
+        this.cmb_filter_role.addActionListener(e -> loadUserTable(userRowListBySearch()));
 
         this.btn_clear.addActionListener(e -> {
             this.cmb_filter_role.setSelectedItem(null);
             loadUserTable(null);
         });
 
-        this.btn_exit.addActionListener(e -> {
-            dispose();
-        });
+        this.btn_exit.addActionListener(e -> dispose());
 
         this.btn_employee.addActionListener(e -> {
             EmployeeView employeeView = new EmployeeView(this.user);

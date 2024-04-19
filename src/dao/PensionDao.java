@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class PensionDao {
     private final Connection con;
-    private HotelDao hotelDao;
+    private final HotelDao hotelDao;
 
     public PensionDao() {
         this.con = Db.getInstance();

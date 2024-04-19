@@ -8,9 +8,9 @@ public class Pension {
     public enum PensionType {
         Ultra_Her_Sey_Dahil,
         Her_Sey_Dahil,
-        Oda_Kahvaltı,
+        Oda_Kahvalti,
         Tam_Pansiyon,
-        Yarım_Pansiyon,
+        Yarim_Pansiyon,
         Sadece_Yatak,
         Alkol_Haric_Full_Credit
     }

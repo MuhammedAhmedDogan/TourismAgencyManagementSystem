@@ -1,10 +1,7 @@
 package dao;
 
 import core.Db;
-import entity.Hotel;
-import entity.Pension;
 import entity.Room;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,7 +10,7 @@ import java.util.ArrayList;
 
 public class RoomDao {
     private final Connection con;
-    private HotelDao hotelDao;
+    private final HotelDao hotelDao;
 
     public RoomDao() {
         this.con = Db.getInstance();

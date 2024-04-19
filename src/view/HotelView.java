@@ -161,13 +161,13 @@ public class HotelView extends Layout {
                         this.pensionManager.save(new Pension(this.hotel, Pension.PensionType.Her_Sey_Dahil));
                     }
                     if (this.check_room_breakfast_pension.isSelected()) {
-                        this.pensionManager.save(new Pension(this.hotel, Pension.PensionType.Oda_Kahvaltı));
+                        this.pensionManager.save(new Pension(this.hotel, Pension.PensionType.Oda_Kahvalti));
                     }
                     if (this.check_full_pension.isSelected()) {
                         this.pensionManager.save(new Pension(this.hotel, Pension.PensionType.Tam_Pansiyon));
                     }
                     if (this.check_half_pension.isSelected()) {
-                        this.pensionManager.save(new Pension(this.hotel, Pension.PensionType.Yarım_Pansiyon));
+                        this.pensionManager.save(new Pension(this.hotel, Pension.PensionType.Yarim_Pansiyon));
                     }
                     if (this.check_only_bed_pension.isSelected()) {
                         this.pensionManager.save(new Pension(this.hotel, Pension.PensionType.Sadece_Yatak));
@@ -197,7 +197,7 @@ public class HotelView extends Layout {
                                 this.pensionManager.deleteById(pension.getId());
                             }
                         }
-                        if (pension.getPensionType().equals(Pension.PensionType.Oda_Kahvaltı)) {
+                        if (pension.getPensionType().equals(Pension.PensionType.Oda_Kahvalti)) {
                             isRoomBreakfast = true;
                             if (!this.check_room_breakfast_pension.isSelected()) {
                                 this.pensionManager.deleteById(pension.getId());
@@ -209,7 +209,7 @@ public class HotelView extends Layout {
                                 this.pensionManager.deleteById(pension.getId());
                             }
                         }
-                        if (pension.getPensionType().equals(Pension.PensionType.Yarım_Pansiyon)) {
+                        if (pension.getPensionType().equals(Pension.PensionType.Yarim_Pansiyon)) {
                             isHalfPension = true;
                             if (!this.check_half_pension.isSelected()) {
                                 this.pensionManager.deleteById(pension.getId());
@@ -235,13 +235,13 @@ public class HotelView extends Layout {
                         this.pensionManager.save(new Pension(this.hotel, Pension.PensionType.Her_Sey_Dahil));
                     }
                     if (this.check_room_breakfast_pension.isSelected() && !isRoomBreakfast) {
-                        this.pensionManager.save(new Pension(this.hotel, Pension.PensionType.Oda_Kahvaltı));
+                        this.pensionManager.save(new Pension(this.hotel, Pension.PensionType.Oda_Kahvalti));
                     }
                     if (this.check_full_pension.isSelected() && !isFullPension) {
                         this.pensionManager.save(new Pension(this.hotel, Pension.PensionType.Tam_Pansiyon));
                     }
                     if (this.check_half_pension.isSelected() && !isHalfPension) {
-                        this.pensionManager.save(new Pension(this.hotel, Pension.PensionType.Yarım_Pansiyon));
+                        this.pensionManager.save(new Pension(this.hotel, Pension.PensionType.Yarim_Pansiyon));
                     }
                     if (this.check_only_bed_pension.isSelected() && !isOnlyBed) {
                         this.pensionManager.save(new Pension(this.hotel, Pension.PensionType.Sadece_Yatak));

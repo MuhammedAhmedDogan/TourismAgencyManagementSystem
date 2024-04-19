@@ -14,13 +14,6 @@ public class User {
     public User() {
     }
 
-    public User(int id, String name, String password, Role role) {
-        this.id = id;
-        this.username = name;
-        this.password = password;
-        this.role = role;
-    }
-
     public int getId() {
         return id;
     }

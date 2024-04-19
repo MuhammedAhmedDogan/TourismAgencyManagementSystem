@@ -44,29 +44,6 @@ public class Hotel {
     public Hotel() {
     }
 
-    public Hotel(int id, String name, String city, String address, String email, String phone, Hotel.Star star, boolean carPark, boolean wifi, boolean pool, boolean fitness, boolean spa, boolean roomService, boolean ultraPension, boolean allInclusivePension, boolean roomBreakfastPension, boolean fullPension, boolean halfPension, boolean onlyBedPension, boolean fullCreditPension) {
-        this.id = id;
-        this.name = name;
-        this.city = city;
-        this.address = address;
-        this.email = email;
-        this.phone = phone;
-        this.star = star;
-        this.carPark = carPark;
-        this.wifi = wifi;
-        this.pool = pool;
-        this.fitness = fitness;
-        this.spa = spa;
-        this.roomService = roomService;
-        this.ultraPension = ultraPension;
-        this.allInclusivePension = allInclusivePension;
-        this.roomBreakfastPension = roomBreakfastPension;
-        this.fullPension = fullPension;
-        this.halfPension = halfPension;
-        this.onlyBedPension = onlyBedPension;
-        this.fullCreditPension = fullCreditPension;
-    }
-
     public int getId() {
         return id;
     }
