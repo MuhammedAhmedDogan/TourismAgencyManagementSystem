@@ -2,6 +2,7 @@ package view;
 
 import business.HotelManager;
 import business.PensionManager;
+import business.RoomManager;
 import business.SeasonManager;
 import core.Helper;
 import entity.Hotel;
@@ -29,11 +30,14 @@ public class EmployeeView extends Layout {
     private JTable tbl_hotel;
     private JButton btn_hotel_add;
     private JPanel pnl_hotel_add;
+    private JTable tbl_room;
     private DefaultTableModel tmdl_hotel = new DefaultTableModel();
+    private DefaultTableModel tmdl_room = new DefaultTableModel();
     private User user;
     private HotelManager hotelManager;
     private SeasonManager seasonManager;
     private PensionManager pensionManager;
+    private RoomManager roomManager;
     private JPopupMenu hotel_menu = new JPopupMenu();
 
     public EmployeeView(User user) {
@@ -43,6 +47,7 @@ public class EmployeeView extends Layout {
         this.hotelManager = new HotelManager();
         this.seasonManager = new SeasonManager();
         this.pensionManager = new PensionManager();
+        this.roomManager = new RoomManager();
 
         this.lbl_welcome.setText("Hoşgeldiniz : " + this.user.getUsername() + " (" + this.user.getRole() + ")");
 
@@ -59,6 +64,14 @@ public class EmployeeView extends Layout {
         loadHotelTable();
         loadHotelComponent();
 
+        loadRoomTable();
+    }
+
+    public void loadRoomTable() {
+        Object[] col_room = {"ID", "Otel Adı", "Oda Tipi", "Yatak Sayısı", "Oda Alanı (Metrekare)", "Boş Oda Sayısı"};
+        ArrayList<Object[]> roomList = roomManager.getForTable(col_room.length, this.roomManager.findAll());
+        createTable(this.tmdl_room, this.tbl_room, col_room, roomList);
+        tbl_room.getColumnModel().getColumn(0).setMaxWidth(75);
     }
 
     public void loadHotelTable() {

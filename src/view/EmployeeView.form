@@ -80,7 +80,12 @@
                 </constraints>
                 <properties/>
                 <border type="none"/>
-                <children/>
+                <children>
+                  <component id="e922b" class="javax.swing.JTable" binding="tbl_room">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                </children>
               </scrollpane>
             </children>
           </grid>
