@@ -62,6 +62,7 @@ CREATE TABLE IF NOT EXISTS public.room
     minibar boolean NOT NULL,
     game_console boolean NOT NULL,
     safe boolean NOT NULL,
+    projection boolean NOT NULL,
     stock int NOT NULL,
     PRIMARY KEY (room_id),
     FOREIGN KEY (room_hotel_id) REFERENCES public.hotel(hotel_id)

@@ -65,6 +65,7 @@ public class RoomDao {
         obj.setMinibar(rs.getBoolean("minibar"));
         obj.setGameConsole(rs.getBoolean("game_console"));
         obj.setSafe(rs.getBoolean("safe"));
+        obj.setProjection(rs.getBoolean("projection"));
         obj.setStock(rs.getInt("stock"));
         return obj;
     }
@@ -104,9 +105,10 @@ public class RoomDao {
                 "minibar, " +
                 "game_console, " +
                 "safe, " +
+                "projection, " +
                 "stock" +
                 ")" +
-                " VALUES (?,?,?,?,?,?,?,?,?)";
+                " VALUES (?,?,?,?,?,?,?,?,?,?)";
         try {
             PreparedStatement pr = this.con.prepareStatement(query);
             pr.setInt(1, room.getHotel().getId());
@@ -117,7 +119,8 @@ public class RoomDao {
             pr.setBoolean(6, room.isMinibar());
             pr.setBoolean(7, room.isGameConsole());
             pr.setBoolean(8, room.isSafe());
-            pr.setInt(9, room.getStock());
+            pr.setBoolean(9, room.isProjection());
+            pr.setInt(10, room.getStock());
             return pr.executeUpdate() != -1;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -136,6 +139,7 @@ public class RoomDao {
                 "minibar = ?, " +
                 "game_console = ?, " +
                 "safe = ?, " +
+                "projection = ? " +
                 "stock = ? " +
                 "WHERE room_id = ?";
         try {
@@ -148,8 +152,9 @@ public class RoomDao {
             pr.setBoolean(6, room.isMinibar());
             pr.setBoolean(7, room.isGameConsole());
             pr.setBoolean(8, room.isSafe());
-            pr.setInt(9, room.getStock());
-            pr.setInt(10, room.getId());
+            pr.setBoolean(9, room.isProjection());
+            pr.setInt(10, room.getStock());
+            pr.setInt(11, room.getId());
             return pr.executeUpdate() != -1;
         } catch (SQLException e) {
             e.printStackTrace();

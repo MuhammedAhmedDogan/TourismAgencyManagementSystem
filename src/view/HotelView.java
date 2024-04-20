@@ -50,7 +50,7 @@ public class HotelView extends Layout {
     private JFormattedTextField fld_season1_end;
     private JFormattedTextField fld_season2_start;
     private JFormattedTextField fld_season2_end;
-    private JComboBox cmb_city;
+    private JComboBox<City> cmb_city;
     private Hotel hotel;
     private HotelManager hotelManager;
     private SeasonManager seasonManager;
@@ -115,11 +115,11 @@ public class HotelView extends Layout {
             } else {
                 boolean result;
                 this.hotel.setName(this.fld_name.getText());
-                this.hotel.setCity(this.cmb_city.getSelectedItem().toString());
+                this.hotel.setCity(City.getCity(this.cmb_city.getSelectedItem().toString()));
                 this.hotel.setAddress(this.fld_address.getText());
                 this.hotel.setEmail(this.fld_email.getText());
                 this.hotel.setPhone(this.fld_phone.getText());
-                this.hotel.setStar(Hotel.Star.getStar(cmb_star.getSelectedItem().toString()));
+                this.hotel.setStar(Hotel.Star.getStar(this.cmb_star.getSelectedItem().toString()));
                 this.hotel.setCarPark(this.check_carpark.isSelected());
                 this.hotel.setWifi(this.check_wifi.isSelected());
                 this.hotel.setPool(this.check_pool.isSelected());
@@ -279,15 +279,15 @@ public class HotelView extends Layout {
             @Override
             public void keyReleased(KeyEvent e) {
                 String query = searchField.getText().toLowerCase();
-                List<String> filteredItems = new ArrayList<>();
+                List<City> filteredItems = new ArrayList<>();
                 for (City item : City.values()) {
                     if (item.toString().startsWith(query)) {
-                        filteredItems.add(item.getName());
+                        filteredItems.add(item);
                     }
                 }
 
                 cmb_city.removeAllItems();
-                for (String item : filteredItems){
+                for (City item : filteredItems){
                     cmb_city.addItem(item);
                 }
             }

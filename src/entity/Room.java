@@ -10,6 +10,7 @@ public class Room {
     private boolean minibar;
     private boolean gameConsole;
     private boolean safe;
+    private boolean projection;
     private int stock;
 
     public enum RoomType {
@@ -92,6 +93,14 @@ public class Room {
 
     public void setSafe(boolean safe) {
         this.safe = safe;
+    }
+
+    public boolean isProjection() {
+        return projection;
+    }
+
+    public void setProjection(boolean projection) {
+        this.projection = projection;
     }
 
     public int getStock() {

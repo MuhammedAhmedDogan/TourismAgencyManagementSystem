@@ -38,9 +38,11 @@ public class EmployeeView extends Layout {
     private JTable tbl_room;
     private JPanel pnl_room_add;
     private JButton btn_room_add;
-    private JComboBox cmb_city_search;
+    private JComboBox<City> cmb_city_search;
     private JLabel lbl_city_search;
     private JButton btn_city_clear;
+    private JComboBox cmb_hotel_search;
+    private JButton btn_hotel_fiilter_clear;
     private DefaultTableModel tmdl_hotel = new DefaultTableModel();
     private DefaultTableModel tmdl_room = new DefaultTableModel();
     private User user;
@@ -148,15 +150,17 @@ public class EmployeeView extends Layout {
                 @Override
                 public void windowClosed(WindowEvent e) {
                     loadHotelTable(hotelRowListBySearch());
+                    loadRoomTable();
                 }
             });
         });
         this.hotel_menu.add("Sil").addActionListener(e -> {
             if (Helper.confirm("sure")) {
                 int selectHotelId = this.getTableSelectedRow(tbl_hotel, 0);
-                if (this.pensionManager.deleteByHotelId(selectHotelId) && this.seasonManager.deleteByHotelId(selectHotelId) && this.hotelManager.delete(selectHotelId)) {
+                if (this.pensionManager.deleteByHotelId(selectHotelId) && this.seasonManager.deleteByHotelId(selectHotelId) && this.roomManager.deleteByHotelId(selectHotelId) && this.hotelManager.delete(selectHotelId)) {
                     Helper.showMessage("done");
                     loadHotelTable(hotelRowListBySearch());
+                    loadRoomTable();
                 } else {
                     Helper.showMessage("error");
                 }
@@ -196,15 +200,15 @@ public class EmployeeView extends Layout {
             @Override
             public void keyReleased(KeyEvent e) {
                 String query = searchField.getText().toLowerCase();
-                List<String> filteredItems = new ArrayList<>();
+                List<City> filteredItems = new ArrayList<>();
                 for (City item : City.values()) {
                     if (item.toString().startsWith(query)) {
-                        filteredItems.add(item.getName());
+                        filteredItems.add(item);
                     }
                 }
 
                 cmb_city_search.removeAllItems();
-                for (String item : filteredItems){
+                for (City item : filteredItems){
                     cmb_city_search.addItem(item);
                 }
             }

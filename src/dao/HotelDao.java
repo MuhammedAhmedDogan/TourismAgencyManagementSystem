@@ -69,7 +69,7 @@ public class HotelDao {
         Hotel obj = new Hotel();
         obj.setId(rs.getInt("hotel_id"));
         obj.setName(rs.getString("hotel_name"));
-        obj.setCity(rs.getString("hotel_city"));
+        obj.setCity(City.getCity(rs.getString("hotel_city")));
         obj.setAddress(rs.getString("hotel_address"));
         obj.setEmail(rs.getString("hotel_email"));
         obj.setPhone(rs.getString("hotel_phone"));
@@ -129,7 +129,7 @@ public class HotelDao {
         try {
             PreparedStatement pr = this.con.prepareStatement(query);
             pr.setString(1, hotel.getName());
-            pr.setString(2, hotel.getCity());
+            pr.setString(2, hotel.getCity().toString());
             pr.setString(3, hotel.getAddress());
             pr.setString(4, hotel.getEmail());
             pr.setString(5, hotel.getPhone());
@@ -179,7 +179,7 @@ public class HotelDao {
         try {
             PreparedStatement pr = this.con.prepareStatement(query);
             pr.setString(1, hotel.getName());
-            pr.setString(2, hotel.getCity());
+            pr.setString(2, hotel.getCity().toString());
             pr.setString(3, hotel.getAddress());
             pr.setString(4, hotel.getEmail());
             pr.setString(5, hotel.getPhone());

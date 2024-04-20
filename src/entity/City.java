@@ -93,6 +93,15 @@ public enum City {
         return name;
     }
 
+    public static City getCity(String str){
+        for (City city : City.values()) {
+            if (city.getName().equalsIgnoreCase(str)) {
+                return city;
+            }
+        }
+        return null;
+    }
+
     @Override
     public String toString() {
         return name;
