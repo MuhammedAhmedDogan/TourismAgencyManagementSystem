@@ -116,13 +116,17 @@ public class EmployeeView extends Layout {
         this.tbl_room.setComponentPopupMenu(room_menu);
 
         this.btn_room_add.addActionListener(e -> {
-            RoomView roomView = new RoomView(new Room());
-            roomView.addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowClosed(WindowEvent e) {
-                    loadRoomTable();
-                }
-            });
+            if (this.hotelManager.findAll().isEmpty()) {
+                Helper.showMessage("Oda eklemek için sistemde kayıtlı otel bulunmalıdır. Lütfen önce otel ekleyiniz.");
+            } else {
+                RoomView roomView = new RoomView(new Room());
+                roomView.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        loadRoomTable();
+                    }
+                });
+            }
 
         });
     }
@@ -157,7 +161,10 @@ public class EmployeeView extends Layout {
         this.hotel_menu.add("Sil").addActionListener(e -> {
             if (Helper.confirm("sure")) {
                 int selectHotelId = this.getTableSelectedRow(tbl_hotel, 0);
-                if (this.pensionManager.deleteByHotelId(selectHotelId) && this.seasonManager.deleteByHotelId(selectHotelId) && this.roomManager.deleteByHotelId(selectHotelId) && this.hotelManager.delete(selectHotelId)) {
+                if (this.pensionManager.deleteByHotelId(selectHotelId) && this.seasonManager.deleteByHotelId(selectHotelId) && this.hotelManager.delete(selectHotelId)) {
+                    if (!this.roomManager.getByHotelId(selectHotelId).isEmpty()) {
+                        this.roomManager.deleteByHotelId(selectHotelId);
+                    }
                     Helper.showMessage("done");
                     loadHotelTable(hotelRowListBySearch());
                     loadRoomTable();
@@ -194,9 +201,13 @@ public class EmployeeView extends Layout {
         JTextField searchField = new JTextField();
         searchField.addKeyListener(new KeyListener() {
             @Override
-            public void keyTyped(KeyEvent e) {}
+            public void keyTyped(KeyEvent e) {
+            }
+
             @Override
-            public void keyPressed(KeyEvent e) {}
+            public void keyPressed(KeyEvent e) {
+            }
+
             @Override
             public void keyReleased(KeyEvent e) {
                 String query = searchField.getText().toLowerCase();
@@ -208,7 +219,7 @@ public class EmployeeView extends Layout {
                 }
 
                 cmb_city_search.removeAllItems();
-                for (City item : filteredItems){
+                for (City item : filteredItems) {
                     cmb_city_search.addItem(item);
                 }
             }
