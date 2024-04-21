@@ -161,10 +161,10 @@ public class EmployeeView extends Layout {
         this.hotel_menu.add("Sil").addActionListener(e -> {
             if (Helper.confirm("sure")) {
                 int selectHotelId = this.getTableSelectedRow(tbl_hotel, 0);
+                if (!this.roomManager.getByHotelId(selectHotelId).isEmpty()) {
+                    this.roomManager.deleteByHotelId(selectHotelId);
+                }
                 if (this.pensionManager.deleteByHotelId(selectHotelId) && this.seasonManager.deleteByHotelId(selectHotelId) && this.hotelManager.delete(selectHotelId)) {
-                    if (!this.roomManager.getByHotelId(selectHotelId).isEmpty()) {
-                        this.roomManager.deleteByHotelId(selectHotelId);
-                    }
                     Helper.showMessage("done");
                     loadHotelTable(hotelRowListBySearch());
                     loadRoomTable();
