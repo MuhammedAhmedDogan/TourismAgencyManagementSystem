@@ -39,7 +39,7 @@ public class EmployeeView extends Layout {
     private JComboBox<City> cmb_city_search;
     private JLabel lbl_city_search;
     private JButton btn_city_clear;
-    private JComboBox<ComboItem> cmb_hotel_search;
+    private JComboBox<ComboItem> cmb_room_search_by_hotel;
     private JButton btn_hotel_filter_clear;
     private DefaultTableModel tmdl_hotel = new DefaultTableModel();
     private DefaultTableModel tmdl_room = new DefaultTableModel();
@@ -88,6 +88,7 @@ public class EmployeeView extends Layout {
         }
         createTable(this.tmdl_room, this.tbl_room, col_room, roomList);
         tbl_room.getColumnModel().getColumn(0).setMaxWidth(75);
+
     }
 
     public void loadRoomComponent() {
@@ -133,10 +134,10 @@ public class EmployeeView extends Layout {
 
         });
 
-        this.cmb_hotel_search.addActionListener(e -> loadRoomTable(roomRowListBySearch()));
+        this.cmb_room_search_by_hotel.addActionListener(e -> loadRoomTable(roomRowListBySearch()));
 
         this.btn_hotel_filter_clear.addActionListener(e -> {
-            this.cmb_hotel_search.setSelectedItem(null);
+            this.cmb_room_search_by_hotel.setSelectedItem(null);
             loadRoomTable(null);
         });
     }
@@ -164,6 +165,7 @@ public class EmployeeView extends Layout {
                 public void windowClosed(WindowEvent e) {
                     loadHotelTable(null);
                     loadRoomTable(null);
+                    loadRoomFilterComboBox();
                 }
             });
         });
@@ -178,6 +180,7 @@ public class EmployeeView extends Layout {
                     Helper.showMessage("done");
                     loadHotelTable(hotelRowListBySearch());
                     loadRoomTable(null);
+                    loadRoomFilterComboBox();
                 } else {
                     Helper.showMessage("error");
                 }
@@ -192,6 +195,7 @@ public class EmployeeView extends Layout {
                 public void windowClosed(WindowEvent e) {
                     loadHotelTable(null);
                     loadRoomTable(null);
+                    loadRoomFilterComboBox();
                     cmb_city_search.setSelectedItem(null);
                 }
             });
@@ -206,10 +210,11 @@ public class EmployeeView extends Layout {
     }
 
     public void loadRoomFilterComboBox() {
+        this.cmb_room_search_by_hotel.removeAllItems();
         for (Hotel hotel : this.hotelManager.findAll()) {
-            this.cmb_hotel_search.addItem(new ComboItem(hotel.getId(), hotel.getName() + " - " + hotel.getCity()));
+            this.cmb_room_search_by_hotel.addItem(new ComboItem(hotel.getId(), hotel.getName() + " - " + hotel.getCity()));
         }
-        this.cmb_hotel_search.getModel().setSelectedItem(null);
+        this.cmb_room_search_by_hotel.getModel().setSelectedItem(null);
     }
 
 
@@ -246,10 +251,10 @@ public class EmployeeView extends Layout {
     }
 
     public ArrayList<Object[]> roomRowListBySearch() {
-        if ((ComboItem) (this.cmb_hotel_search.getSelectedItem()) == null){
+        if ((ComboItem) (this.cmb_room_search_by_hotel.getSelectedItem()) == null){
             return this.roomManager.getForTable(this.col_room.length, this.roomManager.findAll());
         }
-        ArrayList<Room> roomListBySearch = this.roomManager.getByHotelId(((ComboItem) (this.cmb_hotel_search.getSelectedItem())).getKey());
+        ArrayList<Room> roomListBySearch = this.roomManager.getByHotelId(((ComboItem) (this.cmb_room_search_by_hotel.getSelectedItem())).getKey());
         return this.roomManager.getForTable(this.col_room.length, roomListBySearch);
     }
 
