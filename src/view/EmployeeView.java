@@ -1,6 +1,7 @@
 package view;
 
 import business.*;
+import core.ComboItem;
 import core.Helper;
 import entity.City;
 import entity.Hotel;
@@ -38,8 +39,8 @@ public class EmployeeView extends Layout {
     private JComboBox<City> cmb_city_search;
     private JLabel lbl_city_search;
     private JButton btn_city_clear;
-    private JComboBox cmb_hotel_search;
-    private JButton btn_hotel_fiilter_clear;
+    private JComboBox<ComboItem> cmb_hotel_search;
+    private JButton btn_hotel_filter_clear;
     private DefaultTableModel tmdl_hotel = new DefaultTableModel();
     private DefaultTableModel tmdl_room = new DefaultTableModel();
     private User user;
@@ -76,19 +77,22 @@ public class EmployeeView extends Layout {
         loadHotelTable(null);
         loadHotelComponent();
 
-        loadRoomTable();
+        loadRoomTable(null);
         loadRoomComponent();
     }
 
-    public void loadRoomTable() {
+    public void loadRoomTable(ArrayList<Object[]> roomList) {
         this.col_room = new Object[]{"ID", "Otel Adı", "Oda Tipi", "Yatak Sayısı", "Oda Alanı (Metrekare)", "Boş Oda Sayısı"};
-        ArrayList<Object[]> roomList = roomManager.getForTable(col_room.length, this.roomManager.findAll());
+        if (roomList == null) {
+            roomList = roomManager.getForTable(col_room.length, this.roomManager.findAll());
+        }
         createTable(this.tmdl_room, this.tbl_room, col_room, roomList);
         tbl_room.getColumnModel().getColumn(0).setMaxWidth(75);
     }
 
     public void loadRoomComponent() {
         tableRowSelect(this.tbl_room);
+        this.loadRoomFilterComboBox();
 
         this.room_menu = new JPopupMenu();
         this.room_menu.add("Güncelle").addActionListener(e -> {
@@ -97,7 +101,7 @@ public class EmployeeView extends Layout {
             roomView.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent e) {
-                    loadRoomTable();
+                    loadRoomTable(null);
                 }
             });
         });
@@ -106,7 +110,7 @@ public class EmployeeView extends Layout {
                 int selectRoomId = this.getTableSelectedRow(tbl_room, 0);
                 if (this.priceManager.deleteByRoomId(selectRoomId) && this.roomManager.deleteById(selectRoomId)) {
                     Helper.showMessage("done");
-                    loadRoomTable();
+                    loadRoomTable(roomRowListBySearch());
                 } else {
                     Helper.showMessage("error");
                 }
@@ -122,11 +126,18 @@ public class EmployeeView extends Layout {
                 roomView.addWindowListener(new WindowAdapter() {
                     @Override
                     public void windowClosed(WindowEvent e) {
-                        loadRoomTable();
+                        loadRoomTable(null);
                     }
                 });
             }
 
+        });
+
+        this.cmb_hotel_search.addActionListener(e -> loadRoomTable(roomRowListBySearch()));
+
+        this.btn_hotel_filter_clear.addActionListener(e -> {
+            this.cmb_hotel_search.setSelectedItem(null);
+            loadRoomTable(null);
         });
     }
 
@@ -141,8 +152,7 @@ public class EmployeeView extends Layout {
     }
 
     public void loadHotelComponent() {
-        loadHotelFilter();
-
+        loadHotelFilterComboBox();
         tableRowSelect(this.tbl_hotel);
 
         this.hotel_menu = new JPopupMenu();
@@ -152,8 +162,8 @@ public class EmployeeView extends Layout {
             hotelView.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent e) {
-                    loadHotelTable(hotelRowListBySearch());
-                    loadRoomTable();
+                    loadHotelTable(null);
+                    loadRoomTable(null);
                 }
             });
         });
@@ -167,7 +177,7 @@ public class EmployeeView extends Layout {
                 if (this.pensionManager.deleteByHotelId(selectHotelId) && this.seasonManager.deleteByHotelId(selectHotelId) && this.hotelManager.delete(selectHotelId)) {
                     Helper.showMessage("done");
                     loadHotelTable(hotelRowListBySearch());
-                    loadRoomTable();
+                    loadRoomTable(null);
                 } else {
                     Helper.showMessage("error");
                 }
@@ -181,6 +191,7 @@ public class EmployeeView extends Layout {
                 @Override
                 public void windowClosed(WindowEvent e) {
                     loadHotelTable(null);
+                    loadRoomTable(null);
                     cmb_city_search.setSelectedItem(null);
                 }
             });
@@ -194,7 +205,15 @@ public class EmployeeView extends Layout {
         });
     }
 
-    public void loadHotelFilter() {
+    public void loadRoomFilterComboBox() {
+        for (Hotel hotel : this.hotelManager.findAll()) {
+            this.cmb_hotel_search.addItem(new ComboItem(hotel.getId(), hotel.getName() + " - " + hotel.getCity()));
+        }
+        this.cmb_hotel_search.getModel().setSelectedItem(null);
+    }
+
+
+    public void loadHotelFilterComboBox() {
         this.cmb_city_search.setModel(new DefaultComboBoxModel<>(City.values()));
         this.cmb_city_search.setSelectedItem(null);
 
@@ -226,8 +245,16 @@ public class EmployeeView extends Layout {
         });
     }
 
+    public ArrayList<Object[]> roomRowListBySearch() {
+        if ((ComboItem) (this.cmb_hotel_search.getSelectedItem()) == null){
+            return this.roomManager.getForTable(this.col_room.length, this.roomManager.findAll());
+        }
+        ArrayList<Room> roomListBySearch = this.roomManager.getByHotelId(((ComboItem) (this.cmb_hotel_search.getSelectedItem())).getKey());
+        return this.roomManager.getForTable(this.col_room.length, roomListBySearch);
+    }
+
     public ArrayList<Object[]> hotelRowListBySearch() {
-        ArrayList<Hotel> userListBySearch = this.hotelManager.getByCity((City) this.cmb_city_search.getSelectedItem());
-        return this.hotelManager.getForTable(this.col_hotel.length, userListBySearch);
+        ArrayList<Hotel> hotelListBySearch = this.hotelManager.getByCity((City) this.cmb_city_search.getSelectedItem());
+        return this.hotelManager.getForTable(this.col_hotel.length, hotelListBySearch);
     }
 }

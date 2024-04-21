@@ -10,6 +10,7 @@ import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.NumberFormatter;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class RoomView extends Layout {
     private JPanel container;
@@ -108,14 +109,14 @@ public class RoomView extends Layout {
     private JLabel tl_full_credit_4;
     private Room room;
     private Hotel hotel;
-    private RoomManager roomManager;
-    private HotelManager hotelManager;
-    private SeasonManager seasonManager;
-    private PensionManager pensionManager;
-    private PriceManager priceManager;
+    private final RoomManager roomManager;
+    private final HotelManager hotelManager;
+    private final SeasonManager seasonManager;
+    private final PensionManager pensionManager;
+    private final PriceManager priceManager;
     private ArrayList<Season> seasons;
     private ArrayList<Pension> pensions;
-    private ArrayList<Price> prices;
+    private final ArrayList<Price> prices;
 
     public RoomView(Room room) {
         this.add(container);
@@ -132,7 +133,7 @@ public class RoomView extends Layout {
             this.cmb_hotel.addItem(new ComboItem(hotel.getId(), hotel.getName() + " - " + hotel.getCity()));
         }
 
-        this.hotel = this.hotelManager.getById(((ComboItem) this.cmb_hotel.getSelectedItem()).getKey());
+        this.hotel = this.hotelManager.getById(((ComboItem) Objects.requireNonNull(this.cmb_hotel.getSelectedItem())).getKey());
 
         if (this.room.getId() != 0) {
             this.hotel = this.room.getHotel();
