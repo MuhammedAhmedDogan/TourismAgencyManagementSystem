@@ -84,7 +84,7 @@ public class EmployeeView extends Layout {
     public void loadRoomTable(ArrayList<Object[]> roomList) {
         this.col_room = new Object[]{"ID", "Otel Adı", "Oda Tipi", "Yatak Sayısı", "Oda Alanı (Metrekare)", "Boş Oda Sayısı"};
         if (roomList == null) {
-            roomList = roomManager.getForTable(col_room.length, this.roomManager.findAll());
+            roomList = this.roomManager.getForTable(this.col_room.length, this.roomManager.findAll());
         }
         createTable(this.tmdl_room, this.tbl_room, col_room, roomList);
         tbl_room.getColumnModel().getColumn(0).setMaxWidth(75);
