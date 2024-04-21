@@ -1,6 +1,7 @@
 package dao;
 
 import core.Db;
+import entity.Hotel;
 import entity.Room;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -159,5 +160,19 @@ public class RoomDao {
             e.printStackTrace();
         }
         return true;
+    }
+
+    public int newRoomId() {
+        String query = "SELECT * FROM public.room ORDER BY room_id DESC LIMIT 1";
+        Room room = new Room();
+        try {
+            ResultSet rs = this.con.createStatement().executeQuery(query);
+            if (rs.next()) {
+                room = this.match(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return room.getId();
     }
 }

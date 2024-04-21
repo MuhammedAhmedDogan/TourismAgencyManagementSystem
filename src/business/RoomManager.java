@@ -74,4 +74,8 @@ public class RoomManager {
         return this.roomDao.update(room);
     }
 
+    public int newRoomId() {
+        return this.roomDao.newRoomId();
+    }
+
 }

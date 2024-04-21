@@ -1,7 +1,6 @@
 package business;
 
 import core.Helper;
-import dao.PensionDao;
 import dao.PriceDao;
 import entity.Price;
 
@@ -20,6 +19,10 @@ public class PriceManager {
 
     public Price getById(int id) {
         return this.priceDao.getById(id);
+    }
+
+    public ArrayList<Price> getByRoomId(int roomId) {
+        return this.priceDao.getByRoomId(roomId);
     }
 
     public boolean deleteById(int id) {

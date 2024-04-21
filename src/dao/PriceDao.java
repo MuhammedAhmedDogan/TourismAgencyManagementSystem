@@ -56,6 +56,10 @@ public class PriceDao {
         return obj;
     }
 
+    public ArrayList<Price> getByRoomId(int roomId){
+        return selectByQuery("SELECT * FROM public.price WHERE price_room_id = " + roomId + " ORDER BY price_id ASC");
+    }
+
     public Price match(ResultSet rs) throws SQLException {
         Price obj = new Price();
         obj.setId(rs.getInt("price_id"));
