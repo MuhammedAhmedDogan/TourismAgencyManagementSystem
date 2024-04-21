@@ -157,7 +157,7 @@ public class EmployeeView extends Layout {
         tableRowSelect(this.tbl_hotel);
 
         this.hotel_menu = new JPopupMenu();
-        this.hotel_menu.add("Güncelle").addActionListener(e -> {
+        this.hotel_menu.add("Görüntüle - Güncelle").addActionListener(e -> {
             int selectHotelId = this.getTableSelectedRow(tbl_hotel, 0);
             HotelView hotelView = new HotelView(this.hotelManager.getById(selectHotelId));
             hotelView.addWindowListener(new WindowAdapter() {
@@ -169,7 +169,7 @@ public class EmployeeView extends Layout {
                 }
             });
         });
-        this.hotel_menu.add("Sil").addActionListener(e -> {
+        this.hotel_menu.add("Oteli Sil").addActionListener(e -> {
             if (Helper.confirm("sure")) {
                 int selectHotelId = this.getTableSelectedRow(tbl_hotel, 0);
                 if (!this.roomManager.getByHotelId(selectHotelId).isEmpty()) {
