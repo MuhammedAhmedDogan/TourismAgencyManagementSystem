@@ -60,18 +60,6 @@ public class SeasonDao {
         return obj;
     }
 
-    public boolean deleteById(int id) {
-        String query = "DELETE FROM public.season WHERE season_id = ?";
-        try {
-            PreparedStatement pr = con.prepareStatement(query);
-            pr.setInt(1, id);
-            return pr.executeUpdate() != -1;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return true;
-    }
-
     public boolean deleteByHotelId(int id) {
         String query = "DELETE FROM public.season WHERE season_hotel_id = ?";
         try {

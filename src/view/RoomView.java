@@ -167,7 +167,7 @@ public class RoomView extends Layout {
             if (Helper.isFieldListEmpty(new JTextField[]{this.fld_beds, this.fld_area, this.fld_stock}) || this.cmb_hotel.getSelectedItem() == null || this.cmb_room_type.getSelectedItem() == null) {
                 Helper.showMessage("fill");
             } else {
-                boolean result = false;
+                boolean result;
                 this.room.setHotel(this.hotelManager.getById(((ComboItem) this.cmb_hotel.getSelectedItem()).getKey()));
                 this.room.setRoomType((Room.RoomType) this.cmb_room_type.getSelectedItem());
                 this.room.setBeds(Integer.parseInt(this.fld_beds.getText()));
@@ -180,9 +180,16 @@ public class RoomView extends Layout {
                 this.room.setProjection(this.chck_projection.isSelected());
 
                 if (this.room.getId() != 0) {
-                    this.roomManager.update(this.room);
+                    result = this.roomManager.update(this.room);
                 } else {
-                    this.roomManager.save(this.room);
+                    result = this.roomManager.save(this.room);
+                }
+
+                if (result) {
+                    Helper.showMessage("done");
+                    dispose();
+                } else {
+                    Helper.showMessage("error");
                 }
             }
         });
