@@ -5,6 +5,7 @@ import business.PensionManager;
 import business.RoomManager;
 import business.SeasonManager;
 import core.ComboItem;
+import core.Helper;
 import entity.Hotel;
 import entity.Pension;
 import entity.Room;
@@ -163,7 +164,27 @@ public class RoomView extends Layout {
         });
 
         this.btn_save.addActionListener(e -> {
+            if (Helper.isFieldListEmpty(new JTextField[]{this.fld_beds, this.fld_area, this.fld_stock}) || this.cmb_hotel.getSelectedItem() == null || this.cmb_room_type.getSelectedItem() == null) {
+                Helper.showMessage("fill");
+            } else {
+                boolean result = false;
+                this.room.setHotel(this.hotelManager.getById(((ComboItem) this.cmb_hotel.getSelectedItem()).getKey()));
+                this.room.setRoomType((Room.RoomType) this.cmb_room_type.getSelectedItem());
+                this.room.setBeds(Integer.parseInt(this.fld_beds.getText()));
+                this.room.setArea(Integer.parseInt(this.fld_area.getText()));
+                this.room.setStock(Integer.parseInt(this.fld_stock.getText()));
+                this.room.setTv(this.chck_tv.isSelected());
+                this.room.setMinibar(this.chck_minibar.isSelected());
+                this.room.setGameConsole(this.chck_game_console.isSelected());
+                this.room.setSafe(this.chck_safe.isSelected());
+                this.room.setProjection(this.chck_projection.isSelected());
 
+                if (this.room.getId() != 0) {
+                    this.roomManager.update(this.room);
+                } else {
+                    this.roomManager.save(this.room);
+                }
+            }
         });
     }
 

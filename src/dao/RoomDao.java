@@ -130,7 +130,6 @@ public class RoomDao {
 
     public boolean update(Room room) {
         String query = "UPDATE public.room SET " +
-                "(" +
                 "room_hotel_id = ?, " +
                 "room_type = ?, " +
                 "room_beds = ?, " +
@@ -139,7 +138,7 @@ public class RoomDao {
                 "minibar = ?, " +
                 "game_console = ?, " +
                 "safe = ?, " +
-                "projection = ? " +
+                "projection = ?, " +
                 "stock = ? " +
                 "WHERE room_id = ?";
         try {
