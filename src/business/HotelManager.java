@@ -48,7 +48,12 @@ public class HotelManager {
     }
 
     public boolean delete(int id) {
+        if (this.getById(id) == null) {
+            Helper.showMessage(id + " kayıtlı otel bulunamadı !");
+            return false;
+        }
         return this.hotelDao.delete(id);
+
     }
 
     public boolean save(Hotel hotel) {
@@ -61,7 +66,7 @@ public class HotelManager {
 
     public boolean update(Hotel hotel) {
         if (this.getById(hotel.getId()) == null) {
-            Helper.showMessage(hotel.getId() + " ID kayıtlı kullanıcı bulunamadı !");
+            Helper.showMessage(hotel.getId() + " ID kayıtlı otel bulunamadı !");
             return false;
         }
         return this.hotelDao.update(hotel);

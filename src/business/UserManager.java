@@ -3,6 +3,7 @@ package business;
 import core.Helper;
 import dao.UserDao;
 import entity.User;
+
 import java.util.ArrayList;
 
 public class UserManager {
@@ -33,6 +34,10 @@ public class UserManager {
     }
 
     public boolean delete(int id) {
+        if (this.getById(id) == null) {
+            Helper.showMessage(id + " kayıtlı kullanıcı bulunamadı !");
+            return false;
+        }
         return this.userDao.delete(id);
     }
 

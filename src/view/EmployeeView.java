@@ -117,7 +117,7 @@ public class EmployeeView extends Layout {
 
         this.btn_room_add.addActionListener(e -> {
             if (this.hotelManager.findAll().isEmpty()) {
-                Helper.showMessage("Oda eklemek için sistemde kayıtlı otel bulunmalıdır. Lütfen önce otel ekleyiniz.");
+                Helper.showMessage("Oda eklemek için sistemde kayıtlı otel bulunmalıdır ! Lütfen önce otel ekleyiniz.");
             } else {
                 RoomView roomView = new RoomView(new Room());
                 roomView.addWindowListener(new WindowAdapter() {
