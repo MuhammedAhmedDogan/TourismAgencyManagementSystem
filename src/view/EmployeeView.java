@@ -1,9 +1,6 @@
 package view;
 
-import business.HotelManager;
-import business.PensionManager;
-import business.RoomManager;
-import business.SeasonManager;
+import business.*;
 import core.Helper;
 import entity.City;
 import entity.Hotel;
@@ -49,6 +46,7 @@ public class EmployeeView extends Layout {
     private HotelManager hotelManager;
     private SeasonManager seasonManager;
     private PensionManager pensionManager;
+    private PriceManager priceManager;
     private RoomManager roomManager;
     private JPopupMenu hotel_menu = new JPopupMenu();
     private JPopupMenu room_menu = new JPopupMenu();
@@ -63,6 +61,7 @@ public class EmployeeView extends Layout {
         this.seasonManager = new SeasonManager();
         this.pensionManager = new PensionManager();
         this.roomManager = new RoomManager();
+        this.priceManager = new PriceManager();
 
         this.lbl_welcome.setText("Hoşgeldiniz : " + this.user.getUsername() + " (" + this.user.getRole() + ")");
 
@@ -105,7 +104,7 @@ public class EmployeeView extends Layout {
         this.room_menu.add("Sil").addActionListener(e -> {
             if (Helper.confirm("sure")) {
                 int selectRoomId = this.getTableSelectedRow(tbl_room, 0);
-                if (this.roomManager.deleteById(selectRoomId)) {
+                if (this.priceManager.deleteByRoomId(selectRoomId) && this.roomManager.deleteById(selectRoomId)) {
                     Helper.showMessage("done");
                     loadRoomTable();
                 } else {
@@ -162,6 +161,7 @@ public class EmployeeView extends Layout {
             if (Helper.confirm("sure")) {
                 int selectHotelId = this.getTableSelectedRow(tbl_hotel, 0);
                 if (!this.roomManager.getByHotelId(selectHotelId).isEmpty()) {
+                    this.priceManager.deleteByHotelId(selectHotelId);
                     this.roomManager.deleteByHotelId(selectHotelId);
                 }
                 if (this.pensionManager.deleteByHotelId(selectHotelId) && this.seasonManager.deleteByHotelId(selectHotelId) && this.hotelManager.delete(selectHotelId)) {

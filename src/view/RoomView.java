@@ -10,7 +10,6 @@ import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.NumberFormatter;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class RoomView extends Layout {
     private JPanel container;
@@ -116,7 +115,7 @@ public class RoomView extends Layout {
     private PriceManager priceManager;
     private ArrayList<Season> seasons;
     private ArrayList<Pension> pensions;
-    private ArrayList<Price> prices = new ArrayList<>();
+    private ArrayList<Price> prices;
 
     public RoomView(Room room) {
         this.add(container);
@@ -151,6 +150,7 @@ public class RoomView extends Layout {
         }
         this.seasons = this.seasonManager.getByHotelId(this.hotel.getId());
         this.pensions = this.pensionManager.getByHotelId(this.hotel.getId());
+        this.prices = this.priceManager.getByRoomId(this.room.getId());
         this.setFormatFields();
 
         this.cmb_hotel.addActionListener(e -> {
@@ -161,7 +161,7 @@ public class RoomView extends Layout {
         });
 
         this.btn_save.addActionListener(e -> {
-            if (Helper.isFieldListEmpty(new JTextField[]{this.fld_beds, this.fld_area, this.fld_stock}) || this.cmb_hotel.getSelectedItem() == null || this.cmb_room_type.getSelectedItem() == null) {
+            if (Helper.isFieldListEmpty(new JTextField[]{this.fld_beds, this.fld_area, this.fld_stock}) || this.isFieldEmpty() || this.cmb_hotel.getSelectedItem() == null || this.cmb_room_type.getSelectedItem() == null) {
                 Helper.showMessage("fill");
             } else {
                 boolean resultRoomSave;
@@ -179,58 +179,17 @@ public class RoomView extends Layout {
 
                 if (this.room.getId() != 0) {
                     resultRoomSave = this.roomManager.update(this.room);
+                    this.priceManager.deleteByRoomId(this.room.getId());
+                    this.priceSave();
+
                 } else {
                     resultRoomSave = this.roomManager.save(this.room);
                     this.room = this.roomManager.getById(this.roomManager.newRoomId());
+                    this.priceSave();
+                }
 
-                    for (Pension pension : pensions) {
-                        if (pension.getPensionType().equals(Pension.PensionType.Ultra_Her_Sey_Dahil)) {
-                            this.prices.add(new Price(this.room, this.hotel, pension, seasons.getFirst(), "adult", Integer.parseInt(this.fld_ultra_adult_1.getValue().toString())));
-                            this.prices.add(new Price(this.room, this.hotel, pension, seasons.getFirst(), "child", Integer.parseInt(this.fld_ultra_child_1.getValue().toString())));
-                            this.prices.add(new Price(this.room, this.hotel, pension, seasons.getLast(), "adult", Integer.parseInt(this.fld_ultra_adult_2.getValue().toString())));
-                            this.prices.add(new Price(this.room, this.hotel, pension, seasons.getLast(), "child", Integer.parseInt(this.fld_ultra_child_2.getValue().toString())));
-                        }
-                        if (pension.getPensionType().equals(Pension.PensionType.Her_Sey_Dahil)) {
-                            this.prices.add(new Price(this.room, this.hotel, pension, seasons.getFirst(), "adult", Integer.parseInt(this.fld_all_inclusive_adult_1.getValue().toString())));
-                            this.prices.add(new Price(this.room, this.hotel, pension, seasons.getFirst(), "child", Integer.parseInt(this.fld_all_inclusive_child_1.getValue().toString())));
-                            this.prices.add(new Price(this.room, this.hotel, pension, seasons.getLast(), "adult", Integer.parseInt(this.fld_all_inclusive_adult_2.getValue().toString())));
-                            this.prices.add(new Price(this.room, this.hotel, pension, seasons.getLast(), "child", Integer.parseInt(this.fld_all_inclusive_child_2.getValue().toString())));
-                        }
-                        if (pension.getPensionType().equals(Pension.PensionType.Oda_Kahvalti)) {
-                            this.prices.add(new Price(this.room, this.hotel, pension, seasons.getFirst(), "adult", Integer.parseInt(this.fld_room_breakfast_adult_1.getValue().toString())));
-                            this.prices.add(new Price(this.room, this.hotel, pension, seasons.getFirst(), "child", Integer.parseInt(this.fld_room_breakfast_child_1.getValue().toString())));
-                            this.prices.add(new Price(this.room, this.hotel, pension, seasons.getLast(), "adult", Integer.parseInt(this.fld_room_breakfast_adult_2.getValue().toString())));
-                            this.prices.add(new Price(this.room, this.hotel, pension, seasons.getLast(), "child", Integer.parseInt(this.fld_room_breakfast_child_2.getValue().toString())));
-                        }
-                        if (pension.getPensionType().equals(Pension.PensionType.Tam_Pansiyon)) {
-                            this.prices.add(new Price(this.room, this.hotel, pension, seasons.getFirst(), "adult", Integer.parseInt(this.fld_full_pension_adult_1.getValue().toString())));
-                            this.prices.add(new Price(this.room, this.hotel, pension, seasons.getFirst(), "child", Integer.parseInt(this.fld_full_pension_child_1.getValue().toString())));
-                            this.prices.add(new Price(this.room, this.hotel, pension, seasons.getLast(), "adult", Integer.parseInt(this.fld_full_pension_adult_2.getValue().toString())));
-                            this.prices.add(new Price(this.room, this.hotel, pension, seasons.getLast(), "child", Integer.parseInt(this.fld_full_pension_child_2.getValue().toString())));
-                        }
-                        if (pension.getPensionType().equals(Pension.PensionType.Yarim_Pansiyon)) {
-                            this.prices.add(new Price(this.room, this.hotel, pension, seasons.getFirst(), "adult", Integer.parseInt(this.fld_half_pension_adult_1.getValue().toString())));
-                            this.prices.add(new Price(this.room, this.hotel, pension, seasons.getFirst(), "child", Integer.parseInt(this.fld_half_pension_child_1.getValue().toString())));
-                            this.prices.add(new Price(this.room, this.hotel, pension, seasons.getLast(), "adult", Integer.parseInt(this.fld_half_pension_adult_2.getValue().toString())));
-                            this.prices.add(new Price(this.room, this.hotel, pension, seasons.getLast(), "child", Integer.parseInt(this.fld_half_pension_child_2.getValue().toString())));
-                        }
-                        if (pension.getPensionType().equals(Pension.PensionType.Sadece_Yatak)) {
-                            this.prices.add(new Price(this.room, this.hotel, pension, seasons.getFirst(), "adult", Integer.parseInt(this.fld_only_bed_adult_1.getValue().toString())));
-                            this.prices.add(new Price(this.room, this.hotel, pension, seasons.getFirst(), "child", Integer.parseInt(this.fld_only_bed_child_1.getValue().toString())));
-                            this.prices.add(new Price(this.room, this.hotel, pension, seasons.getLast(), "adult", Integer.parseInt(this.fld_only_bed_adult_2.getValue().toString())));
-                            this.prices.add(new Price(this.room, this.hotel, pension, seasons.getLast(), "child", Integer.parseInt(this.fld_only_bed_child_2.getValue().toString())));
-                        }
-                        if (pension.getPensionType().equals(Pension.PensionType.Alkol_Haric_Full_Credit)) {
-                            this.prices.add(new Price(this.room, this.hotel, pension, seasons.getFirst(), "adult", Integer.parseInt(this.fld_full_credit_adult_1.getValue().toString())));
-                            this.prices.add(new Price(this.room, this.hotel, pension, seasons.getFirst(), "child", Integer.parseInt(this.fld_full_credit_child_1.getValue().toString())));
-                            this.prices.add(new Price(this.room, this.hotel, pension, seasons.getLast(), "adult", Integer.parseInt(this.fld_full_credit_adult_2.getValue().toString())));
-                            this.prices.add(new Price(this.room, this.hotel, pension, seasons.getLast(), "child", Integer.parseInt(this.fld_full_credit_child_2.getValue().toString())));
-                        }
-                    }
-                    for (Price price : prices) {
-                        resultPriceSave = this.priceManager.save(price);
-                    }
-
+                for (Price price : prices) {
+                    resultPriceSave = this.priceManager.save(price);
                 }
 
                 if (resultRoomSave && resultPriceSave) {
@@ -243,9 +202,97 @@ public class RoomView extends Layout {
         });
     }
 
+    private boolean isFieldEmpty() {
+        JTextField[] textFields = new JTextField[]{
+                this.fld_ultra_adult_1,
+                this.fld_ultra_adult_2,
+                this.fld_ultra_child_1,
+                this.fld_ultra_child_2,
+                this.fld_all_inclusive_adult_1,
+                this.fld_all_inclusive_adult_2,
+                this.fld_all_inclusive_child_1,
+                this.fld_all_inclusive_child_2,
+                this.fld_room_breakfast_adult_1,
+                this.fld_room_breakfast_adult_2,
+                this.fld_room_breakfast_child_1,
+                this.fld_room_breakfast_child_2,
+                this.fld_full_pension_adult_1,
+                this.fld_full_pension_adult_2,
+                this.fld_full_pension_child_1,
+                this.fld_full_pension_child_2,
+                this.fld_half_pension_adult_1,
+                this.fld_half_pension_adult_2,
+                this.fld_half_pension_child_1,
+                this.fld_half_pension_child_2,
+                this.fld_only_bed_adult_1,
+                this.fld_only_bed_adult_2,
+                this.fld_only_bed_child_1,
+                this.fld_only_bed_child_2,
+                this.fld_full_credit_adult_1,
+                this.fld_full_credit_adult_2,
+                this.fld_full_credit_child_1,
+                this.fld_full_credit_child_2,
+        };
+        for (JTextField textField : textFields) {
+            if (textField.isVisible() && textField.getText().isEmpty()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void priceSave() {
+        this.prices.clear();
+
+        for (Pension pension : this.pensions) {
+            if (pension.getPensionType().equals(Pension.PensionType.Ultra_Her_Sey_Dahil)) {
+                this.prices.add(new Price(this.room, this.hotel, pension, seasons.getFirst(), "adult", Integer.parseInt(this.fld_ultra_adult_1.getValue().toString())));
+                this.prices.add(new Price(this.room, this.hotel, pension, seasons.getFirst(), "child", Integer.parseInt(this.fld_ultra_child_1.getValue().toString())));
+                this.prices.add(new Price(this.room, this.hotel, pension, seasons.getLast(), "adult", Integer.parseInt(this.fld_ultra_adult_2.getValue().toString())));
+                this.prices.add(new Price(this.room, this.hotel, pension, seasons.getLast(), "child", Integer.parseInt(this.fld_ultra_child_2.getValue().toString())));
+            }
+            if (pension.getPensionType().equals(Pension.PensionType.Her_Sey_Dahil)) {
+                this.prices.add(new Price(this.room, this.hotel, pension, seasons.getFirst(), "adult", Integer.parseInt(this.fld_all_inclusive_adult_1.getValue().toString())));
+                this.prices.add(new Price(this.room, this.hotel, pension, seasons.getFirst(), "child", Integer.parseInt(this.fld_all_inclusive_child_1.getValue().toString())));
+                this.prices.add(new Price(this.room, this.hotel, pension, seasons.getLast(), "adult", Integer.parseInt(this.fld_all_inclusive_adult_2.getValue().toString())));
+                this.prices.add(new Price(this.room, this.hotel, pension, seasons.getLast(), "child", Integer.parseInt(this.fld_all_inclusive_child_2.getValue().toString())));
+            }
+            if (pension.getPensionType().equals(Pension.PensionType.Oda_Kahvalti)) {
+                this.prices.add(new Price(this.room, this.hotel, pension, seasons.getFirst(), "adult", Integer.parseInt(this.fld_room_breakfast_adult_1.getValue().toString())));
+                this.prices.add(new Price(this.room, this.hotel, pension, seasons.getFirst(), "child", Integer.parseInt(this.fld_room_breakfast_child_1.getValue().toString())));
+                this.prices.add(new Price(this.room, this.hotel, pension, seasons.getLast(), "adult", Integer.parseInt(this.fld_room_breakfast_adult_2.getValue().toString())));
+                this.prices.add(new Price(this.room, this.hotel, pension, seasons.getLast(), "child", Integer.parseInt(this.fld_room_breakfast_child_2.getValue().toString())));
+            }
+            if (pension.getPensionType().equals(Pension.PensionType.Tam_Pansiyon)) {
+                this.prices.add(new Price(this.room, this.hotel, pension, seasons.getFirst(), "adult", Integer.parseInt(this.fld_full_pension_adult_1.getValue().toString())));
+                this.prices.add(new Price(this.room, this.hotel, pension, seasons.getFirst(), "child", Integer.parseInt(this.fld_full_pension_child_1.getValue().toString())));
+                this.prices.add(new Price(this.room, this.hotel, pension, seasons.getLast(), "adult", Integer.parseInt(this.fld_full_pension_adult_2.getValue().toString())));
+                this.prices.add(new Price(this.room, this.hotel, pension, seasons.getLast(), "child", Integer.parseInt(this.fld_full_pension_child_2.getValue().toString())));
+            }
+            if (pension.getPensionType().equals(Pension.PensionType.Yarim_Pansiyon)) {
+                this.prices.add(new Price(this.room, this.hotel, pension, seasons.getFirst(), "adult", Integer.parseInt(this.fld_half_pension_adult_1.getValue().toString())));
+                this.prices.add(new Price(this.room, this.hotel, pension, seasons.getFirst(), "child", Integer.parseInt(this.fld_half_pension_child_1.getValue().toString())));
+                this.prices.add(new Price(this.room, this.hotel, pension, seasons.getLast(), "adult", Integer.parseInt(this.fld_half_pension_adult_2.getValue().toString())));
+                this.prices.add(new Price(this.room, this.hotel, pension, seasons.getLast(), "child", Integer.parseInt(this.fld_half_pension_child_2.getValue().toString())));
+            }
+            if (pension.getPensionType().equals(Pension.PensionType.Sadece_Yatak)) {
+                this.prices.add(new Price(this.room, this.hotel, pension, seasons.getFirst(), "adult", Integer.parseInt(this.fld_only_bed_adult_1.getValue().toString())));
+                this.prices.add(new Price(this.room, this.hotel, pension, seasons.getFirst(), "child", Integer.parseInt(this.fld_only_bed_child_1.getValue().toString())));
+                this.prices.add(new Price(this.room, this.hotel, pension, seasons.getLast(), "adult", Integer.parseInt(this.fld_only_bed_adult_2.getValue().toString())));
+                this.prices.add(new Price(this.room, this.hotel, pension, seasons.getLast(), "child", Integer.parseInt(this.fld_only_bed_child_2.getValue().toString())));
+            }
+            if (pension.getPensionType().equals(Pension.PensionType.Alkol_Haric_Full_Credit)) {
+                this.prices.add(new Price(this.room, this.hotel, pension, seasons.getFirst(), "adult", Integer.parseInt(this.fld_full_credit_adult_1.getValue().toString())));
+                this.prices.add(new Price(this.room, this.hotel, pension, seasons.getFirst(), "child", Integer.parseInt(this.fld_full_credit_child_1.getValue().toString())));
+                this.prices.add(new Price(this.room, this.hotel, pension, seasons.getLast(), "adult", Integer.parseInt(this.fld_full_credit_adult_2.getValue().toString())));
+                this.prices.add(new Price(this.room, this.hotel, pension, seasons.getLast(), "child", Integer.parseInt(this.fld_full_credit_child_2.getValue().toString())));
+            }
+        }
+    }
+
     private void setFormatFields() {
-        this.lbl_season_1.setText(this.seasons.getFirst().getStartDate().toString() + " / " + this.seasons.getFirst().getEndDate().toString() + "\t\t SEZONU");
-        this.lbl_season_2.setText(this.seasons.getLast().getStartDate().toString() + " / " + this.seasons.getLast().getEndDate().toString() + "\t\t SEZONU");
+        this.lbl_season_1.setText(this.seasons.getFirst().getStartDate().toString() + " / " + this.seasons.getFirst().getEndDate().toString() + "   SEZONU");
+        this.lbl_season_2.setText(this.seasons.getLast().getStartDate().toString() + " / " + this.seasons.getLast().getEndDate().toString() + "   SEZONU");
 
         this.fld_beds.setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(NumberFormat.getIntegerInstance())));
         this.fld_area.setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(NumberFormat.getIntegerInstance())));
