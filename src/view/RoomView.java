@@ -147,6 +147,9 @@ public class RoomView extends Layout {
             this.chck_game_console.setSelected(this.room.isGameConsole());
             this.chck_safe.setSelected(this.room.isSafe());
             this.chck_projection.setSelected(this.room.isProjection());
+            this.seasons = this.seasonManager.getByHotelId(this.hotel.getId());
+            this.pensions = this.pensionManager.getByHotelId(this.hotel.getId());
+            this.setCurrentPrices();
         }
         this.seasons = this.seasonManager.getByHotelId(this.hotel.getId());
         this.pensions = this.pensionManager.getByHotelId(this.hotel.getId());
@@ -239,6 +242,53 @@ public class RoomView extends Layout {
             }
         }
         return false;
+    }
+
+    private void setCurrentPrices() {
+        for (Pension pension : pensions) {
+            if (pension.getPensionType().equals(Pension.PensionType.Ultra_Her_Sey_Dahil)) {
+                this.fld_ultra_adult_1.setValue(this.priceManager.getPrice(this.room,pension,seasons.getFirst(),"'adult'"));
+                this.fld_ultra_child_1.setValue(this.priceManager.getPrice(this.room,pension,seasons.getFirst(),"'child'"));
+                this.fld_ultra_adult_2.setValue(this.priceManager.getPrice(this.room,pension,seasons.getLast(),"'adult'"));
+                this.fld_ultra_child_2.setValue(this.priceManager.getPrice(this.room,pension,seasons.getLast(),"'child'"));
+            }
+            if (pension.getPensionType().equals(Pension.PensionType.Her_Sey_Dahil)) {
+                this.fld_all_inclusive_adult_1.setValue(this.priceManager.getPrice(this.room,pension,seasons.getFirst(),"'adult'"));
+                this.fld_all_inclusive_child_1.setValue(this.priceManager.getPrice(this.room,pension,seasons.getFirst(),"'child'"));
+                this.fld_all_inclusive_adult_2.setValue(this.priceManager.getPrice(this.room,pension,seasons.getLast(),"'adult'"));
+                this.fld_all_inclusive_child_2.setValue(this.priceManager.getPrice(this.room,pension,seasons.getLast(),"'child'"));
+            }
+            if (pension.getPensionType().equals(Pension.PensionType.Oda_Kahvalti)) {
+                this.fld_room_breakfast_adult_1.setValue(this.priceManager.getPrice(this.room,pension,seasons.getFirst(),"'adult'"));
+                this.fld_room_breakfast_child_1.setValue(this.priceManager.getPrice(this.room,pension,seasons.getFirst(),"'child'"));
+                this.fld_room_breakfast_adult_2.setValue(this.priceManager.getPrice(this.room,pension,seasons.getLast(),"'adult'"));
+                this.fld_room_breakfast_child_2.setValue(this.priceManager.getPrice(this.room,pension,seasons.getLast(),"'child'"));
+            }
+            if (pension.getPensionType().equals(Pension.PensionType.Tam_Pansiyon)) {
+                this.fld_full_pension_adult_1.setValue(this.priceManager.getPrice(this.room,pension,seasons.getFirst(),"'adult'"));
+                this.fld_full_pension_child_1.setValue(this.priceManager.getPrice(this.room,pension,seasons.getFirst(),"'child'"));
+                this.fld_full_pension_adult_2.setValue(this.priceManager.getPrice(this.room,pension,seasons.getLast(),"'adult'"));
+                this.fld_full_pension_child_2.setValue(this.priceManager.getPrice(this.room,pension,seasons.getLast(),"'child'"));
+            }
+            if (pension.getPensionType().equals(Pension.PensionType.Yarim_Pansiyon)) {
+                this.fld_half_pension_adult_1.setValue(this.priceManager.getPrice(this.room,pension,seasons.getFirst(),"'adult'"));
+                this.fld_half_pension_child_1.setValue(this.priceManager.getPrice(this.room,pension,seasons.getFirst(),"'child'"));
+                this.fld_half_pension_adult_2.setValue(this.priceManager.getPrice(this.room,pension,seasons.getLast(),"'adult'"));
+                this.fld_half_pension_child_2.setValue(this.priceManager.getPrice(this.room,pension,seasons.getLast(),"'child'"));
+            }
+            if (pension.getPensionType().equals(Pension.PensionType.Sadece_Yatak)) {
+                this.fld_only_bed_adult_1.setValue(this.priceManager.getPrice(this.room,pension,seasons.getFirst(),"'adult'"));
+                this.fld_only_bed_child_1.setValue(this.priceManager.getPrice(this.room,pension,seasons.getFirst(),"'child'"));
+                this.fld_only_bed_adult_2.setValue(this.priceManager.getPrice(this.room,pension,seasons.getLast(),"'adult'"));
+                this.fld_only_bed_child_2.setValue(this.priceManager.getPrice(this.room,pension,seasons.getLast(),"'child'"));
+            }
+            if (pension.getPensionType().equals(Pension.PensionType.Alkol_Haric_Full_Credit)) {
+                this.fld_full_credit_adult_1.setValue(this.priceManager.getPrice(this.room,pension,seasons.getFirst(),"'adult'"));
+                this.fld_full_credit_child_1.setValue(this.priceManager.getPrice(this.room,pension,seasons.getFirst(),"'child'"));
+                this.fld_full_credit_adult_2.setValue(this.priceManager.getPrice(this.room,pension,seasons.getLast(),"'adult'"));
+                this.fld_full_credit_child_2.setValue(this.priceManager.getPrice(this.room,pension,seasons.getLast(),"'child'"));
+            }
+        }
     }
 
     private void priceSave() {

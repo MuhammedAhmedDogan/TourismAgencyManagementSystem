@@ -1,7 +1,11 @@
 package dao;
 
 import core.Db;
+import entity.Pension;
 import entity.Price;
+import entity.Room;
+import entity.Season;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -56,8 +60,15 @@ public class PriceDao {
         return obj;
     }
 
-    public ArrayList<Price> getByRoomId(int roomId){
+    public ArrayList<Price> getByRoomId(int roomId) {
         return selectByQuery("SELECT * FROM public.price WHERE price_room_id = " + roomId + " ORDER BY price_id ASC");
+    }
+
+    public int getPrice(Room room, Pension pension, Season season, String guestType) {
+        return (int) selectByQuery("SELECT * FROM public.price WHERE price_room_id = " + room.getId() +
+                " AND price_pension_id = " + pension.getId() +
+                " AND price_season_id = " + season.getId() +
+                " AND price_guest_type = " + guestType).getFirst().getPrice();
     }
 
     public Price match(ResultSet rs) throws SQLException {

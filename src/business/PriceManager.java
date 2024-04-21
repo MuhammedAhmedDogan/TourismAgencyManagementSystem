@@ -2,7 +2,10 @@ package business;
 
 import core.Helper;
 import dao.PriceDao;
+import entity.Pension;
 import entity.Price;
+import entity.Room;
+import entity.Season;
 
 import java.util.ArrayList;
 
@@ -23,6 +26,11 @@ public class PriceManager {
 
     public ArrayList<Price> getByRoomId(int roomId) {
         return this.priceDao.getByRoomId(roomId);
+    }
+
+
+    public int getPrice(Room room, Pension pension, Season season, String guestType) {
+        return this.priceDao.getPrice(room,pension,season,guestType);
     }
 
     public boolean deleteById(int id) {
