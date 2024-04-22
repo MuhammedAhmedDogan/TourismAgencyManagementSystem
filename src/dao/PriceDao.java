@@ -65,10 +65,15 @@ public class PriceDao {
     }
 
     public int getPrice(Room room, Pension pension, Season season, String guestType) {
-        return (int) selectByQuery("SELECT * FROM public.price WHERE price_room_id = " + room.getId() +
+        ArrayList<Price> prices = selectByQuery("SELECT * FROM public.price WHERE price_room_id = " + room.getId() +
                 " AND price_pension_id = " + pension.getId() +
                 " AND price_season_id = " + season.getId() +
-                " AND price_guest_type = " + guestType).getFirst().getPrice();
+                " AND price_guest_type = " + guestType);
+        if (prices.isEmpty()){
+            return 0;
+        } else {
+            return (int) prices.getFirst().getPrice();
+        }
     }
 
     public Price match(ResultSet rs) throws SQLException {

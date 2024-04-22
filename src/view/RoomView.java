@@ -455,4 +455,3 @@ public class RoomView extends Layout {
         this.tl_full_credit_4.setVisible(this.hotel.isFullCreditPension());
     }
 }
-

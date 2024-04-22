@@ -2,6 +2,7 @@ package view;
 
 import business.HotelManager;
 import business.PensionManager;
+import business.PriceManager;
 import business.SeasonManager;
 import core.Helper;
 import entity.City;
@@ -55,6 +56,7 @@ public class HotelView extends Layout {
     private HotelManager hotelManager;
     private SeasonManager seasonManager;
     private PensionManager pensionManager;
+    private PriceManager priceManager;
     private ArrayList<Season> seasons;
     private ArrayList<Pension> pensions;
 
@@ -65,6 +67,7 @@ public class HotelView extends Layout {
         this.hotelManager = new HotelManager();
         this.seasonManager = new SeasonManager();
         this.pensionManager = new PensionManager();
+        this.priceManager = new PriceManager();
         this.seasons = seasonManager.getByHotelId(hotel.getId());
         this.pensions = pensionManager.getByHotelId(hotel.getId());
 
@@ -193,42 +196,49 @@ public class HotelView extends Layout {
                         if (pension.getPensionType().equals(Pension.PensionType.Ultra_Her_Sey_Dahil)) {
                             isUltra = true;
                             if (!this.check_ultra_pension.isSelected()) {
+                                this.priceManager.deleteByPensionId(pension.getId());
                                 this.pensionManager.deleteById(pension.getId());
                             }
                         }
                         if (pension.getPensionType().equals(Pension.PensionType.Her_Sey_Dahil)) {
                             isAllInclusive = true;
                             if (!this.check_all_inclusive_pension.isSelected()) {
+                                this.priceManager.deleteByPensionId(pension.getId());
                                 this.pensionManager.deleteById(pension.getId());
                             }
                         }
                         if (pension.getPensionType().equals(Pension.PensionType.Oda_Kahvalti)) {
                             isRoomBreakfast = true;
                             if (!this.check_room_breakfast_pension.isSelected()) {
+                                this.priceManager.deleteByPensionId(pension.getId());
                                 this.pensionManager.deleteById(pension.getId());
                             }
                         }
                         if (pension.getPensionType().equals(Pension.PensionType.Tam_Pansiyon)) {
                             isFullPension = true;
                             if (!this.check_full_pension.isSelected()) {
+                                this.priceManager.deleteByPensionId(pension.getId());
                                 this.pensionManager.deleteById(pension.getId());
                             }
                         }
                         if (pension.getPensionType().equals(Pension.PensionType.Yarim_Pansiyon)) {
                             isHalfPension = true;
                             if (!this.check_half_pension.isSelected()) {
+                                this.priceManager.deleteByPensionId(pension.getId());
                                 this.pensionManager.deleteById(pension.getId());
                             }
                         }
                         if (pension.getPensionType().equals(Pension.PensionType.Sadece_Yatak)) {
                             isOnlyBed = true;
                             if (!this.check_only_bed_pension.isSelected()) {
+                                this.priceManager.deleteByPensionId(pension.getId());
                                 this.pensionManager.deleteById(pension.getId());
                             }
                         }
                         if (pension.getPensionType().equals(Pension.PensionType.Alkol_Haric_Full_Credit)) {
                             isFullCredit = true;
                             if (!this.check_full_credit_pension.isSelected()) {
+                                this.priceManager.deleteByPensionId(pension.getId());
                                 this.pensionManager.deleteById(pension.getId());
                             }
                         }

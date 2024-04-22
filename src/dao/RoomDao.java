@@ -1,7 +1,6 @@
 package dao;
 
 import core.Db;
-import entity.Hotel;
 import entity.Room;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
