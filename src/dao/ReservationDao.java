@@ -108,6 +108,7 @@ public class ReservationDao {
         }
         return true;
     }
+
     public boolean deleteByRoomId(int id) {
         String query = "DELETE FROM public.reservation WHERE reservation_room_id = ?";
         try {
@@ -142,16 +143,54 @@ public class ReservationDao {
             pr.setInt(2, reservation.getHotel().getId());
             pr.setInt(3, reservation.getPension().getId());
             pr.setInt(4, reservation.getSeason().getId());
-            pr.setString(5,reservation.getCustomerName());
-            pr.setString(6,reservation.getCustomerId());
-            pr.setInt(7,reservation.getAdults());
-            pr.setInt(8,reservation.getChildren());
+            pr.setString(5, reservation.getCustomerName());
+            pr.setString(6, reservation.getCustomerId());
+            pr.setInt(7, reservation.getAdults());
+            pr.setInt(8, reservation.getChildren());
 
             java.sql.Date sqlDateStart = new java.sql.Date(reservation.getReservationStartDate().getTime());
             java.sql.Date sqlDateEnd = new java.sql.Date(reservation.getReservationEndDate().getTime());
             pr.setDate(9, sqlDateStart);
             pr.setDate(10, sqlDateEnd);
-            pr.setFloat(11,reservation.getCost());
+            pr.setFloat(11, reservation.getCost());
+            return pr.executeUpdate() != -1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    public boolean update(Reservation reservation) {
+        String query = "UPDATE public.reservation SET " +
+                "reservation_room_id = ?, " +
+                "reservation_hotel_id = ?, " +
+                "reservation_pension_id = ?, " +
+                "reservation_season_id = ?, " +
+                "customer_name = ?, " +
+                "customer_id = ?, " +
+                "adults = ?, " +
+                "children = ?, " +
+                "reservation_start_date = ?, " +
+                "reservation_end_date = ?, " +
+                "cost = ? " +
+                "WHERE reservation_id = ?";
+        try {
+            PreparedStatement pr = this.con.prepareStatement(query);
+            pr.setInt(1, reservation.getRoom().getId());
+            pr.setInt(2, reservation.getHotel().getId());
+            pr.setInt(3, reservation.getPension().getId());
+            pr.setInt(4, reservation.getSeason().getId());
+            pr.setString(5, reservation.getCustomerName());
+            pr.setString(6, reservation.getCustomerId());
+            pr.setInt(7, reservation.getAdults());
+            pr.setInt(8, reservation.getChildren());
+
+            java.sql.Date sqlDateStart = new java.sql.Date(reservation.getReservationStartDate().getTime());
+            java.sql.Date sqlDateEnd = new java.sql.Date(reservation.getReservationEndDate().getTime());
+            pr.setDate(9, sqlDateStart);
+            pr.setDate(10, sqlDateEnd);
+            pr.setFloat(11, reservation.getCost());
+            pr.setInt(12, reservation.getId());
             return pr.executeUpdate() != -1;
         } catch (SQLException e) {
             e.printStackTrace();
