@@ -2,8 +2,6 @@ package dao;
 
 import core.Db;
 import entity.Reservation;
-import entity.Season;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -68,6 +66,10 @@ public class ReservationDao {
         return selectByQuery("SELECT * FROM public.reservation WHERE reservation_room_id = " + roomId + " ORDER BY reservation_id");
     }
 
+    public ArrayList<Reservation> getByPensionId(int pensionId) {
+        return selectByQuery("SELECT * FROM public.reservation WHERE reservation_pension_id = " + pensionId + " ORDER BY reservation_id");
+    }
+
     public Reservation match(ResultSet rs) throws SQLException {
         Reservation obj = new Reservation();
         obj.setId(rs.getInt("reservation_id"));
@@ -97,11 +99,11 @@ public class ReservationDao {
         return true;
     }
 
-    public boolean deleteByHotelId(int id) {
+    public boolean deleteByHotelId(int hotelId) {
         String query = "DELETE FROM public.reservation WHERE reservation_hotel_id = ?";
         try {
             PreparedStatement pr = con.prepareStatement(query);
-            pr.setInt(1, id);
+            pr.setInt(1, hotelId);
             return pr.executeUpdate() != -1;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -109,11 +111,23 @@ public class ReservationDao {
         return true;
     }
 
-    public boolean deleteByRoomId(int id) {
+    public boolean deleteByRoomId(int roomId) {
         String query = "DELETE FROM public.reservation WHERE reservation_room_id = ?";
         try {
             PreparedStatement pr = con.prepareStatement(query);
-            pr.setInt(1, id);
+            pr.setInt(1, roomId);
+            return pr.executeUpdate() != -1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    public boolean deleteByPensionId(int pensionId) {
+        String query = "DELETE FROM public.reservation WHERE reservation_pension_id = ?";
+        try {
+            PreparedStatement pr = con.prepareStatement(query);
+            pr.setInt(1, pensionId);
             return pr.executeUpdate() != -1;
         } catch (SQLException e) {
             e.printStackTrace();

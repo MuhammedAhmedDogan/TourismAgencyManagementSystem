@@ -75,7 +75,7 @@ public class HotelView extends Layout {
         this.cmb_star.setSelectedItem(null);
         this.loadCmbCity();
 
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
         DateFormatter dateFormatter = new DateFormatter(dateFormat);
         DefaultFormatterFactory formatterFactory = new DefaultFormatterFactory(dateFormatter);
         this.fld_season1_start.setFormatterFactory(formatterFactory);
@@ -103,10 +103,10 @@ public class HotelView extends Layout {
             this.check_half_pension.setSelected(hotel.isHalfPension());
             this.check_only_bed_pension.setSelected(hotel.isOnlyBedPension());
             this.check_full_credit_pension.setSelected(hotel.isFullCreditPension());
-            this.fld_season1_start.setText(seasons.getFirst().getStartDate().toString());
-            this.fld_season1_end.setText(seasons.getFirst().getEndDate().toString());
-            this.fld_season2_start.setText(seasons.getLast().getStartDate().toString());
-            this.fld_season2_end.setText(seasons.getLast().getEndDate().toString());
+            this.fld_season1_start.setText(Helper.formatDate(this.seasons.getFirst().getStartDate()));
+            this.fld_season1_end.setText(Helper.formatDate(this.seasons.getFirst().getEndDate()));
+            this.fld_season2_start.setText(Helper.formatDate(this.seasons.getLast().getStartDate()));
+            this.fld_season2_end.setText(Helper.formatDate(this.seasons.getLast().getEndDate()));
 
         }
 

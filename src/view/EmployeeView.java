@@ -41,18 +41,22 @@ public class EmployeeView extends Layout {
     private JButton btn_city_clear;
     private JComboBox<ComboItem> cmb_room_search_by_hotel;
     private JButton btn_hotel_filter_clear;
-    private DefaultTableModel tmdl_hotel = new DefaultTableModel();
-    private DefaultTableModel tmdl_room = new DefaultTableModel();
+    private JTable tbl_reservation;
+    private final DefaultTableModel tmdl_hotel = new DefaultTableModel();
+    private final DefaultTableModel tmdl_room = new DefaultTableModel();
+    private final DefaultTableModel tmdl_reservation = new DefaultTableModel();
     private User user;
     private HotelManager hotelManager;
     private SeasonManager seasonManager;
     private PensionManager pensionManager;
     private PriceManager priceManager;
     private RoomManager roomManager;
+    private ReservationManager reservationManager;
     private JPopupMenu hotel_menu = new JPopupMenu();
     private JPopupMenu room_menu = new JPopupMenu();
     private Object[] col_hotel;
     private Object[] col_room;
+    private Object[] col_reservation;
 
     public EmployeeView(User user) {
         this.add(container);
@@ -63,6 +67,7 @@ public class EmployeeView extends Layout {
         this.pensionManager = new PensionManager();
         this.roomManager = new RoomManager();
         this.priceManager = new PriceManager();
+        this.reservationManager = new ReservationManager();
 
         this.lbl_welcome.setText("Hoşgeldiniz : " + this.user.getUsername() + " (" + this.user.getRole() + ")");
 
@@ -79,6 +84,23 @@ public class EmployeeView extends Layout {
 
         loadRoomTable(null);
         loadRoomComponent();
+
+        loadReservationTable(null);
+    }
+
+    public void loadReservationTable(ArrayList<Object[]> reservationList) {
+        this.col_reservation = new Object[]{"ID", "Müşteri İsmi", "Müşteri TC no", "Yetişkin", "Çocuk", "Otel", "Oda Tipi", "Pansiyon Tipi", "Giriş Tarihi", "Çıkış Tarihi", "Fiyat"};
+        if (reservationList == null) {
+            reservationList = this.reservationManager.getForTable(this.col_reservation.length, this.reservationManager.findAll());
+        }
+        createTable(this.tmdl_reservation, this.tbl_reservation, this.col_reservation, reservationList);
+        tbl_reservation.getColumnModel().getColumn(0).setMaxWidth(50);
+        tbl_reservation.getColumnModel().getColumn(2).setMaxWidth(600);
+        tbl_reservation.getColumnModel().getColumn(3).setMaxWidth(60);
+        tbl_reservation.getColumnModel().getColumn(4).setMaxWidth(50);
+        tbl_reservation.getColumnModel().getColumn(8).setMaxWidth(100);
+        tbl_reservation.getColumnModel().getColumn(9).setMaxWidth(100);
+        tbl_reservation.getColumnModel().getColumn(10).setMaxWidth(200);
     }
 
     public void loadRoomTable(ArrayList<Object[]> roomList) {
@@ -86,7 +108,7 @@ public class EmployeeView extends Layout {
         if (roomList == null) {
             roomList = this.roomManager.getForTable(this.col_room.length, this.roomManager.findAll());
         }
-        createTable(this.tmdl_room, this.tbl_room, col_room, roomList);
+        createTable(this.tmdl_room, this.tbl_room, this.col_room, roomList);
         tbl_room.getColumnModel().getColumn(0).setMaxWidth(75);
 
     }
@@ -147,7 +169,7 @@ public class EmployeeView extends Layout {
         if (hotelList == null) {
             hotelList = this.hotelManager.getForTable(col_hotel.length, this.hotelManager.findAll());
         }
-        createTable(this.tmdl_hotel, this.tbl_hotel, col_hotel, hotelList);
+        createTable(this.tmdl_hotel, this.tbl_hotel, this.col_hotel, hotelList);
         tbl_hotel.getColumnModel().getColumn(0).setMaxWidth(75);
         tbl_hotel.getColumnModel().getColumn(5).setMaxWidth(75);
     }
@@ -251,7 +273,7 @@ public class EmployeeView extends Layout {
     }
 
     public ArrayList<Object[]> roomRowListBySearch() {
-        if ((ComboItem) (this.cmb_room_search_by_hotel.getSelectedItem()) == null){
+        if ((ComboItem) (this.cmb_room_search_by_hotel.getSelectedItem()) == null) {
             return this.roomManager.getForTable(this.col_room.length, this.roomManager.findAll());
         }
         ArrayList<Room> roomListBySearch = this.roomManager.getByHotelId(((ComboItem) (this.cmb_room_search_by_hotel.getSelectedItem())).getKey());
