@@ -2,7 +2,6 @@ package business;
 
 import core.Helper;
 import dao.ReservationDao;
-import entity.Hotel;
 import entity.Reservation;
 
 import java.util.ArrayList;
@@ -56,7 +55,7 @@ public class ReservationManager {
         return reservationList;
     }
 
-    public boolean deleteId(int id) {
+    public boolean deleteById(int id) {
         if (this.getById(id) == null) {
             Helper.showMessage("Rezervasyon bulunamadı !");
             return false;

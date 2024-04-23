@@ -42,6 +42,24 @@ public class RoomManager {
         return roomList;
     }
 
+    public ArrayList<Object[]> getForTable2(int size, ArrayList<Room> rooms) {
+        ArrayList<Object[]> roomList = new ArrayList<>();
+        for (Room room : rooms) {
+            int i = 0;
+            Object[] rowObject = new Object[size];
+            rowObject[i++] = room.getId();
+            rowObject[i++] = room.getHotel().getName();
+            rowObject[i++] = room.getHotel().getStar().getStarValue();
+            rowObject[i++] = room.getRoomType().toString();
+            rowObject[i++] = room.getBeds();
+            rowObject[i++] = room.getArea();
+            rowObject[i] = room.getStock();
+
+            roomList.add(rowObject);
+        }
+        return roomList;
+    }
+
     public boolean deleteById(int id) {
         if (this.getById(id) == null) {
             Helper.showMessage("Oda bulunamadı !");

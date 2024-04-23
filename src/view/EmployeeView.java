@@ -3,10 +3,7 @@ package view;
 import business.*;
 import core.ComboItem;
 import core.Helper;
-import entity.City;
-import entity.Hotel;
-import entity.Room;
-import entity.User;
+import entity.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -42,6 +39,8 @@ public class EmployeeView extends Layout {
     private JComboBox<ComboItem> cmb_room_search_by_hotel;
     private JButton btn_hotel_filter_clear;
     private JTable tbl_reservation;
+    private JPanel lbl_reservation_add;
+    private JButton btn_reservation_add;
     private final DefaultTableModel tmdl_hotel = new DefaultTableModel();
     private final DefaultTableModel tmdl_room = new DefaultTableModel();
     private final DefaultTableModel tmdl_reservation = new DefaultTableModel();
@@ -54,6 +53,7 @@ public class EmployeeView extends Layout {
     private ReservationManager reservationManager;
     private JPopupMenu hotel_menu = new JPopupMenu();
     private JPopupMenu room_menu = new JPopupMenu();
+    private JPopupMenu reservation_menu = new JPopupMenu();
     private Object[] col_hotel;
     private Object[] col_room;
     private Object[] col_reservation;
@@ -86,6 +86,7 @@ public class EmployeeView extends Layout {
         loadRoomComponent();
 
         loadReservationTable(null);
+        loadReservationComponent();
     }
 
     public void loadReservationTable(ArrayList<Object[]> reservationList) {
@@ -95,12 +96,53 @@ public class EmployeeView extends Layout {
         }
         createTable(this.tmdl_reservation, this.tbl_reservation, this.col_reservation, reservationList);
         tbl_reservation.getColumnModel().getColumn(0).setMaxWidth(50);
-        tbl_reservation.getColumnModel().getColumn(2).setMaxWidth(600);
         tbl_reservation.getColumnModel().getColumn(3).setMaxWidth(60);
         tbl_reservation.getColumnModel().getColumn(4).setMaxWidth(50);
         tbl_reservation.getColumnModel().getColumn(8).setMaxWidth(100);
         tbl_reservation.getColumnModel().getColumn(9).setMaxWidth(100);
         tbl_reservation.getColumnModel().getColumn(10).setMaxWidth(200);
+    }
+
+    public void loadReservationComponent() {
+        tableRowSelect(this.tbl_reservation);
+
+        this.reservation_menu = new JPopupMenu();
+        this.reservation_menu.add("Görüntüle - Güncelle").addActionListener(e -> {
+            int selectReservationId = this.getTableSelectedRow(tbl_reservation, 0);
+            ReservationView reservationView = new ReservationView(this.reservationManager.getById(selectReservationId));
+            reservationView.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    loadReservationTable(null);
+                }
+            });
+        });
+        this.reservation_menu.add("Rezervasyonu Sil").addActionListener(e -> {
+            if (Helper.confirm("sure")) {
+                int selectReservationId = this.getTableSelectedRow(tbl_reservation, 0);
+                if (this.reservationManager.deleteById(selectReservationId)) {
+                    Helper.showMessage("done");
+                    loadReservationTable(null);
+                } else {
+                    Helper.showMessage("error");
+                }
+            }
+        });
+        this.tbl_reservation.setComponentPopupMenu(reservation_menu);
+
+        this.btn_reservation_add.addActionListener(e -> {
+            if (this.roomManager.findAll().isEmpty()) {
+                Helper.showMessage("Rezervasyon eklemek için sistemde kayıtlı oda bulunmalıdır ! Lütfen önce oda ekleyiniz.");
+            } else {
+                ReservationView reservationView = new ReservationView(new Reservation());
+                reservationView.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        loadReservationTable(null);
+                    }
+                });
+            }
+        });
     }
 
     public void loadRoomTable(ArrayList<Object[]> roomList) {
@@ -110,7 +152,6 @@ public class EmployeeView extends Layout {
         }
         createTable(this.tmdl_room, this.tbl_room, this.col_room, roomList);
         tbl_room.getColumnModel().getColumn(0).setMaxWidth(75);
-
     }
 
     public void loadRoomComponent() {
@@ -118,7 +159,7 @@ public class EmployeeView extends Layout {
         this.loadRoomFilterComboBox();
 
         this.room_menu = new JPopupMenu();
-        this.room_menu.add("Güncelle").addActionListener(e -> {
+        this.room_menu.add("GÖrüntüle - Güncelle").addActionListener(e -> {
             int selectRoomId = this.getTableSelectedRow(tbl_room, 0);
             RoomView roomView = new RoomView(this.roomManager.getById(selectRoomId));
             roomView.addWindowListener(new WindowAdapter() {
@@ -128,7 +169,7 @@ public class EmployeeView extends Layout {
                 }
             });
         });
-        this.room_menu.add("Sil").addActionListener(e -> {
+        this.room_menu.add("Odayı Sil").addActionListener(e -> {
             if (Helper.confirm("sure")) {
                 int selectRoomId = this.getTableSelectedRow(tbl_room, 0);
                 if (this.priceManager.deleteByRoomId(selectRoomId) && this.roomManager.deleteById(selectRoomId)) {
