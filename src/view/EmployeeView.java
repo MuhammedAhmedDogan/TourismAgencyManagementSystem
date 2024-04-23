@@ -166,15 +166,20 @@ public class EmployeeView extends Layout {
                 @Override
                 public void windowClosed(WindowEvent e) {
                     loadRoomTable(null);
+                    loadReservationTable(null);
                 }
             });
         });
         this.room_menu.add("Odayı Sil").addActionListener(e -> {
             if (Helper.confirm("sure")) {
                 int selectRoomId = this.getTableSelectedRow(tbl_room, 0);
+                if (!this.reservationManager.getByRoomId(selectRoomId).isEmpty()) {
+                    this.reservationManager.deleteByRoomId(selectRoomId);
+                }
                 if (this.priceManager.deleteByRoomId(selectRoomId) && this.roomManager.deleteById(selectRoomId)) {
                     Helper.showMessage("done");
                     loadRoomTable(roomRowListBySearch());
+                    loadReservationTable(null);
                 } else {
                     Helper.showMessage("error");
                 }
@@ -191,6 +196,7 @@ public class EmployeeView extends Layout {
                     @Override
                     public void windowClosed(WindowEvent e) {
                         loadRoomTable(null);
+                        loadReservationTable(null);
                     }
                 });
             }
@@ -216,7 +222,7 @@ public class EmployeeView extends Layout {
     }
 
     public void loadHotelComponent() {
-        loadHotelFilterComboBox();
+        this.loadHotelFilterComboBox();
         tableRowSelect(this.tbl_hotel);
 
         this.hotel_menu = new JPopupMenu();
@@ -229,12 +235,16 @@ public class EmployeeView extends Layout {
                     loadHotelTable(null);
                     loadRoomTable(null);
                     loadRoomFilterComboBox();
+                    loadReservationTable(null);
                 }
             });
         });
         this.hotel_menu.add("Oteli Sil").addActionListener(e -> {
             if (Helper.confirm("sure")) {
                 int selectHotelId = this.getTableSelectedRow(tbl_hotel, 0);
+                if (!this.reservationManager.getByHotelId(selectHotelId).isEmpty()) {
+                    this.reservationManager.deleteByHotelId(selectHotelId);
+                }
                 if (!this.roomManager.getByHotelId(selectHotelId).isEmpty()) {
                     this.priceManager.deleteByHotelId(selectHotelId);
                     this.roomManager.deleteByHotelId(selectHotelId);
@@ -244,6 +254,7 @@ public class EmployeeView extends Layout {
                     loadHotelTable(hotelRowListBySearch());
                     loadRoomTable(null);
                     loadRoomFilterComboBox();
+                    loadReservationTable(null);
                 } else {
                     Helper.showMessage("error");
                 }
@@ -260,6 +271,7 @@ public class EmployeeView extends Layout {
                     loadRoomTable(null);
                     loadRoomFilterComboBox();
                     cmb_city_search.setSelectedItem(null);
+                    loadReservationTable(null);
                 }
             });
         });

@@ -75,6 +75,7 @@ public class Helper {
         return JOptionPane.showConfirmDialog(null, msg, "Emin misin ?", JOptionPane.YES_NO_OPTION) == 0;
     }
 
+
     public static int getLocationPoint(String type, Dimension size) {
         return switch (type) {
             case "x" -> (Toolkit.getDefaultToolkit().getScreenSize().width - size.width) / 2;
