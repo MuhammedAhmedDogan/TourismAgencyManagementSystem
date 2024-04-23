@@ -221,6 +221,7 @@ public class ReservationView extends Layout {
             this.cmb_pension_type.addItem(Pension.PensionType.Sadece_Yatak);
         if (this.room.getHotel().isFullCreditPension())
             this.cmb_pension_type.addItem(Pension.PensionType.Alkol_Haric_Full_Credit);
+        this.cmb_pension_type.setSelectedItem(this.reservation.getPension().getPensionType());
 
     }
 
