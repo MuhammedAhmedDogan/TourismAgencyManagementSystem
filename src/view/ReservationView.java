@@ -71,13 +71,29 @@ public class ReservationView extends Layout {
     public ReservationView(Reservation reservation) {
         this.add(container);
         this.guiInitilaze(700, 950);
+        this.roomManager = new RoomManager();
         this.reservation = reservation;
         this.room = this.reservation.getRoom();
-        this.setFormatFields();
 
-        this.roomManager = new RoomManager();
+        setFormatFields();
         loadRoomTable(null);
         loadRoomComponent();
+
+        this.btn_search.addActionListener(e -> {
+            if (Helper.isFieldListEmpty(new JTextField[]{this.fld_start_date, this.fld_end_date}) || this.cmb_city.getSelectedItem() == null) {
+                Helper.showMessage("fill");
+            } else {
+
+            }
+        });
+
+        this.btn_save.addActionListener(e -> {
+            if (Helper.isFieldListEmpty(new JTextField[]{this.fld_customer_name, this.fld_customer_id, this.fld_adults, this.fld_children, this.fld_start_date, this.fld_end_date}) || this.cmb_pension_type.getSelectedItem() == null) {
+                Helper.showMessage("fill");
+            } else {
+
+            }
+        });
 
     }
 
