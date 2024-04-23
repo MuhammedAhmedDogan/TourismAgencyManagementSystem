@@ -1,7 +1,6 @@
 package view;
 
-import business.RoomManager;
-import core.ComboItem;
+import business.*;
 import core.Helper;
 import entity.*;
 
@@ -16,9 +15,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DateFormat;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ReservationView extends Layout {
     private JPanel container;
@@ -62,16 +63,25 @@ public class ReservationView extends Layout {
     private JComboBox<Pension.PensionType> cmb_pension_type;
     private JLabel lbl_cost;
     private JLabel lbl_room_type;
+    private JButton btn_cost;
     private Reservation reservation;
     private Object[] col_room;
     private final DefaultTableModel tmdl_room = new DefaultTableModel();
     private final RoomManager roomManager;
+    private final SeasonManager seasonManager;
+    private final PensionManager pensionManager;
+    private final PriceManager priceManager;
+    private final ReservationManager reservationManager;
     private Room room;
 
     public ReservationView(Reservation reservation) {
         this.add(container);
         this.guiInitilaze(700, 950);
         this.roomManager = new RoomManager();
+        this.seasonManager = new SeasonManager();
+        this.pensionManager = new PensionManager();
+        this.priceManager = new PriceManager();
+        this.reservationManager = new ReservationManager();
         this.reservation = reservation;
         this.room = this.reservation.getRoom();
 
@@ -87,11 +97,34 @@ public class ReservationView extends Layout {
             }
         });
 
+        this.btn_cost.addActionListener(e -> {
+            if (Helper.isFieldListEmpty(new JTextField[]{this.fld_customer_name, this.fld_customer_id, this.fld_adults, this.fld_children, this.fld_start_date, this.fld_end_date}) || this.cmb_pension_type.getSelectedItem() == null) {
+                Helper.showMessage("fill");
+            } else {
+                this.setReservation();
+                this.lbl_cost.setText("Toplam Tutar : " + this.reservation.getCost() + " TL");
+            }
+
+        });
+
         this.btn_save.addActionListener(e -> {
             if (Helper.isFieldListEmpty(new JTextField[]{this.fld_customer_name, this.fld_customer_id, this.fld_adults, this.fld_children, this.fld_start_date, this.fld_end_date}) || this.cmb_pension_type.getSelectedItem() == null) {
                 Helper.showMessage("fill");
             } else {
+                boolean result;
+                this.setReservation();
+                if (this.reservation.getId() != 0) {
+                    result = this.reservationManager.update(this.reservation);
+                } else {
+                    result = this.reservationManager.save(this.reservation);
+                }
 
+                if (result) {
+                    Helper.showMessage("done");
+                    dispose();
+                } else {
+                    Helper.showMessage("error");
+                }
             }
         });
 
@@ -120,6 +153,37 @@ public class ReservationView extends Layout {
                 loadInfo(selectRoomId);
             }
         });
+    }
+
+    public void setReservation() {
+        this.reservation.setRoom(this.room);
+        this.reservation.setHotel(this.room.getHotel());
+        this.reservation.setPension(this.pensionManager.getForReservation(this.room.getHotel().getId(), Objects.requireNonNull(this.cmb_pension_type.getSelectedItem()).toString()));
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        try {
+            this.reservation.setSeason(this.seasonManager.getForReservation(this.room.getHotel().getId(), dateFormat.parse(this.fld_start_date.getText()), dateFormat.parse(this.fld_end_date.getText())));
+            this.reservation.setReservationStartDate(dateFormat.parse(this.fld_start_date.getText()));
+            this.reservation.setReservationEndDate(dateFormat.parse(this.fld_end_date.getText()));
+        } catch (ParseException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        this.reservation.setCustomerName(this.fld_customer_name.getText());
+        this.reservation.setCustomerId(this.fld_customer_id.getText());
+        this.reservation.setAdults(Integer.parseInt(this.fld_adults.getValue().toString()));
+        this.reservation.setChildren(Integer.parseInt(this.fld_children.getValue().toString()));
+        int cost = 0;
+        for (int i = 0; i < this.reservation.getAdults(); i++) {
+            cost += this.priceManager.getPrice(this.room, this.reservation.getPension(), this.reservation.getSeason(), "'adult'");
+        }
+        for (int i = 0; i < this.reservation.getChildren(); i++) {
+            cost += this.priceManager.getPrice(this.room, this.reservation.getPension(), this.reservation.getSeason(), "'child'");
+        }
+
+        long difference = this.reservation.getReservationEndDate().getTime() - this.reservation.getReservationStartDate().getTime();
+        long daysBetween = difference / (1000 * 60 * 60 * 24);
+        cost *= (int) daysBetween;
+        this.reservation.setCost(cost);
     }
 
     public void loadInfo(int roomId) {
@@ -157,6 +221,7 @@ public class ReservationView extends Layout {
             this.cmb_pension_type.addItem(Pension.PensionType.Sadece_Yatak);
         if (this.room.getHotel().isFullCreditPension())
             this.cmb_pension_type.addItem(Pension.PensionType.Alkol_Haric_Full_Credit);
+
     }
 
     public void setFormatFields() {

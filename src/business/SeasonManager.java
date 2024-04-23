@@ -3,7 +3,9 @@ package business;
 import core.Helper;
 import dao.SeasonDao;
 import entity.Season;
+
 import java.util.ArrayList;
+import java.util.Date;
 
 public class SeasonManager {
     private final SeasonDao seasonDao;
@@ -18,6 +20,10 @@ public class SeasonManager {
 
     public Season getById(int id) {
         return this.seasonDao.getById(id);
+    }
+
+    public Season getForReservation(int hotelId, Date startDate, Date endDate) {
+        return this.seasonDao.getForReservation(hotelId,startDate,endDate);
     }
 
     public ArrayList<Season> getByHotelId(int hotel_id) {

@@ -51,6 +51,23 @@ public class PensionDao {
         return obj;
     }
 
+    public Pension geForReservation(int hotelId, String pensionType) {
+        Pension obj = null;
+        String query = "SELECT * FROM public.pension WHERE pension_hotel_id = ? AND pension_type = ?";
+        try {
+            PreparedStatement pr = this.con.prepareStatement(query);
+            pr.setInt(1, hotelId);
+            pr.setString(2, pensionType);
+            ResultSet rs = pr.executeQuery();
+            if (rs.next()) {
+                obj = this.match(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return obj;
+    }
+
     public ArrayList<Pension> getByHotelId(int hotelId) {
         return selectByQuery("SELECT * FROM public.pension WHERE pension_hotel_id = " + hotelId + " ORDER BY pension_id");
     }

@@ -3,6 +3,7 @@ package business;
 import core.Helper;
 import dao.PensionDao;
 import entity.Pension;
+
 import java.util.ArrayList;
 
 public class PensionManager {
@@ -18,6 +19,10 @@ public class PensionManager {
 
     public Pension getById(int id) {
         return this.pensionDao.getById(id);
+    }
+
+    public Pension getForReservation(int hotelId, String pensionType) {
+        return this.pensionDao.geForReservation(hotelId, pensionType);
     }
 
     public ArrayList<Pension> getByHotelId(int hotel_id) {

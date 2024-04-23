@@ -2,6 +2,7 @@ package dao;
 
 import core.Db;
 import entity.Season;
+
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -37,6 +38,26 @@ public class SeasonDao {
         try {
             PreparedStatement pr = this.con.prepareStatement(query);
             pr.setInt(1, id);
+            ResultSet rs = pr.executeQuery();
+            if (rs.next()) {
+                obj = this.match(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return obj;
+    }
+
+    public Season getForReservation(int hotelId, java.util.Date startDate, java.util.Date endDate) {
+        Season obj = null;
+        String query = "SELECT * FROM public.season WHERE season_hotel_id = ? AND season_start_date < ? AND season_end_date > ?";
+        try {
+            PreparedStatement pr = this.con.prepareStatement(query);
+            pr.setInt(1, hotelId);
+            java.sql.Date sqlDateStart = new java.sql.Date(startDate.getTime());
+            java.sql.Date sqlDateEnd = new java.sql.Date(endDate.getTime());
+            pr.setDate(2,sqlDateStart);
+            pr.setDate(3,sqlDateEnd);
             ResultSet rs = pr.executeQuery();
             if (rs.next()) {
                 obj = this.match(rs);
