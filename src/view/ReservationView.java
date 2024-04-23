@@ -1,16 +1,24 @@
 package view;
 
 import business.RoomManager;
-import entity.City;
-import entity.Pension;
-import entity.Reservation;
-import entity.Room;
+import core.ComboItem;
+import core.Helper;
+import entity.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.DateFormatter;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.NumberFormatter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.DateFormat;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ReservationView extends Layout {
     private JPanel container;
@@ -53,6 +61,7 @@ public class ReservationView extends Layout {
     private JButton btn_save;
     private JComboBox<Pension.PensionType> cmb_pension_type;
     private JLabel lbl_cost;
+    private JLabel lbl_room_type;
     private Reservation reservation;
     private Object[] col_room;
     private final DefaultTableModel tmdl_room = new DefaultTableModel();
@@ -63,10 +72,13 @@ public class ReservationView extends Layout {
         this.add(container);
         this.guiInitilaze(700, 950);
         this.reservation = reservation;
+        this.room = this.reservation.getRoom();
+        this.setFormatFields();
 
         this.roomManager = new RoomManager();
         loadRoomTable(null);
         loadRoomComponent();
+
     }
 
     public void loadRoomTable(ArrayList<Object[]> roomList) {
@@ -76,6 +88,10 @@ public class ReservationView extends Layout {
         }
         createTable(this.tmdl_room, this.tbl_room, this.col_room, roomList);
         tbl_room.getColumnModel().getColumn(0).setMaxWidth(75);
+        if (this.room != null) {
+            this.loadInfo(this.room.getId());
+        }
+
     }
 
     public void loadRoomComponent() {
@@ -109,6 +125,72 @@ public class ReservationView extends Layout {
         this.chck_game_console.setSelected(this.room.isGameConsole());
         this.chck_safe.setSelected(this.room.isSafe());
         this.chck_projection.setSelected(this.room.isProjection());
+        this.lbl_room_type.setText("Oda Özellikleri (" + this.room.getRoomType() + ")");
+        this.cmb_pension_type.removeAllItems();
+        if (this.room.getHotel().isUltraPension())
+            this.cmb_pension_type.addItem(Pension.PensionType.Ultra_Her_Sey_Dahil);
+        if (this.room.getHotel().isAllInclusivePension())
+            this.cmb_pension_type.addItem(Pension.PensionType.Her_Sey_Dahil);
+        if (this.room.getHotel().isRoomBreakfastPension())
+            this.cmb_pension_type.addItem(Pension.PensionType.Oda_Kahvalti);
+        if (this.room.getHotel().isFullPension())
+            this.cmb_pension_type.addItem(Pension.PensionType.Tam_Pansiyon);
+        if (this.room.getHotel().isHalfPension())
+            this.cmb_pension_type.addItem(Pension.PensionType.Yarim_Pansiyon);
+        if (this.room.getHotel().isOnlyBedPension())
+            this.cmb_pension_type.addItem(Pension.PensionType.Sadece_Yatak);
+        if (this.room.getHotel().isFullCreditPension())
+            this.cmb_pension_type.addItem(Pension.PensionType.Alkol_Haric_Full_Credit);
+    }
 
+    public void setFormatFields() {
+        this.cmb_city.setModel(new DefaultComboBoxModel<>(City.values()));
+        this.cmb_city.setSelectedItem(null);
+
+        JTextField searchField = new JTextField();
+        searchField.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                String query = searchField.getText().toLowerCase();
+                List<City> filteredItems = new ArrayList<>();
+                for (City item : City.values()) {
+                    if (item.toString().startsWith(query)) {
+                        filteredItems.add(item);
+                    }
+                }
+
+                cmb_city.removeAllItems();
+                for (City item : filteredItems) {
+                    cmb_city.addItem(item);
+                }
+            }
+        });
+
+        this.fld_adults.setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(NumberFormat.getIntegerInstance())));
+        this.fld_children.setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(NumberFormat.getIntegerInstance())));
+
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        DateFormatter dateFormatter = new DateFormatter(dateFormat);
+        DefaultFormatterFactory formatterFactory = new DefaultFormatterFactory(dateFormatter);
+        this.fld_start_date.setFormatterFactory(formatterFactory);
+        this.fld_end_date.setFormatterFactory(formatterFactory);
+
+        if (this.reservation.getId() != 0) {
+            this.fld_customer_name.setText(this.reservation.getCustomerName());
+            this.fld_customer_id.setText(this.reservation.getCustomerId());
+            this.fld_adults.setValue(this.reservation.getAdults());
+            this.fld_children.setValue(this.reservation.getChildren());
+            this.fld_start_date.setText(Helper.formatDate(this.reservation.getReservationStartDate()));
+            this.fld_end_date.setText(Helper.formatDate(this.reservation.getReservationEndDate()));
+            this.cmb_city.setSelectedItem(this.room.getHotel().getCity());
+        }
     }
 }

@@ -159,7 +159,7 @@ public class EmployeeView extends Layout {
         this.loadRoomFilterComboBox();
 
         this.room_menu = new JPopupMenu();
-        this.room_menu.add("GÖrüntüle - Güncelle").addActionListener(e -> {
+        this.room_menu.add("Görüntüle - Güncelle").addActionListener(e -> {
             int selectRoomId = this.getTableSelectedRow(tbl_room, 0);
             RoomView roomView = new RoomView(this.roomManager.getById(selectRoomId));
             roomView.addWindowListener(new WindowAdapter() {
