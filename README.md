@@ -12,9 +12,12 @@ gösterilmiştir.
 -Değerlendirme formu 13. 14. package view içerisindeki RoomView Class'ı içerisinde yorum satırları ile gösterilmiştir.
 -Değerlendirme formu 15. package view içerisindeki EmployeeView ve ReservationView Classları içerisinde yorum satırları 
 ile gösterilmiştir.
--Değerlendirme formu 16. package view içerisindeki ReservationView Class'ı içerisinde yorum satırları ile gösterilmiştir.
--Değerlendirme formu 17. package view içerisindeki ReservationView Class'ı içerisinde yorum satırları ile gösterilmiştir.
--Değerlendirme formu 18. package view içerisindeki ReservationView Class'ı içerisinde yorum satırları ile gösterilmiştir.
+-Değerlendirme formu 16. package view içerisindeki ReservationView Class'ı içerisinde yorum satırları ile 
+gösterilmiştir.
+-Değerlendirme formu 17. package view içerisindeki ReservationView Class'ı içerisinde yorum satırları ile 
+gösterilmiştir.
+-Değerlendirme formu 18. package view içerisindeki ReservationView Class'ı içerisinde yorum satırları ile 
+gösterilmiştir.
 -Değerlendirme formu 19. odaların stoğu oteldeki aynı tip oda sayısı, yapılan diğer rezervasyonlar ve sezon tarihleri 
 kullanılarak gerçek hayata uygun olarak hesaplanmıştır. package view içerisindeki ReservationView Class'ı içerisinde 
 yorum satırları ile gösterilmiştir.
