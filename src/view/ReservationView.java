@@ -165,7 +165,7 @@ public class ReservationView extends Layout {
     }
 
     public void loadRoomTable(ArrayList<Object[]> roomList) {
-        this.col_room = new Object[]{"ID", "Otel Adı", "Yıldız", "Oda Tipi", "Yatak Sayısı", "Metrekare", "Boş Oda Sayısı"};
+        this.col_room = new Object[]{"ID", "Otel Adı", "Yıldız", "Oda Tipi", "Yatak Sayısı", "Metrekare", "Oda Sayısı"};
         if (roomList == null) {
             roomList = this.roomManager.getForTable2(this.col_room.length, this.roomManager.findAll());
         }
