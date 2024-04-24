@@ -118,6 +118,7 @@ public class RoomView extends Layout {
     private ArrayList<Pension> pensions;
     private final ArrayList<Price> prices;
 
+    // Değerlendirme formu 13.
     public RoomView(Room room) {
         this.add(container);
         this.guiInitilaze(600, 950);
@@ -181,6 +182,7 @@ public class RoomView extends Layout {
                 this.room.setSafe(this.chck_safe.isSelected());
                 this.room.setProjection(this.chck_projection.isSelected());
 
+                // Değerlendirme formu 14.
                 if (this.room.getId() != 0) {
                     resultRoomSave = this.roomManager.update(this.room);
                     this.priceManager.deleteByRoomId(this.room.getId());
@@ -292,6 +294,7 @@ public class RoomView extends Layout {
         }
     }
 
+    // Değerlendirme formu 14.
     private void priceSave() {
         this.prices.clear();
 

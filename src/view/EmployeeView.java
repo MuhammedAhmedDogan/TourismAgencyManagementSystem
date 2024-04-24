@@ -58,6 +58,7 @@ public class EmployeeView extends Layout {
     private Object[] col_room;
     private Object[] col_reservation;
 
+    // Değerlendirme formu 8.
     public EmployeeView(User user) {
         this.add(container);
         this.guiInitilaze(1000, 700);
@@ -89,6 +90,7 @@ public class EmployeeView extends Layout {
         loadReservationComponent();
     }
 
+    // Değerlendirme formu 20. (Rezervasyon listeleme)
     public void loadReservationTable(ArrayList<Object[]> reservationList) {
         this.col_reservation = new Object[]{"ID", "Müşteri İsmi", "Müşteri TC no", "Yetişkin", "Çocuk", "Otel", "Oda Tipi", "Pansiyon Tipi", "Giriş Tarihi", "Çıkış Tarihi", "Fiyat (TL)"};
         if (reservationList == null) {
@@ -107,6 +109,7 @@ public class EmployeeView extends Layout {
         tableRowSelect(this.tbl_reservation);
 
         this.reservation_menu = new JPopupMenu();
+        // Değerlendirme formu 21. (Rezervasyon güncelleme)
         this.reservation_menu.add("Görüntüle - Güncelle").addActionListener(e -> {
             int selectReservationId = this.getTableSelectedRow(tbl_reservation, 0);
             ReservationView reservationView = new ReservationView(this.reservationManager.getById(selectReservationId));
@@ -117,6 +120,7 @@ public class EmployeeView extends Layout {
                 }
             });
         });
+        // Değerlendirme formu 22. (Rezervasyon silme)
         this.reservation_menu.add("Rezervasyonu Sil").addActionListener(e -> {
             if (Helper.confirm("sure")) {
                 int selectReservationId = this.getTableSelectedRow(tbl_reservation, 0);
@@ -276,6 +280,7 @@ public class EmployeeView extends Layout {
             });
         });
 
+        // Değerlendirme formu 15.
         this.cmb_city_search.addActionListener(e -> loadHotelTable(hotelRowListBySearch()));
 
         this.btn_city_clear.addActionListener(e -> {
@@ -284,6 +289,7 @@ public class EmployeeView extends Layout {
         });
     }
 
+    // Değerlendirme formu 15.
     public void loadRoomFilterComboBox() {
         this.cmb_room_search_by_hotel.removeAllItems();
         for (Hotel hotel : this.hotelManager.findAll()) {
@@ -325,6 +331,7 @@ public class EmployeeView extends Layout {
         });
     }
 
+    // Değerlendirme formu 15.
     public ArrayList<Object[]> roomRowListBySearch() {
         if ((ComboItem) (this.cmb_room_search_by_hotel.getSelectedItem()) == null) {
             return this.roomManager.getForTable(this.col_room.length, this.roomManager.findAll());

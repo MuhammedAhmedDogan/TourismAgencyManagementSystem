@@ -19,6 +19,7 @@ public class UserView extends Layout {
     private User user;
     private UserManager userManager = new UserManager();
 
+    // Değerlendirme formu 7.
     public UserView(User user) {
         this.add(container);
         this.guiInitilaze(400, 500);
@@ -56,9 +57,6 @@ public class UserView extends Layout {
                     }
                 }
             }
-
         });
-
     }
-
 }

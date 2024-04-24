@@ -55,6 +55,7 @@ public class HotelView extends Layout {
     private ArrayList<Season> seasons;
     private ArrayList<Pension> pensions;
 
+    // Değerlendirme formu 10.
     public HotelView(Hotel hotel) {
         this.add(container);
         this.guiInitilaze(500, 700);
@@ -72,6 +73,7 @@ public class HotelView extends Layout {
         this.loadCmbCity();
         this.loadCheckBoxListeners();
 
+        // İlgili fieldların tarih formatını ayarlayan kodlar
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
         DateFormatter dateFormatter = new DateFormatter(dateFormat);
         DefaultFormatterFactory formatterFactory = new DefaultFormatterFactory(dateFormatter);
@@ -80,6 +82,7 @@ public class HotelView extends Layout {
         this.fld_season2_start.setFormatterFactory(formatterFactory);
         this.fld_season2_end.setFormatterFactory(formatterFactory);
 
+        // Yapılan işlem bir görüntüleme veya güncellemi işlemi ise formun başlangıç değerlerini ayarlayan kodlar.
         if (this.hotel.getId() != 0) {
             this.fld_name.setText(hotel.getName());
             this.cmb_city.setSelectedItem(hotel.getCity());
@@ -106,7 +109,7 @@ public class HotelView extends Layout {
             this.fld_season2_end.setText(Helper.formatDate(this.seasons.getLast().getEndDate()));
         }
 
-
+        // Kayıt butonu. Girilen değerlere göre otel, pansiyon ve sezon tablolarına gerekli güncelleme veya kayıt işlemlerini yapan kodlar.
         this.btn_save.addActionListener(e -> {
             if (Helper.isFieldListEmpty(new JTextField[]{this.fld_name, this.fld_address, this.fld_email, this.fld_phone, this.fld_season1_start, this.fld_season1_end, this.fld_season2_start, this.fld_season2_end}) || this.cmb_star.getSelectedItem() == null || this.cmb_city.getSelectedItem() == null) {
                 Helper.showMessage("fill");
@@ -134,6 +137,7 @@ public class HotelView extends Layout {
                 this.hotel.setOnlyBedPension(this.check_only_bed_pension.isSelected());
                 this.hotel.setFullCreditPension(this.check_full_credit_pension.isSelected());
 
+                // Değerlendirme formu 11.
                 if (this.hotel.getId() != 0) {
                     this.hotelManager.update(this.hotel);
                     try {
@@ -158,6 +162,7 @@ public class HotelView extends Layout {
                     result = this.seasonManager.save(seasons.getFirst()) && this.seasonManager.save(seasons.getLast());
                 }
 
+                // Değerlendirme formu 12.
                 if (pensions.isEmpty()) {
                     if (this.check_ultra_pension.isSelected()) {
                         this.pensionManager.save(new Pension(this.hotel, Pension.PensionType.Ultra_Her_Sey_Dahil));
@@ -280,6 +285,7 @@ public class HotelView extends Layout {
         });
     }
 
+    // Şehir filtresini comboboxa atayan ve klavyeden girilen harflere göre aranan şehri getiren metod.
     public void loadCmbCity() {
         this.cmb_city.setModel(new DefaultComboBoxModel<>(City.values()));
         this.cmb_city.setSelectedItem(null);
@@ -287,13 +293,9 @@ public class HotelView extends Layout {
         JTextField searchField = new JTextField();
         searchField.addKeyListener(new KeyListener() {
             @Override
-            public void keyTyped(KeyEvent e) {
-            }
-
+            public void keyTyped(KeyEvent e) {}
             @Override
-            public void keyPressed(KeyEvent e) {
-            }
-
+            public void keyPressed(KeyEvent e) {}
             @Override
             public void keyReleased(KeyEvent e) {
                 String query = searchField.getText().toLowerCase();
@@ -312,6 +314,7 @@ public class HotelView extends Layout {
         });
     }
 
+    // Otelin pansiyon seçeneği değiştirilirse o pansiyon tipine kayıtlı rezervarson olup olmadığını kontrol edip kullanıcıya uyarı veren checkbox listenerlar.
     public void loadCheckBoxListeners() {
         this.check_ultra_pension.addActionListener(e -> {
             if (!this.pensions.isEmpty() && !this.check_ultra_pension.isSelected()) {
@@ -412,5 +415,4 @@ public class HotelView extends Layout {
             }
         });
     }
-
 }

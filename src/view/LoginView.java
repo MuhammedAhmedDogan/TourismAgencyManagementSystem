@@ -20,6 +20,7 @@ public class LoginView extends Layout {
     private JButton btn_login;
     private UserManager userManager;
 
+    // Değerlendirme formu 9.
     public LoginView() {
         this.userManager = new UserManager();
         this.add(container);
@@ -43,7 +44,6 @@ public class LoginView extends Layout {
                     } else {
                         Helper.showMessage("Kullanıcı yetkisi bulunamadı !");
                     }
-
                 }
             }
         });

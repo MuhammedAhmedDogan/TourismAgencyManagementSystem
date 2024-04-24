@@ -88,19 +88,22 @@ public class ReservationView extends Layout {
         setFormatFields();
         loadRoomTable(null);
         loadRoomComponent();
+
+        // Değerlendirme formu 16.
         if (this.reservation.getId() != 0) {
             loadInfo(this.reservation.getRoom().getId());
-            this.lbl_cost.setText("Toplam Tutar : " + this.reservation.getCost() + " TL");
+            this.lbl_cost.setText("Toplam Tutar : " + this.reservation.getCost() + " TL"); // Değerlendirme formu 17.
         }
         if (this.room != null)
             this.cmb_pension_type.setSelectedItem(this.reservation.getPension().getPensionType());
 
-
+        // Değerlendirme formu 15. 19.
         this.btn_search.addActionListener(e -> {
             DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
             if (Helper.isFieldListEmpty(new JTextField[]{this.fld_start_date, this.fld_end_date}) || this.cmb_city.getSelectedItem() == null) {
                 Helper.showMessage("fill");
             } else {
+                // Değerlendirme formu 19. 23. (Stok kontrol edilip arama sonucu ona göre getiriliyor)
                 try {
                     if (dateFormat.parse(this.fld_end_date.getText()).getTime() - dateFormat.parse(this.fld_start_date.getText()).getTime() <= 0) {
                         Helper.showMessage("Hatalı tarih girdiniz !");
@@ -122,6 +125,7 @@ public class ReservationView extends Layout {
             }
         });
 
+        // Değerlendirme formu 17.
         this.btn_cost.addActionListener(e -> {
             if (Helper.isFieldListEmpty(new JTextField[]{this.fld_customer_name, this.fld_customer_id, this.fld_adults, this.fld_children, this.fld_start_date, this.fld_end_date}) || this.cmb_pension_type.getSelectedItem() == null) {
                 Helper.showMessage("fill");
@@ -138,6 +142,8 @@ public class ReservationView extends Layout {
 
         });
 
+
+        // Değerlendirme formu 18.
         this.btn_save.addActionListener(e -> {
             if (Helper.isFieldListEmpty(new JTextField[]{this.fld_customer_name, this.fld_customer_id, this.fld_adults, this.fld_children, this.fld_start_date, this.fld_end_date}) || this.cmb_pension_type.getSelectedItem() == null) {
                 Helper.showMessage("fill");
@@ -173,6 +179,7 @@ public class ReservationView extends Layout {
         tbl_room.getColumnModel().getColumn(0).setMaxWidth(75);
     }
 
+    // Değerlendirme formu 16.
     public void loadRoomComponent() {
         tbl_room.addMouseListener(new MouseAdapter() {
             @Override
@@ -203,6 +210,7 @@ public class ReservationView extends Layout {
         this.reservation.setAdults(Integer.parseInt(this.fld_adults.getValue().toString()));
         this.reservation.setChildren(Integer.parseInt(this.fld_children.getValue().toString()));
 
+        // Değerlendirme formu 17. (Fiyat Hesaplama)
         if (this.reservation.getSeason() != null) {
             int cost = 0;
             for (int i = 0; i < this.reservation.getAdults(); i++) {
@@ -219,7 +227,7 @@ public class ReservationView extends Layout {
         }
 
     }
-
+    // Değerlendirme formu 16.
     public void loadInfo(int roomId) {
         this.room = roomManager.getById(roomId);
         this.lbl_hotel_name.setText("Otel Adı : " + this.room.getHotel().getName());

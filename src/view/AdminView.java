@@ -32,6 +32,7 @@ public class AdminView extends Layout {
     private JPopupMenu user_menu = new JPopupMenu();
     private Object[] col_user;
 
+    // Değerlendirme formu 7.
     public AdminView(User user) {
         this.add(container);
         this.guiInitilaze(1000, 700);

@@ -31,6 +31,7 @@ public class Helper {
         return false;
     }
 
+    // Değerlendirme formu 24. 25.
     public static void showMessage(String str) {
         optionPaneTR();
         String msg;
@@ -59,6 +60,7 @@ public class Helper {
         JOptionPane.showMessageDialog(null, msg, title, JOptionPane.INFORMATION_MESSAGE);
     }
 
+    // Değerlendirme formu 24. 25.
     public static boolean confirm(String str) {
         optionPaneTR();
         String msg;

@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Db {
-    // Singleton Design Pattern
+    // Singleton Design Pattern ( Değerlendirme formu 6 )
     private static Db instance = null;
     private Connection connection = null;
     private final String DB_URL = "jdbc:postgresql://localhost:5432/tourismagency";
