@@ -56,8 +56,8 @@ public class SeasonDao {
             pr.setInt(1, hotelId);
             java.sql.Date sqlDateStart = new java.sql.Date(startDate.getTime());
             java.sql.Date sqlDateEnd = new java.sql.Date(endDate.getTime());
-            pr.setDate(2,sqlDateStart);
-            pr.setDate(3,sqlDateEnd);
+            pr.setDate(2, sqlDateStart);
+            pr.setDate(3, sqlDateEnd);
             ResultSet rs = pr.executeQuery();
             if (rs.next()) {
                 obj = this.match(rs);

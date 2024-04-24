@@ -5,6 +5,7 @@ import dao.ReservationDao;
 import entity.Reservation;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ReservationManager {
     private final ReservationDao reservationDao;
@@ -15,6 +16,10 @@ public class ReservationManager {
 
     public ArrayList<Reservation> findAll() {
         return this.reservationDao.findAll();
+    }
+
+    public ArrayList<Reservation> getForStockControl(int roomId, Date startDate, Date endDate) {
+        return this.reservationDao.getForStockControl(roomId,startDate,endDate);
     }
 
     public Reservation getById(int id) {

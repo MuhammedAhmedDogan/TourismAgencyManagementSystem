@@ -2,11 +2,13 @@ package dao;
 
 import core.Db;
 import entity.Reservation;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ReservationDao {
     private final Connection con;
@@ -40,6 +42,26 @@ public class ReservationDao {
 
     public ArrayList<Reservation> findAll() {
         return selectByQuery("SELECT * FROM public.reservation ORDER BY reservation_id ASC");
+    }
+
+    public ArrayList<Reservation> getForStockControl(int roomId, Date startDate,Date endDate ) {
+        ArrayList<Reservation> reservations = new ArrayList<>();
+        String query = "SELECT * FROM public.reservation WHERE reservation_room_id = ? AND reservation_start_date < ? AND reservation_end_date > ? ";
+        try {
+            PreparedStatement pr = this.con.prepareStatement(query);
+            pr.setInt(1, roomId);
+            java.sql.Date sqlDateStart = new java.sql.Date(startDate.getTime());
+            java.sql.Date sqlDateEnd = new java.sql.Date(endDate.getTime());
+            pr.setDate(2, sqlDateEnd);
+            pr.setDate(3, sqlDateStart);
+            ResultSet rs = pr.executeQuery();
+            while (rs.next()) {
+                reservations.add(this.match(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return reservations;
     }
 
     public Reservation getById(int id) {

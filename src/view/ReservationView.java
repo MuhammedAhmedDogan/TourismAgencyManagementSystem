@@ -100,7 +100,21 @@ public class ReservationView extends Layout {
             if (Helper.isFieldListEmpty(new JTextField[]{this.fld_start_date, this.fld_end_date}) || this.cmb_city.getSelectedItem() == null) {
                 Helper.showMessage("fill");
             } else {
-
+                ArrayList<Room> roomSearchList = new ArrayList<>();
+                for (Room room1 : this.roomManager.findAll()) {
+                    DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+                    try {
+                        if (this.seasonManager.getForReservation(room1.getHotel().getId(), dateFormat.parse(this.fld_start_date.getText()), dateFormat.parse(this.fld_end_date.getText())) != null && room1.getHotel().getCity().equals(this.cmb_city.getSelectedItem())) {
+                            if (room1.getStock() > this.reservationManager.getForStockControl(room1.getId(), dateFormat.parse(this.fld_start_date.getText()), dateFormat.parse(this.fld_end_date.getText())).size()) {
+                                roomSearchList.add(room1);
+                            }
+                        }
+                    } catch (ParseException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }
+                ArrayList<Object[]> roomList = this.roomManager.getForTable2(this.col_room.length,roomSearchList);
+                loadRoomTable(roomList);
             }
         });
 
