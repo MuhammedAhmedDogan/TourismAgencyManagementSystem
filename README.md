@@ -49,3 +49,5 @@ stok 1 artsın.<br>
 -Bu nedenle stok azalıp arttığı görülmeyecek sadece otele ait belirtilen tipteki oda sayısı gözükecektir. 
 Ancak uygun oda arama ve rezervasyon işlemleri sırasında kesişen tarihler için oda sayısından fazla rezervasyon
 yapılamamaktır.<br>
+<br>
+https://www.youtube.com/watch?v=3gwTo2LOPFE
