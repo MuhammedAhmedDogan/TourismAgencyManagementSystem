@@ -3,13 +3,13 @@
 ## Proje Java version 21.0.2 ve PostgreSQL version 15.6 kullanılarak hazırlanmıştır.
 
 ## Programı çalıştırmak için gerekenler
-TourismAgencyManagementSystemBackup dosyasını kullanarak database oluşturun<br>
-database.properties içerisine postgre için db.url, db.user ve db.password bilgilerinizi girerek bağlantıyı sağlayabilirsiniz.<br>
+TourismAgencyManagementSystemBackup dosyasını kullanarak database oluşturduktan sonra database.properties içerisine 
+postgre için db.url, db.user ve db.password bilgilerinizi girerek bağlantıyı sağlayabilirsiniz.<br>
 <br>
-Sisteme ilk girişi yapmak için<br>
+Sisteme ilk kez girişi yapmak için<br>
 Kullanıcı adı : admin<br>
 Şifre : admin<br>
-
+## Açıklama
 Turizm Acente Sistemi programı, Java Swing kullanılarak hazırlanmış bir masaüstü uygulamasıdır.<br>
 Bu programın temel amacı, otel sektöründe faaliyet gösteren işletmenin günlük operasyonlarını daha etkili bir şekilde
 yönetmesini sağlamak ve müşteri rezervasyon süreçlerini optimize etmektir.<br>
