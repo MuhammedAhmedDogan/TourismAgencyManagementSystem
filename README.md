@@ -5,11 +5,11 @@
 Kullanıcı adı : admin<br>
 Şifre : admin<br>
 
--Bu projenin temel amacı, otel sektöründe faaliyet gösteren işletmenin günlük operasyonlarını daha etkili bir şekilde
+Bu projenin temel amacı, otel sektöründe faaliyet gösteren işletmenin günlük operasyonlarını daha etkili bir şekilde
 yönetmesini sağlamak ve müşteri rezervasyon süreçlerini optimize etmektir.<br>
 <br>
--Admin yetkisine sahip kişi sisteme login olup hem admin hem acente çalışanı ekleyebilmektedir.<br>
--Acente çalışanları sisteme otel, oda kaydedebilir ve müşterilerin taleplerine göre oda araması yapıp rezervasyon işlemi
+Admin yetkisine sahip kişi sisteme login olup hem admin hem acente çalışanı ekleyebilmektedir.<br>
+Acente çalışanları sisteme otel, oda kaydedebilir ve müşterilerin taleplerine göre oda araması yapıp rezervasyon işlemi
 yapabilmektedir.<br>
 
 -Değerlendirme formu 6. package core içerisindeki Db Class'ı içerisinde yorum satırı ile gösterilmiştir.<br>
