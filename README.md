@@ -5,7 +5,7 @@
 Kullanıcı adı : admin<br>
 Şifre : admin<br>
 
-Turizm Acente Sistemi programı Java Swing kullanılarak hazırlanmış bir masaüstü uygulamasıdır.<br>
+Turizm Acente Sistemi programı, Java Swing kullanılarak hazırlanmış bir masaüstü uygulamasıdır.<br>
 Bu programın temel amacı, otel sektöründe faaliyet gösteren işletmenin günlük operasyonlarını daha etkili bir şekilde
 yönetmesini sağlamak ve müşteri rezervasyon süreçlerini optimize etmektir.<br>
 <br>
@@ -50,5 +50,5 @@ stok 1 artsın.<br>
 Ancak uygun oda arama ve rezervasyon işlemleri sırasında kesişen tarihler için oda sayısından fazla rezervasyon
 yapılamamaktır.<br>
 <br>
-Uygulamayı genel hatları ile kısaca gösteren video linki 
+Uygulamanın genel hatlarını ve arayüzünü kısaca gösteren video linki:<br> 
 https://www.youtube.com/watch?v=3gwTo2LOPFE
