@@ -315,79 +315,100 @@ public class HotelView extends Layout {
     public void loadCheckBoxListeners() {
         this.check_ultra_pension.addActionListener(e -> {
             if (!this.pensions.isEmpty() && !this.check_ultra_pension.isSelected()) {
+                boolean isTrue = false;
                 for (Pension pension : this.pensions) {
                     for (Reservation reservation : this.reservationManager.getByPensionId(pension.getId())) {
                         if (reservation.getPension().getPensionType().equals(Pension.PensionType.Ultra_Her_Sey_Dahil)) {
-                            this.check_ultra_pension.setSelected(!Helper.confirm("Otelin bu pansiyon tipine kayıtlı rezervasyonlar bulunmaktadır.\nDevam ederseniz rezervasyonlar silinecektir\nDevam etmek istiyor musunuz ?"));
+                            isTrue = true;
                         }
                     }
                 }
+                if (isTrue)
+                    this.check_ultra_pension.setSelected(!Helper.confirm("Otelin bu pansiyon tipine kayıtlı rezervasyonlar bulunmaktadır.\nDevam ederseniz rezervasyonlar silinecektir\nDevam etmek istiyor musunuz ?"));
             }
         });
         this.check_all_inclusive_pension.addActionListener(e -> {
             if (!this.pensions.isEmpty() && !this.check_all_inclusive_pension.isSelected()) {
+                boolean isTrue = false;
                 for (Pension pension : this.pensions) {
                     for (Reservation reservation : this.reservationManager.getByPensionId(pension.getId())) {
                         if (reservation.getPension().getPensionType().equals(Pension.PensionType.Her_Sey_Dahil)) {
-                            this.check_all_inclusive_pension.setSelected(!Helper.confirm("Otelin bu pansiyon tipine kayıtlı rezervasyonlar bulunmaktadır.\nDevam ederseniz rezervasyonlar silinecektir\nDevam etmek istiyor musunuz ?"));
+                            isTrue = true;
                         }
                     }
                 }
+                if (isTrue)
+                    this.check_all_inclusive_pension.setSelected(!Helper.confirm("Otelin bu pansiyon tipine kayıtlı rezervasyonlar bulunmaktadır.\nDevam ederseniz rezervasyonlar silinecektir\nDevam etmek istiyor musunuz ?"));
             }
         });
         this.check_room_breakfast_pension.addActionListener(e -> {
             if (!this.pensions.isEmpty() && !this.check_room_breakfast_pension.isSelected()) {
+                boolean isTrue = false;
                 for (Pension pension : this.pensions) {
                     for (Reservation reservation : this.reservationManager.getByPensionId(pension.getId())) {
                         if (reservation.getPension().getPensionType().equals(Pension.PensionType.Oda_Kahvalti)) {
-                            this.check_room_breakfast_pension.setSelected(!Helper.confirm("Otelin bu pansiyon tipine kayıtlı rezervasyonlar bulunmaktadır.\nDevam ederseniz rezervasyonlar silinecektir\nDevam etmek istiyor musunuz ?"));
+                            isTrue = true;
                         }
                     }
                 }
+                if (isTrue)
+                    this.check_room_breakfast_pension.setSelected(!Helper.confirm("Otelin bu pansiyon tipine kayıtlı rezervasyonlar bulunmaktadır.\nDevam ederseniz rezervasyonlar silinecektir\nDevam etmek istiyor musunuz ?"));
             }
         });
         this.check_full_pension.addActionListener(e -> {
             if (!this.pensions.isEmpty() && !this.check_full_pension.isSelected()) {
+                boolean isTrue = false;
                 for (Pension pension : this.pensions) {
                     for (Reservation reservation : this.reservationManager.getByPensionId(pension.getId())) {
                         if (reservation.getPension().getPensionType().equals(Pension.PensionType.Tam_Pansiyon)) {
-                            this.check_full_pension.setSelected(!Helper.confirm("Otelin bu pansiyon tipine kayıtlı rezervasyonlar bulunmaktadır.\nDevam ederseniz rezervasyonlar silinecektir\nDevam etmek istiyor musunuz ?"));
+                            isTrue = true;
                         }
                     }
                 }
+                if (isTrue)
+                    this.check_full_pension.setSelected(!Helper.confirm("Otelin bu pansiyon tipine kayıtlı rezervasyonlar bulunmaktadır.\nDevam ederseniz rezervasyonlar silinecektir\nDevam etmek istiyor musunuz ?"));
             }
         });
         this.check_half_pension.addActionListener(e -> {
             if (!this.pensions.isEmpty() && !this.check_half_pension.isSelected()) {
+                boolean isTrue = false;
                 for (Pension pension : this.pensions) {
                     for (Reservation reservation : this.reservationManager.getByPensionId(pension.getId())) {
                         if (reservation.getPension().getPensionType().equals(Pension.PensionType.Yarim_Pansiyon)) {
-                            this.check_half_pension.setSelected(!Helper.confirm("Otelin bu pansiyon tipine kayıtlı rezervasyonlar bulunmaktadır.\nDevam ederseniz rezervasyonlar silinecektir\nDevam etmek istiyor musunuz ?"));
+                            isTrue = true;
                         }
                     }
                 }
+                if (isTrue)
+                    this.check_half_pension.setSelected(!Helper.confirm("Otelin bu pansiyon tipine kayıtlı rezervasyonlar bulunmaktadır.\nDevam ederseniz rezervasyonlar silinecektir\nDevam etmek istiyor musunuz ?"));
             }
         });
         this.check_only_bed_pension.addActionListener(e -> {
             if (!this.pensions.isEmpty() && !this.check_only_bed_pension.isSelected()) {
+                boolean isTrue = false;
                 for (Pension pension : this.pensions) {
                     for (Reservation reservation : this.reservationManager.getByPensionId(pension.getId())) {
                         if (reservation.getPension().getPensionType().equals(Pension.PensionType.Sadece_Yatak)) {
-                            this.check_only_bed_pension.setSelected(!Helper.confirm("Otelin bu pansiyon tipine kayıtlı rezervasyonlar bulunmaktadır.\nDevam ederseniz rezervasyonlar silinecektir\nDevam etmek istiyor musunuz ?"));
+                            isTrue = true;
                         }
                     }
                 }
+                if (isTrue)
+                    this.check_only_bed_pension.setSelected(!Helper.confirm("Otelin bu pansiyon tipine kayıtlı rezervasyonlar bulunmaktadır.\nDevam ederseniz rezervasyonlar silinecektir\nDevam etmek istiyor musunuz ?"));
             }
         });
         this.check_full_credit_pension.addActionListener(e -> {
             if (!this.pensions.isEmpty() && !this.check_full_credit_pension.isSelected()) {
+                boolean isTrue = false;
                 for (Pension pension : this.pensions) {
                     for (Reservation reservation : this.reservationManager.getByPensionId(pension.getId())) {
                         if (reservation.getPension().getPensionType().equals(Pension.PensionType.Alkol_Haric_Full_Credit)) {
-                            this.check_full_credit_pension.setSelected(!Helper.confirm("Otelin bu pansiyon tipine kayıtlı rezervasyonlar bulunmaktadır.\nDevam ederseniz rezervasyonlar silinecektir\nDevam etmek istiyor musunuz ?"));
+                            isTrue = true;
                         }
                     }
                 }
+                if (isTrue)
+                    this.check_full_credit_pension.setSelected(!Helper.confirm("Otelin bu pansiyon tipine kayıtlı rezervasyonlar bulunmaktadır.\nDevam ederseniz rezervasyonlar silinecektir\nDevam etmek istiyor musunuz ?"));
             }
         });
     }
