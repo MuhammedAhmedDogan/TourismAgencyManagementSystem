@@ -148,22 +148,22 @@ public class ReservationView extends Layout {
             if (Helper.isFieldListEmpty(new JTextField[]{this.fld_customer_name, this.fld_customer_id, this.fld_adults, this.fld_children, this.fld_start_date, this.fld_end_date}) || this.cmb_pension_type.getSelectedItem() == null) {
                 Helper.showMessage("fill");
             } else {
-                ArrayList<Room> roomSearchList = new ArrayList<>();
+                ArrayList<Room> roomSearchList1 = new ArrayList<>();
                 DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
                 try {
                     if (dateFormat.parse(this.fld_end_date.getText()).getTime() - dateFormat.parse(this.fld_start_date.getText()).getTime() <= 0) {
                         Helper.showMessage("Hatalı tarih girdiniz !");
                     } else {
-
                         for (Room room1 : this.roomManager.findAll()) {
-                            if (this.seasonManager.getForReservation(room1.getHotel().getId(), dateFormat.parse(this.fld_start_date.getText()), dateFormat.parse(this.fld_end_date.getText())) != null && room1.getHotel().getCity().equals(this.cmb_city.getSelectedItem())) {
+                            if (this.seasonManager.getForReservation(room1.getHotel().getId(), dateFormat.parse(this.fld_start_date.getText()), dateFormat.parse(this.fld_end_date.getText())) != null) {
                                 if (room1.getStock() > this.reservationManager.getForStockControl(room1.getId(), dateFormat.parse(this.fld_start_date.getText()), dateFormat.parse(this.fld_end_date.getText())).size()) {
-                                    roomSearchList.add(room1);
+                                    roomSearchList1.add(room1);
                                 }
                             }
                         }
-                        if (roomSearchList.isEmpty() && this.reservation.getId() == 0) {
-                            Helper.showMessage("Seçili oda tipinde boş oda bulunmamaktadır !");
+                        // Değerlendirme formu 15. 19.
+                        if (roomSearchList1.isEmpty() && this.reservation.getId() == 0) {
+                            Helper.showMessage("Otele ait seçili oda tipinde girilen tarih için boş oda bulunmamaktadır !");
                         }
                     }
                 } catch (ParseException ex) {
@@ -177,7 +177,7 @@ public class ReservationView extends Layout {
                     this.lbl_cost.setText("Toplam Tutar : -----");
                     Helper.showMessage("Hatalı bir tarih girdiniz !");
                     result = false;
-                } else if (roomSearchList.isEmpty() && this.reservation.getId() == 0) {
+                } else if (roomSearchList1.isEmpty() && this.reservation.getId() == 0) {
                     result = false;
                 } else if (this.reservation.getId() != 0) {
                     result = this.reservationManager.update(this.reservation);
