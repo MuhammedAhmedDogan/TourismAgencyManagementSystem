@@ -73,7 +73,6 @@ public class ReservationView extends Layout {
     private final PriceManager priceManager;
     private final ReservationManager reservationManager;
     private Room room;
-    private Room beforeUpdateRoom;
 
     public ReservationView(Reservation reservation) {
         this.add(container);
@@ -92,7 +91,6 @@ public class ReservationView extends Layout {
 
         // Değerlendirme formu 16.
         if (this.reservation.getId() != 0) {
-            this.beforeUpdateRoom = this.reservation.getRoom();
             loadInfo(this.reservation.getRoom().getId());
             this.lbl_cost.setText("Toplam Tutar : " + this.reservation.getCost() + " TL"); // Değerlendirme formu 17.
         }
