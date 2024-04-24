@@ -73,6 +73,7 @@ public class ReservationView extends Layout {
     private final PriceManager priceManager;
     private final ReservationManager reservationManager;
     private Room room;
+    private Room roomBeforeUpdate;
 
     public ReservationView(Reservation reservation) {
         this.add(container);
@@ -84,6 +85,7 @@ public class ReservationView extends Layout {
         this.reservationManager = new ReservationManager();
         this.reservation = reservation;
         this.room = this.reservation.getRoom();
+        this.roomBeforeUpdate = this.reservation.getRoom();
 
         setFormatFields();
         loadRoomTable(null);
@@ -167,6 +169,12 @@ public class ReservationView extends Layout {
                         // Değerlendirme formu 15. 19.
                         for (Room room2 : roomSearchList) {
                             if (room2.getId() == this.room.getId()) {
+                                isRoomAvailable = true;
+                                break;
+                            }
+                        }
+                        if (this.reservation.getId() != 0) {
+                            if (this.roomBeforeUpdate.getId() == this.room.getId()) {
                                 isRoomAvailable = true;
                             }
                         }
