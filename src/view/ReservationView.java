@@ -100,7 +100,7 @@ public class ReservationView extends Layout {
         // Değerlendirme formu 15. 19.
         this.btn_search.addActionListener(e -> {
             DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-            if (Helper.isFieldListEmpty(new JTextField[]{this.fld_start_date, this.fld_end_date}) || this.cmb_city.getSelectedItem() == null) {
+            if (Helper.isFieldListEmpty(new JTextField[]{this.fld_start_date, this.fld_end_date, this.fld_adults, this.fld_children}) || this.cmb_city.getSelectedItem() == null) {
                 Helper.showMessage("fill");
             } else {
                 // Değerlendirme formu 19. 23. (Stok kontrol edilip arama sonucu ona göre getiriliyor)
@@ -112,7 +112,9 @@ public class ReservationView extends Layout {
                         for (Room room1 : this.roomManager.findAll()) {
                             if (this.seasonManager.getForReservation(room1.getHotel().getId(), dateFormat.parse(this.fld_start_date.getText()), dateFormat.parse(this.fld_end_date.getText())) != null && room1.getHotel().getCity().equals(this.cmb_city.getSelectedItem())) {
                                 if (room1.getStock() > this.reservationManager.getForStockControl(room1.getId(), dateFormat.parse(this.fld_start_date.getText()), dateFormat.parse(this.fld_end_date.getText())).size()) {
-                                    roomSearchList.add(room1);
+                                    if (room1.getBeds() >= Integer.parseInt(this.fld_adults.getValue().toString()) + Integer.parseInt(this.fld_children.getValue().toString())) {
+                                        roomSearchList.add(room1);
+                                    }
                                 }
                             }
                         }
@@ -156,7 +158,9 @@ public class ReservationView extends Layout {
                         for (Room room1 : this.roomManager.findAll()) {
                             if (this.seasonManager.getForReservation(room1.getHotel().getId(), dateFormat.parse(this.fld_start_date.getText()), dateFormat.parse(this.fld_end_date.getText())) != null) {
                                 if (room1.getStock() > this.reservationManager.getForStockControl(room1.getId(), dateFormat.parse(this.fld_start_date.getText()), dateFormat.parse(this.fld_end_date.getText())).size()) {
-                                    roomSearchList.add(room1);
+                                    if (room1.getBeds() >= Integer.parseInt(this.fld_adults.getValue().toString()) + Integer.parseInt(this.fld_children.getValue().toString())) {
+                                        roomSearchList.add(room1);
+                                    }
                                 }
                             }
                         }
@@ -167,7 +171,7 @@ public class ReservationView extends Layout {
                             }
                         }
                         if (!isRoomAvailable) {
-                            Helper.showMessage("Otele ait seçili oda tipinde girilen tarih için boş oda bulunmamaktadır !\nBoş oda ara butonunu kullanarak rezervasyona uygun odaları listeleyebilirsiniz.");
+                            Helper.showMessage("Otele ait seçili oda tipinde girilen tarih ve kişi sayısı için uygun oda bulunmamaktadır !\nBoş oda ara butonunu kullanarak rezervasyona uygun odaları listeleyebilirsiniz.");
                         }
                     }
                 } catch (ParseException ex) {
