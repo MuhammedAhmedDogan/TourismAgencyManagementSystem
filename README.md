@@ -2,6 +2,11 @@
 
 ## Proje Java version 21.0.2 ve PostgreSQL version 15.6 kullanılarak hazırlanmıştır.
 
+## Programı çalıştırmak için gerekenler
+TourismAgencyManagementSystemBackup dosyasını kullanarak database oluşturun<br>
+database.properties içerisine postgre için db.url, db.user ve db.password bilgilerinizi girerek bağlantıyı sağlayabilirsiniz.<br>
+<br>
+Sisteme ilk girişi yapmak için<br>
 Kullanıcı adı : admin<br>
 Şifre : admin<br>
 
