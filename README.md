@@ -22,7 +22,7 @@ yorum satırları ile gösterilmiştir.<br>
 -Değerlendirme formu 21. package view içerisindeki EmployeeView Class'ı içerisinde yorum satırları ile gösterilmiştir.<br>
 -Değerlendirme formu 22. package view içerisindeki EmployeeView Class'ı içerisinde yorum satırları ile gösterilmiştir.<br>
 -Değerlendirme formu 23. odaların stoğu oteldeki aynı tip oda sayısı, yapılan diğer rezervasyonlar ve sezon tarihleri
-kullanılarak gerçek hayata uygun olarak hesaplanmıştır.<br>
+kullanılarak gerçek hayata uygun olarak hesaplanmıştır.
 package view içerisindeki ReservationView Class'ı içerisinde yorum satırları ile gösterilmiştir.<br>
 -Değerlendirme formu 24. 25. package core içerisindeki Helper Class'ı içerisinde yorum satırları ile gösterilmiştir.<br>
 
