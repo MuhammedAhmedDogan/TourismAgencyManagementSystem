@@ -2,8 +2,8 @@
 
 ## Proje Java version 21.0.2 ve PostgreSQL version 15.6 kullanılarak hazırlanmıştır.
 
--Değerlendirme formu 6. package core içerisindeki Db Class'ı içerisinde yorum satırı ile gösterilmiştir.<br>
--Değerlendirme formu 7. package view içerisindeki AdminView ve UserView Classları içerisinde yorum satırları<br>
+-Değerlendirme formu 6. package core içerisindeki Db Class'ı içerisinde yorum satırı ile gösterilmiştir.
+-Değerlendirme formu 7. package view içerisindeki AdminView ve UserView Classları içerisinde yorum satırları
 ile gösterilmiştir.<br>
 -Değerlendirme formu 8. package view içerisindeki EmployeeView Class'ı içerisinde yorum satırı ile gösterilmiştir.<br>
 -Değerlendirme formu 9. package view içerisindeki LoginView Class'ı içerisinde yorum satırı ile gösterilmiştir.<br>
