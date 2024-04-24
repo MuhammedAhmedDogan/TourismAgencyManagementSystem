@@ -5,11 +5,12 @@
 Kullanıcı adı : admin<br>
 Şifre : admin<br>
 
-Bu projenin temel amacı, otel sektöründe faaliyet gösteren işletmenin günlük operasyonlarını daha etkili bir şekilde
+Turizm Acente Sistemi programı Java Swing kullanılarak hazırlanmış bir masaüstü uygulamasıdır.<br>
+Bu programın temel amacı, otel sektöründe faaliyet gösteren işletmenin günlük operasyonlarını daha etkili bir şekilde
 yönetmesini sağlamak ve müşteri rezervasyon süreçlerini optimize etmektir.<br>
 <br>
 Admin yetkisine sahip kişi sisteme login olup hem admin hem acente çalışanı ekleyebilmektedir.<br>
-Acente çalışanları sisteme oteller ve bu otellere ait odalar kaydedebilir ve müşterilerin taleplerine göre oda araması
+Acente çalışanları sisteme oteller ve bu otellere ait odalar kaydedebilmekte ve müşterilerin taleplerine göre oda araması
 yapıp rezervasyon işlemi yapabilmektedir.<br>
 <br>
 ## Değerlendirme formu
