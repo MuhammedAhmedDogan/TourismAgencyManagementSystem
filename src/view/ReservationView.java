@@ -73,10 +73,11 @@ public class ReservationView extends Layout {
     private final PriceManager priceManager;
     private final ReservationManager reservationManager;
     private Room room;
+    private Room beforeUpdateRoom;
 
     public ReservationView(Reservation reservation) {
         this.add(container);
-        this.guiInitilaze(700, 950);
+        this.guiInitilaze(800, 950);
         this.roomManager = new RoomManager();
         this.seasonManager = new SeasonManager();
         this.pensionManager = new PensionManager();
@@ -91,6 +92,7 @@ public class ReservationView extends Layout {
 
         // Değerlendirme formu 16.
         if (this.reservation.getId() != 0) {
+            this.beforeUpdateRoom = this.reservation.getRoom();
             loadInfo(this.reservation.getRoom().getId());
             this.lbl_cost.setText("Toplam Tutar : " + this.reservation.getCost() + " TL"); // Değerlendirme formu 17.
         }
@@ -139,16 +141,15 @@ public class ReservationView extends Layout {
                     this.lbl_cost.setText("Toplam Tutar : " + this.reservation.getCost() + " TL");
                 }
             }
-
         });
-
 
         // Değerlendirme formu 18.
         this.btn_save.addActionListener(e -> {
             if (Helper.isFieldListEmpty(new JTextField[]{this.fld_customer_name, this.fld_customer_id, this.fld_adults, this.fld_children, this.fld_start_date, this.fld_end_date}) || this.cmb_pension_type.getSelectedItem() == null) {
                 Helper.showMessage("fill");
             } else {
-                ArrayList<Room> roomSearchList1 = new ArrayList<>();
+                boolean isRoomAvailable = false;
+                ArrayList<Room> roomSearchList = new ArrayList<>();
                 DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
                 try {
                     if (dateFormat.parse(this.fld_end_date.getText()).getTime() - dateFormat.parse(this.fld_start_date.getText()).getTime() <= 0) {
@@ -157,13 +158,18 @@ public class ReservationView extends Layout {
                         for (Room room1 : this.roomManager.findAll()) {
                             if (this.seasonManager.getForReservation(room1.getHotel().getId(), dateFormat.parse(this.fld_start_date.getText()), dateFormat.parse(this.fld_end_date.getText())) != null) {
                                 if (room1.getStock() > this.reservationManager.getForStockControl(room1.getId(), dateFormat.parse(this.fld_start_date.getText()), dateFormat.parse(this.fld_end_date.getText())).size()) {
-                                    roomSearchList1.add(room1);
+                                    roomSearchList.add(room1);
                                 }
                             }
                         }
                         // Değerlendirme formu 15. 19.
-                        if (roomSearchList1.isEmpty() && this.reservation.getId() == 0) {
-                            Helper.showMessage("Otele ait seçili oda tipinde girilen tarih için boş oda bulunmamaktadır !");
+                        for (Room room2 : roomSearchList) {
+                            if (room2.getId() == this.room.getId()) {
+                                isRoomAvailable = true;
+                            }
+                        }
+                        if (!isRoomAvailable) {
+                            Helper.showMessage("Otele ait seçili oda tipinde girilen tarih için boş oda bulunmamaktadır !\nBoş oda ara butonunu kullanarak rezervasyona uygun odaları listeleyebilirsiniz.");
                         }
                     }
                 } catch (ParseException ex) {
@@ -177,7 +183,7 @@ public class ReservationView extends Layout {
                     this.lbl_cost.setText("Toplam Tutar : -----");
                     Helper.showMessage("Hatalı bir tarih girdiniz !");
                     result = false;
-                } else if (roomSearchList1.isEmpty() && this.reservation.getId() == 0) {
+                } else if (!isRoomAvailable) {
                     result = false;
                 } else if (this.reservation.getId() != 0) {
                     result = this.reservationManager.update(this.reservation);
@@ -200,7 +206,10 @@ public class ReservationView extends Layout {
             roomList = this.roomManager.getForTable2(this.col_room.length, this.roomManager.findAll());
         }
         createTable(this.tmdl_room, this.tbl_room, this.col_room, roomList);
-        tbl_room.getColumnModel().getColumn(0).setMaxWidth(75);
+        tbl_room.getColumnModel().getColumn(0).setMaxWidth(50);
+        tbl_room.getColumnModel().getColumn(2).setMaxWidth(200);
+        tbl_room.getColumnModel().getColumn(5).setMaxWidth(400);
+        tbl_room.getColumnModel().getColumn(6).setMaxWidth(150);
     }
 
     // Değerlendirme formu 16.
@@ -249,7 +258,6 @@ public class ReservationView extends Layout {
             cost *= (int) daysBetween;
             this.reservation.setCost(cost);
         }
-
     }
 
     // Değerlendirme formu 16.

@@ -150,7 +150,7 @@ public class EmployeeView extends Layout {
     }
 
     public void loadRoomTable(ArrayList<Object[]> roomList) {
-        this.col_room = new Object[]{"ID", "Otel Adı", "Oda Tipi", "Yatak Sayısı", "Oda Alanı (Metrekare)", "Boş Oda Sayısı"};
+        this.col_room = new Object[]{"ID", "Otel Adı", "Oda Tipi", "Yatak Sayısı", "Oda Alanı (Metrekare)", "Oda Sayısı"};
         if (roomList == null) {
             roomList = this.roomManager.getForTable(this.col_room.length, this.roomManager.findAll());
         }

@@ -47,7 +47,7 @@ public class RoomManager {
             int i = 0;
             Object[] rowObject = new Object[size];
             rowObject[i++] = room.getId();
-            rowObject[i++] = room.getHotel().getName();
+            rowObject[i++] = room.getHotel().getName() + " - " + room.getHotel().getCity();
             rowObject[i++] = room.getHotel().getStar().getStarValue();
             rowObject[i++] = room.getRoomType().toString();
             rowObject[i++] = room.getBeds();
