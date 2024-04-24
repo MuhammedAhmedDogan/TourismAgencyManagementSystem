@@ -2,16 +2,16 @@
 
 ## Proje Java version 21.0.2 ve PostgreSQL version 15.6 kullanılarak hazırlanmıştır.
 
--Değerlendirme formu 6. package core içerisindeki Db Class'ı içerisinde yorum satırı ile gösterilmiştir.
+-Değerlendirme formu 6. package core içerisindeki Db Class'ı içerisinde yorum satırı ile gösterilmiştir.<br>
 -Değerlendirme formu 7. package view içerisindeki AdminView ve UserView Classları içerisinde yorum satırları
-ile gösterilmiştir.
--Değerlendirme formu 8. package view içerisindeki EmployeeView Class'ı içerisinde yorum satırı ile gösterilmiştir.
--Değerlendirme formu 9. package view içerisindeki LoginView Class'ı içerisinde yorum satırı ile gösterilmiştir.
+ile gösterilmiştir.<br>
+-Değerlendirme formu 8. package view içerisindeki EmployeeView Class'ı içerisinde yorum satırı ile gösterilmiştir.<br>
+-Değerlendirme formu 9. package view içerisindeki LoginView Class'ı içerisinde yorum satırı ile gösterilmiştir.<br>
 -Değerlendirme formu 10. 11. 12. package view içerisindeki HotelView Class'ı içerisinde yorum satırları ile 
-gösterilmiştir.
--Değerlendirme formu 13. 14. package view içerisindeki RoomView Class'ı içerisinde yorum satırları ile gösterilmiştir.
+gösterilmiştir.<br>
+-Değerlendirme formu 13. 14. package view içerisindeki RoomView Class'ı içerisinde yorum satırları ile gösterilmiştir.<br>
 -Değerlendirme formu 15. package view içerisindeki EmployeeView ve ReservationView Classları içerisinde yorum satırları 
-ile gösterilmiştir.
+ile gösterilmiştir.<br>
 -Değerlendirme formu 16. package view içerisindeki ReservationView Class'ı içerisinde yorum satırları ile gösterilmiştir.
 -Değerlendirme formu 17. package view içerisindeki ReservationView Class'ı içerisinde yorum satırları ile gösterilmiştir.
 -Değerlendirme formu 18. package view içerisindeki ReservationView Class'ı içerisinde yorum satırları ile gösterilmiştir.
