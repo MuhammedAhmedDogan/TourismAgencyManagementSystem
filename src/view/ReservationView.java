@@ -88,6 +88,13 @@ public class ReservationView extends Layout {
         setFormatFields();
         loadRoomTable(null);
         loadRoomComponent();
+        if (this.reservation.getId() != 0) {
+            loadInfo(this.reservation.getRoom().getId());
+            this.lbl_cost.setText("Toplam Tutar : " + this.reservation.getCost() + " TL");
+        }
+        if (this.room != null)
+            this.cmb_pension_type.setSelectedItem(this.reservation.getPension().getPensionType());
+
 
         this.btn_search.addActionListener(e -> {
             if (Helper.isFieldListEmpty(new JTextField[]{this.fld_start_date, this.fld_end_date}) || this.cmb_city.getSelectedItem() == null) {
@@ -102,7 +109,13 @@ public class ReservationView extends Layout {
                 Helper.showMessage("fill");
             } else {
                 this.setReservation();
-                this.lbl_cost.setText("Toplam Tutar : " + this.reservation.getCost() + " TL");
+                if (this.reservation.getSeason() == null) {
+                    this.lbl_cost.setText("Toplam Tutar : -----");
+                    Helper.showMessage("Hatalı bir tarih girdiniz !");
+
+                } else {
+                    this.lbl_cost.setText("Toplam Tutar : " + this.reservation.getCost() + " TL");
+                }
             }
 
         });
@@ -113,7 +126,12 @@ public class ReservationView extends Layout {
             } else {
                 boolean result;
                 this.setReservation();
-                if (this.reservation.getId() != 0) {
+
+                if (this.reservation.getSeason() == null) {
+                    this.lbl_cost.setText("Toplam Tutar : -----");
+                    Helper.showMessage("Hatalı bir tarih girdiniz !");
+                    result = false;
+                } else if (this.reservation.getId() != 0) {
                     result = this.reservationManager.update(this.reservation);
                 } else {
                     result = this.reservationManager.save(this.reservation);
@@ -122,8 +140,6 @@ public class ReservationView extends Layout {
                 if (result) {
                     Helper.showMessage("done");
                     dispose();
-                } else {
-                    Helper.showMessage("error");
                 }
             }
         });
@@ -137,10 +153,6 @@ public class ReservationView extends Layout {
         }
         createTable(this.tmdl_room, this.tbl_room, this.col_room, roomList);
         tbl_room.getColumnModel().getColumn(0).setMaxWidth(75);
-        if (this.room != null) {
-            this.loadInfo(this.room.getId());
-        }
-
     }
 
     public void loadRoomComponent() {
@@ -172,18 +184,22 @@ public class ReservationView extends Layout {
         this.reservation.setCustomerId(this.fld_customer_id.getText());
         this.reservation.setAdults(Integer.parseInt(this.fld_adults.getValue().toString()));
         this.reservation.setChildren(Integer.parseInt(this.fld_children.getValue().toString()));
-        int cost = 0;
-        for (int i = 0; i < this.reservation.getAdults(); i++) {
-            cost += this.priceManager.getPrice(this.room, this.reservation.getPension(), this.reservation.getSeason(), "'adult'");
-        }
-        for (int i = 0; i < this.reservation.getChildren(); i++) {
-            cost += this.priceManager.getPrice(this.room, this.reservation.getPension(), this.reservation.getSeason(), "'child'");
+
+        if (this.reservation.getSeason() != null) {
+            int cost = 0;
+            for (int i = 0; i < this.reservation.getAdults(); i++) {
+                cost += this.priceManager.getPrice(this.room, this.reservation.getPension(), this.reservation.getSeason(), "'adult'");
+            }
+            for (int i = 0; i < this.reservation.getChildren(); i++) {
+                cost += this.priceManager.getPrice(this.room, this.reservation.getPension(), this.reservation.getSeason(), "'child'");
+            }
+
+            long difference = this.reservation.getReservationEndDate().getTime() - this.reservation.getReservationStartDate().getTime();
+            long daysBetween = difference / (1000 * 60 * 60 * 24);
+            cost *= (int) daysBetween;
+            this.reservation.setCost(cost);
         }
 
-        long difference = this.reservation.getReservationEndDate().getTime() - this.reservation.getReservationStartDate().getTime();
-        long daysBetween = difference / (1000 * 60 * 60 * 24);
-        cost *= (int) daysBetween;
-        this.reservation.setCost(cost);
     }
 
     public void loadInfo(int roomId) {
@@ -221,8 +237,6 @@ public class ReservationView extends Layout {
             this.cmb_pension_type.addItem(Pension.PensionType.Sadece_Yatak);
         if (this.room.getHotel().isFullCreditPension())
             this.cmb_pension_type.addItem(Pension.PensionType.Alkol_Haric_Full_Credit);
-        this.cmb_pension_type.setSelectedItem(this.reservation.getPension().getPensionType());
-
     }
 
     public void setFormatFields() {

@@ -90,7 +90,7 @@ public class EmployeeView extends Layout {
     }
 
     public void loadReservationTable(ArrayList<Object[]> reservationList) {
-        this.col_reservation = new Object[]{"ID", "Müşteri İsmi", "Müşteri TC no", "Yetişkin", "Çocuk", "Otel", "Oda Tipi", "Pansiyon Tipi", "Giriş Tarihi", "Çıkış Tarihi", "Fiyat"};
+        this.col_reservation = new Object[]{"ID", "Müşteri İsmi", "Müşteri TC no", "Yetişkin", "Çocuk", "Otel", "Oda Tipi", "Pansiyon Tipi", "Giriş Tarihi", "Çıkış Tarihi", "Fiyat (TL)"};
         if (reservationList == null) {
             reservationList = this.reservationManager.getForTable(this.col_reservation.length, this.reservationManager.findAll());
         }

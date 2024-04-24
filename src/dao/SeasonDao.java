@@ -50,7 +50,7 @@ public class SeasonDao {
 
     public Season getForReservation(int hotelId, java.util.Date startDate, java.util.Date endDate) {
         Season obj = null;
-        String query = "SELECT * FROM public.season WHERE season_hotel_id = ? AND season_start_date < ? AND season_end_date > ?";
+        String query = "SELECT * FROM public.season WHERE season_hotel_id = ? AND season_start_date <= ? AND season_end_date >= ?";
         try {
             PreparedStatement pr = this.con.prepareStatement(query);
             pr.setInt(1, hotelId);
