@@ -50,4 +50,5 @@ stok 1 artsın.<br>
 Ancak uygun oda arama ve rezervasyon işlemleri sırasında kesişen tarihler için oda sayısından fazla rezervasyon
 yapılamamaktır.<br>
 <br>
+Uygulamayı genel hatları ile kısaca gösteren video linki 
 https://www.youtube.com/watch?v=3gwTo2LOPFE
