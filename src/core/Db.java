@@ -12,7 +12,6 @@ public class Db {
     private final String DB_USERNAME = "postgres";
     private final String DB_PASSWORD = "6121333";
 
-
     private Db() {
         try {
             this.connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);

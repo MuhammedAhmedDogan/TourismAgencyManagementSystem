@@ -4,7 +4,6 @@ import core.Helper;
 import dao.HotelDao;
 import entity.City;
 import entity.Hotel;
-
 import java.util.ArrayList;
 
 public class HotelManager {
@@ -75,5 +74,4 @@ public class HotelManager {
     public int newHotelId() {
         return this.hotelDao.newHotelId();
     }
-
 }

@@ -218,5 +218,4 @@ public class HotelDao {
         }
         return hotel.getId();
     }
-
 }

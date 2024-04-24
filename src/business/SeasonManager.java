@@ -3,7 +3,6 @@ package business;
 import core.Helper;
 import dao.SeasonDao;
 import entity.Season;
-
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -53,5 +52,4 @@ public class SeasonManager {
         }
         return this.seasonDao.update(season);
     }
-
 }

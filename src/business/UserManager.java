@@ -3,7 +3,6 @@ package business;
 import core.Helper;
 import dao.UserDao;
 import entity.User;
-
 import java.util.ArrayList;
 
 public class UserManager {

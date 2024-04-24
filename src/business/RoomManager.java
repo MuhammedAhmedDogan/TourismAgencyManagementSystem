@@ -3,7 +3,6 @@ package business;
 import core.Helper;
 import dao.RoomDao;
 import entity.Room;
-
 import java.util.ArrayList;
 
 public class RoomManager {
@@ -95,5 +94,4 @@ public class RoomManager {
     public int newRoomId() {
         return this.roomDao.newRoomId();
     }
-
 }

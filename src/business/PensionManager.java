@@ -3,7 +3,6 @@ package business;
 import core.Helper;
 import dao.PensionDao;
 import entity.Pension;
-
 import java.util.ArrayList;
 
 public class PensionManager {
@@ -60,5 +59,4 @@ public class PensionManager {
         }
         return this.pensionDao.update(pension);
     }
-
 }

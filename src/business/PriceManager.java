@@ -6,7 +6,6 @@ import entity.Pension;
 import entity.Price;
 import entity.Room;
 import entity.Season;
-
 import java.util.ArrayList;
 
 public class PriceManager {
