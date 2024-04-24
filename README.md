@@ -9,9 +9,10 @@ Bu projenin temel amacı, otel sektöründe faaliyet gösteren işletmenin günl
 yönetmesini sağlamak ve müşteri rezervasyon süreçlerini optimize etmektir.<br>
 <br>
 Admin yetkisine sahip kişi sisteme login olup hem admin hem acente çalışanı ekleyebilmektedir.<br>
-Acente çalışanları sisteme otel, oda kaydedebilir ve müşterilerin taleplerine göre oda araması yapıp rezervasyon işlemi
-yapabilmektedir.<br>
-
+Acente çalışanları sisteme oteller ve bu otellere ait odalar kaydedebilir ve müşterilerin taleplerine göre oda araması
+yapıp rezervasyon işlemi yapabilmektedir.<br>
+<br>
+## Değerlendirme formu
 -Değerlendirme formu 6. package core içerisindeki Db Class'ı içerisinde yorum satırı ile gösterilmiştir.<br>
 -Değerlendirme formu 7. package view içerisindeki AdminView ve UserView Classları içerisinde yorum satırları
 ile gösterilmiştir.<br>
