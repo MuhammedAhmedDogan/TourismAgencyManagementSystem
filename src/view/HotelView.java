@@ -55,7 +55,7 @@ public class HotelView extends Layout {
     private ArrayList<Season> seasons;
     private ArrayList<Pension> pensions;
 
-    // Değerlendirme formu 10.
+
     public HotelView(Hotel hotel) {
         this.add(container);
         this.guiInitilaze(500, 700);
@@ -137,7 +137,6 @@ public class HotelView extends Layout {
                 this.hotel.setOnlyBedPension(this.check_only_bed_pension.isSelected());
                 this.hotel.setFullCreditPension(this.check_full_credit_pension.isSelected());
 
-                // Değerlendirme formu 11.
                 if (this.hotel.getId() != 0) {
                     this.hotelManager.update(this.hotel);
                     try {
@@ -162,7 +161,6 @@ public class HotelView extends Layout {
                     result = this.seasonManager.save(seasons.getFirst()) && this.seasonManager.save(seasons.getLast());
                 }
 
-                // Değerlendirme formu 12.
                 if (pensions.isEmpty()) {
                     if (this.check_ultra_pension.isSelected()) {
                         this.pensionManager.save(new Pension(this.hotel, Pension.PensionType.Ultra_Her_Sey_Dahil));

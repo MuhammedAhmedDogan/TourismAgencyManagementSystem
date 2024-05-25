@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class Db {
-    // Singleton Design Pattern ( Değerlendirme formu 6 )
+    // Singleton Design Pattern
     private static Db instance = null;
     private Connection connection = null;
 
